@@ -1,0 +1,89 @@
+[33m[nodemon] 3.1.10[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching path(s): server.ts src/**/*[39m
+[33m[nodemon] watching extensions: ts,tsx,js,jsx[39m
+[32m[nodemon] starting `npx tsx server.ts`[39m
+> Ready on http://127.0.0.1:3000
+> Socket.IO server running at ws://127.0.0.1:3000/api/socketio
+ ○ Compiling / ...
+ ✓ Compiled / in 4.6s (1693 modules)
+ GET / 200 in 6309ms
+ ○ Compiling /api/websites ...
+ ✓ Compiled /api/websites in 607ms (916 modules)
+ ✓ Compiled in 712ms (794 modules)
+ GET /api/admin/news 200 in 1708ms
+ GET /api/websites 200 in 1721ms
+ GET /favicon.ico 200 in 1802ms
+ GET /api/admin/background-images 200 in 1752ms
+ ○ Compiling /middleware ...
+ ✓ Compiled /middleware in 1159ms (111 modules)
+ ○ Compiling /admin/login ...
+ ✓ Compiled /admin/login in 3.1s (1731 modules)
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /admin/login?redirect=%2Fadmin 200 in 3675ms
+ ○ Compiling /api/admin/auth/login ...
+ ✓ Compiled /api/admin/auth/login in 898ms (1751 modules)
+ POST /api/admin/auth/login 200 in 1094ms
+ ○ Compiling /admin ...
+ ✓ Compiled /admin in 3s (2108 modules)
+ GET /admin 200 in 3276ms
+ ○ Compiling /api/admin/system-logs ...
+ ✓ Compiled /api/admin/system-logs in 711ms (1123 modules)
+ ✓ Compiled in 1099ms (987 modules)
+ GET /api/admin/background-images 200 in 2431ms
+ GET /api/admin/users 200 in 2440ms
+ GET /api/admin/contact-messages 200 in 2448ms
+ GET /api/admin/website-templates 200 in 2459ms
+ GET /api/admin/system-logs 200 in 2469ms
+ GET /api/admin/news 200 in 2490ms
+ ○ Compiling /api/admin/stats ...
+ ✓ Compiled /api/admin/stats in 1464ms (2127 modules)
+ GET /api/admin/websites 200 in 1533ms
+ GET /api/admin/stats 200 in 1547ms
+ GET /api/admin/services 200 in 1566ms
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `npx tsx server.ts`[39m
+> Ready on http://127.0.0.1:3000
+> Socket.IO server running at ws://127.0.0.1:3000/api/socketio
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `npx tsx server.ts`[39m
+> Ready on http://127.0.0.1:3000
+> Socket.IO server running at ws://127.0.0.1:3000/api/socketio
+ ○ Compiling /middleware ...
+ ✓ Compiled /middleware in 4.1s (111 modules)
+ ○ Compiling /admin ...
+ ⨯ unhandledRejection: [Error: ENOENT: no such file or directory, stat '/home/wadarbab/Desktop/CIAR/.next/cache/webpack/server-development/17.pack.gz'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: '/home/wadarbab/Desktop/CIAR/.next/cache/webpack/server-development/17.pack.gz'
+}
+ ⨯ unhandledRejection:  [Error: ENOENT: no such file or directory, stat '/home/wadarbab/Desktop/CIAR/.next/cache/webpack/server-development/17.pack.gz'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: '/home/wadarbab/Desktop/CIAR/.next/cache/webpack/server-development/17.pack.gz'
+}
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, stat '/home/wadarbab/Desktop/CIAR/.next/cache/webpack/server-development/1.pack.gz'
+(node:12283) PromiseRejectionHandledWarning: Promise rejection was handled asynchronously (rejection id: 5131)
+(Use `node --trace-warnings ...` to show where the warning was created)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, stat '/home/wadarbab/Desktop/CIAR/.next/cache/webpack/client-development/0.pack.gz'
+ ✓ Compiled / in 91.1s (2189 modules)
+ GET / 200 in 89077ms
+ ○ Compiling /favicon.ico ...
+ ✓ Compiled /favicon.ico in 1883ms (2104 modules)
+ GET /api/admin/news 200 in 2085ms
+ GET /favicon.ico 200 in 1898ms
+ GET /api/websites 200 in 2124ms
+ GET /api/admin/background-images 200 in 2136ms
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: incorrect header check
+ ○ Compiling /about ...
+ ✓ Compiled /about in 1954ms (1897 modules)
+ GET /about 200 in 2296ms
+ GET /about 200 in 50ms
+ ✓ Compiled /api/websites in 293ms (927 modules)
+ ✓ Compiled (932 modules)
+ GET /api/admin/news 200 in 688ms
+ GET /api/websites 200 in 703ms
+ GET /api/admin/background-images 200 in 717ms
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: incorrect header check
