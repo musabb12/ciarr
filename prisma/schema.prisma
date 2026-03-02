@@ -1,0 +1,140 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+enum ContactStatus {
+  NEW
+  READ
+  REPLIED
+  CLOSED
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String?
+  name      String?
+  phone     String?
+  avatar    String?
+  role      UserRole @default(USER)
+  isActive  Boolean  @default(true)
+  lastLogin DateTime?
+  sessions  Session[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Setting {
+  key       String   @id
+  value     String
+  type      String?  @default("json")
+  group     String?  @default("general")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model DisplayWebsite {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  title        String
+  description  String?
+  url          String
+  category     String
+  technologies String?
+  images       String?
+  badges       String?
+  tags         String?
+  featured     Boolean  @default(false)
+  status       String   @default("active")
+  client       String?
+  provider     String?
+  price        Float?
+  demoUrl      String?
+  hidden       Boolean  @default(false)
+  displayOrder Int      @default(1)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model NewsItem {
+  id        String   @id @default(cuid())
+  text      String
+  icon      String?
+  active    Boolean  @default(true)
+  priority  String   @default("medium")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SiteService {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  icon        String   @default("FileText")
+  active      Boolean  @default(true)
+  sortOrder   Int      @default(1)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ContactMessage {
+  id        String         @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String
+  status    ContactStatus  @default(NEW)
+  notes     String?
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  sortOrder Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model BackgroundImage {
+  id        String   @id @default(cuid())
+  url       String
+  title     String?
+  active    Boolean  @default(true)
+  sortOrder Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SystemLog {
+  id        String   @id @default(cuid())
+  action    String
+  user      String?
+  ip        String?
+  status    String   @default("success")
+  details   String?
+  createdAt DateTime @default(now())
+}
