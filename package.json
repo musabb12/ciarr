@@ -94,10 +94,6 @@
     "zod": "^4.0.2",
     "zustand": "^5.0.6"
   },
-  "overrides": {
-    "next": "15.3.6",
-    "eslint-config-next": "15.3.6"
-  },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
