@@ -39,7 +39,6 @@ import {
   PieChart,
   LineChart,
   GitBranch,
-  Api,
   Code,
   Terminal,
   Server,
@@ -339,7 +338,7 @@ export function AdvancedIntegrations() {
   const getLogIcon = (type: string) => {
     switch (type) {
       case 'api_call':
-        return <Api className="w-4 h-4 text-blue-600" />;
+        return <Code className="w-4 h-4 text-blue-600" />;
       case 'webhook':
         return <Link className="w-4 h-4 text-green-600" />;
       case 'sync':
@@ -535,7 +534,7 @@ export function AdvancedIntegrations() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">مجموع API Calls</CardTitle>
-            <Api className="h-4 w-4 text-muted-foreground" />
+            <Code className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
