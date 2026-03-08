@@ -9,6 +9,18 @@ import { db } from '@/lib/db';
 
 const CONTENT_FILE = path.join(process.cwd(), 'data', 'site-content.json');
 
+/** رسالة واضحة عند غياب DATABASE_URL (مثلاً على Netlify) */
+export const DATABASE_URL_MESSAGE =
+  'قاعدة البيانات غير مضبوطة. أضف المتغير DATABASE_URL في Netlify: Site configuration → Environment variables ثم أعد النشر (Deploy).';
+
+function ensureDatabaseUrl(): void {
+  if (!process.env.DATABASE_URL?.trim()) {
+    const e = new Error(DATABASE_URL_MESSAGE) as Error & { code?: string };
+    e.code = 'DATABASE_URL_NOT_SET';
+    throw e;
+  }
+}
+
 export async function loadSiteContentFromDb(): Promise<SiteContent | null> {
   try {
     const row = await db.setting.findUnique({ where: { key: 'site_content' } });
@@ -25,6 +37,7 @@ export async function loadSiteContentFromDb(): Promise<SiteContent | null> {
 }
 
 export async function saveSiteContentToDb(content: SiteContent): Promise<void> {
+  ensureDatabaseUrl();
   const json = JSON.stringify(content, null, 2);
   try {
     await db.setting.upsert({
