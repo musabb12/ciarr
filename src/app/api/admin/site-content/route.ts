@@ -35,8 +35,9 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json(updated);
   } catch (error) {
     console.error('Error updating site content:', error);
+    const msg = (error as Error).message || 'فشل الاتصال بقاعدة البيانات';
     return NextResponse.json(
-      { error: String((error as Error).message) },
+      { error: msg },
       { status: 500 }
     );
   }

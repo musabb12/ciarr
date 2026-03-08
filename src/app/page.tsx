@@ -113,9 +113,9 @@ export default function Home() {
   const [isPaused, setIsPaused] = useState(false);
   const [imageLoadErrors, setImageLoadErrors] = useState<Set<number>>(new Set());
   const defaultNewsItems = [
-    { id: 'default-1', text: 'مرحباً بكم في CIAR — 14 موقعاً يخدمونك', icon: '🎉', active: true },
-    { id: 'default-2', text: 'عقاري، سياحي، موضة، تجارة إلكترونية، سيارات، توظيف، استثمار', icon: '✨', active: true },
-    { id: 'default-3', text: 'تواصل معنا عبر واتساب والهاتف — أيقونات التواصل على يسار الصفحة', icon: '📞', active: true },
+    { id: 'default-1', text: 'خصم 20% على جميع قوالب المواقع هذا الأسبوع', icon: '🏷️', active: true },
+    { id: 'default-2', text: 'إطلاق ميزات جديدة في لوحة التحكم', icon: '🚀', active: true },
+    { id: 'default-3', text: 'نصائح جديدة لتحسين أداء موقعك', icon: '📍', active: true },
   ];
   const [newsItems, setNewsItems] = useState<any[]>(defaultNewsItems);
   const [featuredWebsites, setFeaturedWebsites] = useState<any[]>([]);
@@ -704,7 +704,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg">
               <Link prefetch href="/websites" className="btn-luxury rounded-xl px-8 py-6 text-base font-arabic-modern inline-flex items-center justify-center shadow-[var(--luxury-glow)]">
-                استعرض مواقعنا الـ 14
+                استعرض المواقع
               </Link>
             </Button>
             <Button asChild size="lg" variant="outline">

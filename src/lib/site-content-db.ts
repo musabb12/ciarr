@@ -34,6 +34,7 @@ export async function saveSiteContentToDb(content: SiteContent): Promise<void> {
     });
   } catch (e) {
     console.error('site-content db write:', e);
+    throw e;
   }
   try {
     const dir = path.dirname(CONTENT_FILE);

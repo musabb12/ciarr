@@ -50,7 +50,11 @@ export default function AdminHomepagePage() {
         const updated = await res.json();
         setContent(updated);
         toast.success('تم حفظ التغييرات');
-      } else toast.error('فشل الحفظ');
+      } else {
+        const data = await res.json().catch(() => ({}));
+        const msg = data?.error || 'فشل الحفظ. تحقق من إعدادات قاعدة البيانات (DATABASE_URL على Netlify).';
+        toast.error(msg);
+      }
     } catch {
       toast.error('فشل الحفظ');
     } finally {

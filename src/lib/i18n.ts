@@ -19,9 +19,9 @@ export const translations = {
     },
     // Hero Section
     hero: {
-      title: 'شركة <span>CIAR</span> — <span>14 موقعاً</span> يخدمونك',
-      subtitle: 'عقاري، سياحي، موضة، تجارة إلكترونية، سيارات، توظيف، استثمار، وغيرها — كل ما تحتاجه تحت سقف واحد',
-      searchPlaceholder: 'ابحث في مواقعنا وخدماتنا...',
+      title: 'منصتك العالمية',
+      subtitle: 'كل ما تحتاجه في العالم تجده هنا',
+      searchPlaceholder: 'ابحث عن مواقع أو خدمات...',
       contactUs: 'اتصل بنا'
     },
     // Categories (business domains of our 14 websites)
