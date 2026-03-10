@@ -23,7 +23,9 @@ export async function POST(request: NextRequest) {
     const payload = await createDisplayWebsite({
       id: data.id,
       title: data.title,
+      titleEn: data.titleEn,
       description: data.description || '',
+      descriptionEn: data.descriptionEn,
       category: data.category,
       url: data.url,
       technologies: data.technologies || [],

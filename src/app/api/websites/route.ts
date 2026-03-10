@@ -12,7 +12,9 @@ export async function GET() {
       const fallback = listWebsites().map((w) => ({
         id: w.id,
         title: w.title,
+        titleEn: (w as any).titleEn ?? '',
         description: w.description ?? '',
+        descriptionEn: (w as any).descriptionEn ?? '',
         url: w.url,
         category: w.category,
         technologies: w.technologies ?? [],

@@ -46,6 +46,7 @@ import {
 interface Website {
   id: string;
   title: string;
+  titleEn?: string;
   category: string;
   price: number;
   isFree: boolean;
@@ -59,6 +60,7 @@ interface Website {
   images?: string[]; // 多图片支持
   createdAt: string;
   description?: string;
+  descriptionEn?: string;
   features?: string[];
   technologies?: string[];
   demoUrl?: string;
@@ -69,11 +71,12 @@ interface Website {
   tags?: string[];
 }
 
-function mapApiToWebsite(api: { id: string; title: string; url?: string; category: string; description?: string; technologies?: string[]; images?: string[]; featured?: boolean; tags?: string[]; status?: string }): Website {
+function mapApiToWebsite(api: { id: string; title: string; titleEn?: string; url?: string; category: string; description?: string; descriptionEn?: string; technologies?: string[]; images?: string[]; featured?: boolean; tags?: string[]; status?: string }): Website {
   const images = api.images && api.images.length ? api.images : ['/template-portfolio.jpg'];
   return {
     id: api.id,
     title: api.title,
+    titleEn: api.titleEn || '',
     category: api.category,
     price: 0,
     isFree: true,
@@ -87,6 +90,7 @@ function mapApiToWebsite(api: { id: string; title: string; url?: string; categor
     images,
     createdAt: '',
     description: api.description || '',
+    descriptionEn: api.descriptionEn || '',
     features: [],
     technologies: api.technologies || [],
     demoUrl: api.url || '',
@@ -110,9 +114,11 @@ export function WebsitesManagement() {
   const [activeTab, setActiveTab] = useState('basic');
   const [addWebsiteOpen, setAddWebsiteOpen] = useState(false);
   const [addTitle, setAddTitle] = useState('');
+  const [addTitleEn, setAddTitleEn] = useState('');
   const [addUrl, setAddUrl] = useState('');
   const [addCategory, setAddCategory] = useState('الموضة');
   const [addDescription, setAddDescription] = useState('');
+  const [addDescriptionEn, setAddDescriptionEn] = useState('');
   const [savingWebsite, setSavingWebsite] = useState(false);
 
   useEffect(() => {
@@ -165,9 +171,11 @@ export function WebsitesManagement() {
         body: JSON.stringify({
           id: editingWebsite.id,
           title: editingWebsite.title,
+          titleEn: editingWebsite.titleEn,
           url: editingWebsite.demoUrl || '',
           category: editingWebsite.category,
           description: editingWebsite.description,
+          descriptionEn: editingWebsite.descriptionEn,
           technologies: editingWebsite.technologies,
           images: editingWebsite.images,
           featured: editingWebsite.isFeatured,
@@ -213,9 +221,11 @@ export function WebsitesManagement() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           title: addTitle.trim(),
+          titleEn: addTitleEn.trim() || undefined,
           url: addUrl.trim(),
           category: addCategory.trim(),
           description: addDescription.trim(),
+          descriptionEn: addDescriptionEn.trim() || undefined,
         }),
       });
       if (res.ok) {
@@ -223,9 +233,11 @@ export function WebsitesManagement() {
         setWebsites((prev) => [...prev, mapApiToWebsite(created)]);
         setAddWebsiteOpen(false);
         setAddTitle('');
+        setAddTitleEn('');
         setAddUrl('');
         setAddCategory('الموضة');
         setAddDescription('');
+        setAddDescriptionEn('');
       }
     } catch (e) {
       console.error(e);
@@ -551,6 +563,16 @@ export function WebsitesManagement() {
                       className="mt-1"
                     />
                   </div>
+                <div>
+                  <Label htmlFor="titleEn">عنوان الموقع (English)</Label>
+                  <Input
+                    id="titleEn"
+                    value={editingWebsite.titleEn || ''}
+                    onChange={(e) => updateEditingWebsite('titleEn', e.target.value)}
+                    className="mt-1"
+                    placeholder="Website title in English"
+                  />
+                </div>
                   <div>
                     <Label htmlFor="provider">المزود</Label>
                     <Input
@@ -922,6 +944,10 @@ export function WebsitesManagement() {
               <Label>العنوان</Label>
               <Input className="mt-1" value={addTitle} onChange={(e) => setAddTitle(e.target.value)} placeholder="عنوان الموقع" />
             </div>
+                <div>
+                  <Label>العنوان (English)</Label>
+                  <Input className="mt-1" value={addTitleEn} onChange={(e) => setAddTitleEn(e.target.value)} placeholder="Website title in English" />
+                </div>
             <div>
               <Label>الرابط</Label>
               <Input className="mt-1" value={addUrl} onChange={(e) => setAddUrl(e.target.value)} placeholder="https://..." />
@@ -934,6 +960,10 @@ export function WebsitesManagement() {
               <Label>الوصف (اختياري)</Label>
               <Input className="mt-1" value={addDescription} onChange={(e) => setAddDescription(e.target.value)} placeholder="وصف قصير" />
             </div>
+                <div>
+                  <Label>الوصف (English, اختياري)</Label>
+                  <Input className="mt-1" value={addDescriptionEn} onChange={(e) => setAddDescriptionEn(e.target.value)} placeholder="Short description in English" />
+                </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setAddWebsiteOpen(false)}>إلغاء</Button>

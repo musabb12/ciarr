@@ -72,28 +72,28 @@ export function AdminSidebar() {
       className="admin-glass-sidebar w-72 shrink-0 flex flex-col relative z-20"
       dir="rtl"
     >
-      <div className="p-6 border-b border-amber-900/20">
+      <div className="p-6 border-b admin-sidebar-border">
         <Link href="/admin" className="flex items-center gap-3 group">
           <div className="admin-logo-glow w-11 h-11 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center ring-2 ring-amber-400/30 transition-transform group-hover:scale-105">
             <LayoutDashboard className="w-6 h-6 text-white" />
           </div>
           <div>
-            <span className="font-bold text-slate-100 text-lg font-arabic-heading">لوحة الإدارة</span>
-            <p className="text-xs text-amber-400/80">CIAR</p>
+            <span className="admin-sidebar-title font-arabic-heading block">لوحة الإدارة</span>
+            <p className="admin-sidebar-sub mt-0.5">CIAR</p>
           </div>
         </Link>
       </div>
-      <div className="p-5 flex flex-col items-center border-b border-amber-900/20">
-        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400/20 to-amber-600/30 border border-amber-500/30 flex items-center justify-center ring-4 ring-amber-500/10">
-          <User className="w-8 h-8 text-amber-400" />
+      <div className="p-5 flex flex-col items-center border-b admin-sidebar-border">
+        <div className="admin-sidebar-user-box w-16 h-16 rounded-2xl flex items-center justify-center ring-4 ring-amber-500/10">
+          <User className="w-8 h-8 text-amber-500" />
         </div>
-        <p className="mt-3 font-semibold text-slate-100 text-sm">المدير</p>
-        <p className="text-xs text-amber-400/80">مدير CIAR</p>
+        <p className="mt-3 font-semibold admin-sidebar-title text-sm">المدير</p>
+        <p className="admin-sidebar-sub">مدير CIAR</p>
       </div>
       <nav className="flex-1 overflow-y-auto p-4 space-y-7">
         {navSections.map((section) => (
           <div key={section.title}>
-            <p className="text-xs font-semibold text-amber-500/90 uppercase tracking-widest mb-3 px-3">
+            <p className="admin-sidebar-section mb-3 px-3">
               {section.title}
             </p>
             <ul className="space-y-1">
@@ -109,10 +109,10 @@ export function AdminSidebar() {
                       prefetch
                       href={item.href}
                       className={cn(
-                        'flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200',
+                        'flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 border border-transparent',
                         isActive
-                          ? 'bg-gradient-to-l from-amber-600/90 to-amber-700/80 text-white shadow-lg shadow-amber-900/40 border border-amber-500/30'
-                          : 'text-slate-400 hover:bg-slate-800/60 hover:text-amber-200/90 border border-transparent'
+                          ? 'bg-gradient-to-l from-amber-600/90 to-amber-700/80 text-white shadow-lg shadow-amber-900/40 border-amber-500/30'
+                          : 'admin-sidebar-link'
                       )}
                     >
                       <Icon className={cn('w-4 h-4 shrink-0', isActive ? 'text-white' : '')} />

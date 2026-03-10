@@ -17,7 +17,9 @@ function toApiWebsite(row: {
   id: string;
   slug: string;
   title: string;
+  titleEn: string | null;
   description: string | null;
+  descriptionEn: string | null;
   url: string;
   category: string;
   technologies: string | null;
@@ -33,7 +35,9 @@ function toApiWebsite(row: {
   return {
     id: row.slug,
     title: row.title,
+    titleEn: row.titleEn ?? '',
     description: row.description ?? '',
+    descriptionEn: row.descriptionEn ?? '',
     url: row.url,
     category: row.category,
     technologies: parseJson<string[]>(row.technologies, []),
@@ -54,7 +58,9 @@ function mapDataWebsiteToApi(w: ReturnType<typeof listWebsites>[number]) {
   return {
     id: w.id,
     title: w.title,
+    titleEn: (w as any).titleEn ?? '',
     description: w.description ?? '',
+    descriptionEn: (w as any).descriptionEn ?? '',
     url: w.url,
     category: w.category,
     technologies: w.technologies ?? [],
@@ -92,7 +98,9 @@ export async function createDisplayWebsite(data: Partial<DisplayWebsiteApi> & { 
     data: {
       slug,
       title: data.title,
+      titleEn: data.titleEn ?? null,
       description: data.description ?? null,
+      descriptionEn: data.descriptionEn ?? null,
       url: data.url,
       category: data.category,
       technologies: data.technologies ? JSON.stringify(data.technologies) : null,
@@ -118,7 +126,9 @@ export async function updateDisplayWebsite(id: string, data: Partial<DisplayWebs
     where: { id: existing.id },
     data: {
       ...(data.title != null && { title: data.title }),
+      ...(data.titleEn !== undefined && { titleEn: data.titleEn || null }),
       ...(data.description !== undefined && { description: data.description || null }),
+      ...(data.descriptionEn !== undefined && { descriptionEn: data.descriptionEn || null }),
       ...(data.url != null && { url: data.url }),
       ...(data.category != null && { category: data.category }),
       ...(data.technologies !== undefined && { technologies: data.technologies ? JSON.stringify(data.technologies) : null }),

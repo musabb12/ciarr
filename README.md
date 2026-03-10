@@ -1,6 +1,43 @@
 # CIAR
 
-## النشر على Netlify
+## إجراءات إعداد قاعدة البيانات على Netlify
+
+إذا ظهرت رسالة **"قاعدة البيانات غير مضبوطة"** عند الحفظ من لوحة الأدمن، نفّذ التالي بالترتيب:
+
+### 1. الحصول على رابط الاتصال من Supabase
+
+- ادخل إلى [supabase.com](https://supabase.com) → مشروعك → **Project Settings** → **Database**
+- في **Connection string** اختر **URI** ثم **Session pooler** (وليس Direct)
+- انسخ الرابط واستبدل `[YOUR-PASSWORD]` بكلمة مرور قاعدة البيانات
+
+### 2. إضافة المتغير في Netlify
+
+- ادخل إلى [app.netlify.com](https://app.netlify.com) → موقعك (ciarr) → **Site configuration** → **Environment variables**
+- **Add a variable** أو **New variable**
+- **Key:** `DATABASE_URL`
+- **Value:** استخدم هذا القالب (واستبدل `كلمة_المرور` بكلمة مرور قاعدة البيانات الفعلية):
+  ```
+  postgresql://postgres.lcjhmwogaixgcndkchxw:كلمة_المرور@aws-1-eu-west-1.pooler.supabase.com:5432/postgres
+  ```
+  إذا كانت كلمة المرور تحتوي على رموز خاصة (مثل `@` أو `#`) فانسخ الرابط من Supabase: **Project Settings** → **Database** → **Session pooler**.
+- احفظ (Save)
+
+### 3. إعادة النشر
+
+- من **Deploys** اضغط **Trigger deploy** → **Deploy site**
+- انتظر انتهاء النشر ثم جرّب الحفظ من لوحة الأدمن مرة أخرى
+
+### 4. المايجريشن (مرة واحدة فقط)
+
+إن لم تكن شغّلت المايجريشن على قاعدة Supabase من قبل، نفّذ محلياً (مع `.env` صحيح):
+
+```bash
+npx prisma migrate deploy
+```
+
+---
+
+## النشر على Netlify (تفاصيل)
 
 لكي تظهر تعديلات لوحة الأدمن على الموقع وعلى كل الأجهزة:
 
@@ -22,4 +59,4 @@
      ```
    - أو من Supabase SQL Editor تشغيل الـ migrations يدوياً إن رغبت.
 
-بدون `DATABASE_URL` على Netlify، الحفظ من لوحة الأدمن قد يظهر "تم الحفظ" لكن التعديلات لا تُخزَّن في قاعدة مشتركة، فلا تظهر على الموقع أو على أجهزة أخرى.
+بدون `DATABASE_URL` على Netlify، الحفظ من لوحة الأدمن سيعرض رسالة "قاعدة البيانات غير مضبوطة"، ولن تُخزَّن التعديلات في قاعدة مشتركة.

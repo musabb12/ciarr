@@ -57,7 +57,11 @@ model DisplayWebsite {
   id           String   @id @default(cuid())
   slug         String   @unique
   title        String
+  /// English title (optional)
+  titleEn      String?
   description  String?
+  /// English description (optional)
+  descriptionEn String?
   url          String
   category     String
   technologies String?

@@ -1,6 +1,7 @@
 'use client';
 
 import { ReactNode, useState } from 'react';
+import { useTheme } from 'next-themes';
 import { useSession } from '@/components/admin/SessionManager';
 import { AdminSidebar } from '@/components/admin/AdminSidebar';
 import { Search, Bell, Settings, LogOut, Moon, Sun } from 'lucide-react';
@@ -17,7 +18,8 @@ import { useToast } from '@/hooks/use-toast';
 export function AdminShell({ children }: { children: ReactNode }) {
   const { logout, timeRemaining } = useSession();
   const [search, setSearch] = useState('');
-  const [darkMode, setDarkMode] = useState(true);
+  const { theme, setTheme, resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
   const { toast } = useToast();
 
   const formatTime = (seconds: number) => {
@@ -27,14 +29,14 @@ export function AdminShell({ children }: { children: ReactNode }) {
   };
 
   return (
-    <div className="min-h-screen flex relative text-slate-100 overflow-hidden" dir="rtl">
+    <div className="min-h-screen flex relative text-foreground overflow-hidden admin-shell-wrapper" dir="rtl">
       <div className="admin-panel-bg" aria-hidden />
       <AdminSidebar />
       <div className="flex-1 flex flex-col min-w-0 relative z-10">
-        <header className="relative shrink-0">
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-amber-900/60 via-slate-950/80 to-amber-800/40 opacity-95" />
-          <div className="pointer-events-none absolute inset-x-8 bottom-0 h-px bg-gradient-to-r from-transparent via-amber-400/60 to-transparent" />
-          <div className="relative admin-glass h-20 flex items-center justify-between gap-6 px-8 border-b border-amber-900/40 shadow-[0_18px_40px_rgba(15,23,42,0.7)]">
+        <header className="relative shrink-0 admin-header">
+          <div className="pointer-events-none absolute inset-0 admin-header-gradient" />
+          <div className="pointer-events-none absolute inset-x-8 bottom-0 h-px admin-header-line" />
+          <div className="relative admin-glass h-20 flex items-center justify-between gap-6 px-8 border-b admin-header-border">
             {/* Brand / Identity */}
             <div className="flex items-center gap-4 flex-1 min-w-0">
               <div className="flex items-center gap-3">
@@ -42,14 +44,14 @@ export function AdminShell({ children }: { children: ReactNode }) {
                   <span className="text-slate-950 font-black text-lg tracking-tight">C</span>
                 </div>
                 <div className="hidden sm:block">
-                  <p className="text-xs uppercase tracking-[0.25em] text-amber-200/70">CIAR ADMIN</p>
-                  <p className="text-sm font-medium text-amber-50 font-arabic-modern">لوحة تحكم رسمية للمواقع الأربعة عشر</p>
+                  <p className="text-xs uppercase tracking-[0.25em] admin-brand-label">CIAR ADMIN</p>
+                  <p className="text-sm font-medium admin-brand-desc font-arabic-modern">لوحة تحكم رسمية للمواقع الأربعة عشر</p>
                 </div>
               </div>
               {/* Search */}
               <div className="hidden md:flex items-center gap-3 flex-1 max-w-xl ml-4">
                 <div className="relative flex-1">
-                  <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-amber-300/80" />
+                  <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 admin-search-icon" />
                   <Input
                     placeholder="بحث دقيق في لوحة الإدارة..."
                     value={search}
@@ -59,14 +61,14 @@ export function AdminShell({ children }: { children: ReactNode }) {
                         toast.info(`جاري البحث عن: ${search}`);
                       }
                     }}
-                    className="bg-slate-900/50 border border-amber-500/40 text-amber-50 placeholder:text-amber-200/50 focus-visible:ring-amber-400/60 focus-visible:border-amber-300/70 pr-10 h-10 rounded-xl shadow-inner"
+                    className="admin-search-input pr-10 h-10 rounded-xl"
                   />
                 </div>
                 <Button
                   variant="secondary"
                   size="sm"
                   onClick={() => toast.info(search.trim() ? `جاري البحث عن: ${search}` : 'اكتب عبارة للبحث')}
-                  className="bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-300 hover:via-amber-400 hover:to-amber-500 text-slate-950 font-semibold shadow-[0_10px_30px_rgba(250,204,21,0.55)] h-10 px-5 rounded-xl border border-amber-200/60"
+                  className="admin-search-btn h-10 px-5 rounded-xl"
                 >
                   بحث
                 </Button>
@@ -75,22 +77,23 @@ export function AdminShell({ children }: { children: ReactNode }) {
 
             {/* Session / Actions */}
             <div className="flex items-center gap-3">
-              <span className="hidden lg:inline-flex items-center gap-2 text-[11px] text-amber-100/90 px-3 py-1.5 rounded-full bg-slate-900/40 border border-amber-500/40 shadow-sm shadow-amber-900/30">
+              <span className="admin-session-badge hidden lg:inline-flex items-center gap-2 text-[11px] px-3 py-1.5 rounded-full">
                 <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgba(52,211,153,0.3)]" />
                 <span>جلسة إدارية نشطة • {formatTime(timeRemaining)}</span>
               </span>
               <Button
                 variant="ghost"
                 size="icon"
-                className="text-amber-100/80 hover:text-amber-50 hover:bg-amber-500/20 h-9 w-9 rounded-full border border-amber-500/30 transition-colors"
-                onClick={() => setDarkMode(!darkMode)}
+                className="admin-theme-toggle h-9 w-9 rounded-full border transition-colors"
+                onClick={() => setTheme(isDark ? 'light' : 'dark')}
+                aria-label={isDark ? 'تفعيل الوضع الفاتح' : 'تفعيل الوضع الداكن'}
               >
-                {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
               </Button>
               <Button
                 variant="ghost"
                 size="icon"
-                className="text-amber-100/80 hover:text-amber-50 hover:bg-amber-500/20 h-9 w-9 rounded-full relative border border-amber-500/30 transition-colors"
+                className="admin-icon-btn h-9 w-9 rounded-full relative border transition-colors"
                 onClick={() => toast.info('لا توجد إشعارات جديدة حالياً')}
               >
                 <Bell className="w-4 h-4" />
@@ -101,12 +104,12 @@ export function AdminShell({ children }: { children: ReactNode }) {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="text-amber-100/90 hover:text-amber-50 hover:bg-amber-500/20 h-9 w-9 rounded-full border border-amber-500/30 transition-colors"
+                    className="admin-icon-btn h-9 w-9 rounded-full border transition-colors"
                   >
                     <Settings className="w-4 h-4" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56 bg-slate-950/95 backdrop-blur-2xl border border-amber-700/50 shadow-2xl shadow-slate-950/80">
+                <DropdownMenuContent align="end" className="admin-dropdown w-56">
                   <DropdownMenuItem className="flex flex-col items-start gap-0.5 cursor-default">
                     <span className="text-xs text-amber-300/90">وضع الإدارة</span>
                     <span className="text-[11px] text-slate-400">مراجعة شاملة لإعدادات المنصّة</span>

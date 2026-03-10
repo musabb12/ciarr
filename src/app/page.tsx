@@ -123,6 +123,7 @@ export default function Home() {
   const [siteSettings, setSiteSettings] = useState<Record<string, any> | null>(null);
   const { language, t, dir } = useLanguage();
   const pathname = usePathname();
+  const isArabic = language === 'ar';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -351,9 +352,12 @@ export default function Home() {
       : '/logo.png';
 
   const filteredWebsites = featuredWebsites.filter(website => {
+    const titleForSearch = (isArabic ? website.title : (website.titleEn || website.title)) as string;
+    const descForSearch = (isArabic ? website.description : (website.descriptionEn || website.description)) as string;
     const matchesCategory = selectedCategory === 'all' || website.category === selectedCategory;
-    const matchesSearch = website.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         (website.description && website.description.toLowerCase().includes(searchTerm.toLowerCase()));
+    const matchesSearch =
+      titleForSearch.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (descForSearch && descForSearch.toLowerCase().includes(searchTerm.toLowerCase()));
     return matchesCategory && matchesSearch;
   });
 
@@ -680,7 +684,15 @@ export default function Home() {
         {/* Hero Content */}
         <div className="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8 animate-slide-up">
           <div className="inline-block w-16 h-1 rounded-full bg-gradient-to-l from-amber-400 via-amber-500 to-amber-400 mb-6 opacity-90" aria-hidden />
-          <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-5 font-arabic-heading text-shadow-hero leading-tight tracking-tight">
+          {/* Logo الحقيقي في المنتصف */}
+          <div className="mb-2 flex justify-center">
+            <img
+              src={logoSrc}
+              alt={siteSettings?.siteName || 'CIAR'}
+              className="hero-logo-image"
+            />
+          </div>
+          <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-3 font-arabic-heading text-shadow-hero leading-tight tracking-tight">
             {siteContent?.hero?.title ?? t.hero.title}
           </h1>
           <p className="text-lg md:text-xl lg:text-2xl mb-10 max-w-3xl mx-auto font-arabic-modern text-stone-300 text-shadow-hero reading-optimized">
@@ -721,11 +733,11 @@ export default function Home() {
         <div className="container-narrow">
           <div className="text-center mb-14">
             <h2 className="section-heading font-arabic-heading mb-2">
-              مواقعنا الـ 14
+              {t.sections?.featuredWebsitesTitle ?? 'مواقعنا الـ 14'}
             </h2>
             <span className="section-heading-accent" aria-hidden />
             <p className="section-subheading font-arabic-modern mt-4">
-              مواقع شركة CIAR في قطاعات متعددة: عقاري، سياحي، موضة، تجارة إلكترونية، سيارات، توظيف، استثمار، وتسويق
+              {t.sections?.featuredWebsitesSubtitle ?? 'مواقع شركة CIAR في قطاعات متعددة: عقاري، سياحي، موضة، تجارة إلكترونية، سيارات، توظيف، استثمار، وتسويق'}
             </p>
           </div>
           
@@ -735,19 +747,19 @@ export default function Home() {
                 <div className="relative rounded-t-2xl overflow-hidden">
                   <ImageCarousel 
                     images={website.images || [website.image || '/template-portfolio.jpg']} 
-                    title={website.title} 
+                    title={isArabic ? website.title : (website.titleEn || website.title)} 
                   />
                   {website.featured && (
                     <div className="absolute top-4 left-4 z-10">
                       <Badge className="bg-amber-500 text-gray-900 font-medium shadow-md">
-                        مميز
+                        {t.common.featured}
                       </Badge>
                     </div>
                   )}
                   <div className="absolute top-4 right-4 z-10 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-xl shadow-sm">
                     <div className="flex items-center gap-1.5">
                       <CheckCircle className="w-4 h-4 text-emerald-500" />
-                      <span className="text-sm font-medium text-emerald-700">موقع CIAR</span>
+                      <span className="text-sm font-medium text-emerald-700">CIAR</span>
                     </div>
                   </div>
                 </div>
@@ -759,16 +771,16 @@ export default function Home() {
                     </Badge>
                     <div className="flex items-center text-xs text-gray-500">
                       <ImageIcon className="w-3 h-3 ml-1" />
-                      <span>{website.images?.length || 1} صور</span>
+                    <span>{website.images?.length || 1}</span>
                     </div>
                   </div>
                   
                   <h3 className="text-xl font-semibold text-gray-900 mb-2 font-arabic-heading">
-                    {website.title}
+                    {isArabic ? website.title : (website.titleEn || website.title)}
                   </h3>
                   
                   <p className="text-gray-600 mb-4 font-arabic-modern reading-optimized">
-                    {website.description}
+                    {isArabic ? website.description : (website.descriptionEn || website.description)}
                   </p>
                   
                   {website.technologies && website.technologies.length > 0 && (
@@ -796,7 +808,7 @@ export default function Home() {
                       className="flex-1 btn-brand rounded-xl font-arabic-modern"
                       onClick={() => window.open(website.url, '_blank')}
                     >
-                      زيارة الموقع
+                      {t.sections?.featuredWebsitesVisitSite ?? 'زيارة الموقع'}
                     </Button>
                   </div>
                 </CardContent>
@@ -807,7 +819,7 @@ export default function Home() {
           <div className="text-center mt-12">
             <Button asChild size="lg">
               <Link href="/websites" className="btn-brand-outline rounded-xl font-arabic-modern inline-flex items-center justify-center gap-2">
-                عرض جميع مواقعنا الـ 14
+                {t.sections?.featuredWebsitesViewAll ?? 'عرض جميع مواقعنا الـ 14'}
                 <ArrowRight className="w-4 h-4 mr-2" />
               </Link>
             </Button>
@@ -857,11 +869,11 @@ export default function Home() {
         <div className="container-narrow">
           <div className="text-center mb-14">
             <h2 className="section-heading font-arabic-heading mb-2">
-              تصفح مواقعنا حسب القطاع
+              {t.sections?.browseBySectorTitle ?? 'تصفح مواقعنا حسب القطاع'}
             </h2>
             <span className="section-heading-accent" aria-hidden />
             <p className="section-subheading font-arabic-modern mt-4">
-              عقاري، سياحي، موضة، تجارة إلكترونية، سيارات، توظيف، استثمار، وأكثر
+              {t.sections?.browseBySectorSubtitle ?? 'عقاري، سياحي، موضة، تجارة إلكترونية، سيارات، توظيف، استثمار، وأكثر'}
             </p>
           </div>
           
@@ -890,11 +902,11 @@ export default function Home() {
         <div className="container-narrow">
           <div className="text-center mb-14">
             <h2 className="section-heading font-arabic-heading mb-2">
-              قطاعاتنا وخدماتنا
+              {t.sections?.servicesTitle ?? 'قطاعاتنا وخدماتنا'}
             </h2>
             <span className="section-heading-accent" aria-hidden />
             <p className="section-subheading font-arabic-modern mt-4">
-              عقاري، سياحي، موضة، تجارة إلكترونية، سيارات، توظيف، استثمار، تسويق، لوجستيات، وأكثر
+              {t.sections?.servicesSubtitle ?? 'عقاري، سياحي، موضة، تجارة إلكترونية، سيارات، توظيف، استثمار، تسويق، لوجستيات، وأكثر'}
             </p>
           </div>
           
@@ -913,7 +925,7 @@ export default function Home() {
                   </p>
                   <Button asChild variant="outline">
                     <Link href="/services" className="rounded-xl font-arabic-modern font-semibold border-2 border-amber-200 hover:bg-amber-50 hover:border-amber-300 inline-flex items-center justify-center">
-                      اعرف المزيد
+                      {t.sections?.servicesLearnMore ?? 'اعرف المزيد'}
                     </Link>
                   </Button>
                 </CardContent>
@@ -928,11 +940,11 @@ export default function Home() {
         <div className="container-narrow">
           <div className="text-center mb-14">
             <h2 className="section-heading font-arabic-heading mb-2">
-              آراء العملاء
+              {t.sections?.testimonialsTitle ?? 'آراء العملاء'}
             </h2>
             <span className="section-heading-accent" aria-hidden />
             <p className="section-subheading font-arabic-modern mt-4">
-              ماذا يقول عملاؤنا عن تجربتهم معنا
+              {t.sections?.testimonialsSubtitle ?? 'ماذا يقول عملاؤنا عن تجربتهم معنا'}
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
@@ -970,11 +982,11 @@ export default function Home() {
         <div className="container-narrow">
           <div className="text-center mb-14">
             <h2 className="section-heading font-arabic-heading mb-2">
-              لماذا تختارنا؟
+              {t.sections?.whyUsTitle ?? 'لماذا تختارنا؟'}
             </h2>
             <span className="section-heading-accent" aria-hidden />
             <p className="section-subheading font-arabic-modern mt-4">
-              نقدم أفضل الحلول الرقمية لتنمية أعمالك
+              {t.sections?.whyUsSubtitle ?? 'نقدم أفضل الحلول الرقمية لتنمية أعمالك'}
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
@@ -1009,11 +1021,11 @@ export default function Home() {
         <div className="container-narrow">
           <div className="text-center mb-14">
             <h2 className="section-heading font-arabic-heading mb-2">
-              كيف نعمل
+              {t.sections?.processTitle ?? 'كيف نعمل'}
             </h2>
             <span className="section-heading-accent" aria-hidden />
             <p className="section-subheading font-arabic-modern mt-4">
-              عملية عمل بسيطة وفعالة لتحقيق أهدافك
+              {t.sections?.processSubtitle ?? 'عملية عمل بسيطة وفعالة لتحقيق أهدافك'}
             </p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
@@ -1069,11 +1081,11 @@ export default function Home() {
         <div className="container-narrow">
           <div className="text-center mb-14">
             <h2 className="section-heading font-arabic-heading mb-2">
-              خطط مرنة
+              {t.sections?.pricingTitle ?? 'خطط مرنة'}
             </h2>
             <span className="section-heading-accent" aria-hidden />
             <p className="section-subheading font-arabic-modern mt-4">
-              اختر الخطة التي تناسب احتياجاتك
+              {t.sections?.pricingSubtitle ?? 'اختر الخطة التي تناسب احتياجاتك'}
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-6 md:gap-8">
@@ -1085,7 +1097,9 @@ export default function Home() {
               <Card key={index} className={`relative card-elevated overflow-hidden ${plan.popular ? 'ring-2 ring-amber-500 shadow-xl shadow-amber-500/10' : ''}`}>
                 {plan.popular && (
                   <div className="absolute top-0 left-0 right-0 bg-amber-500 text-gray-900 py-2 text-center">
-                    <span className="text-sm font-bold font-arabic-modern">الأكثر شعبية</span>
+                    <span className="text-sm font-bold font-arabic-modern">
+                      {t.sections?.pricingPopularBadge ?? 'الأكثر شعبية'}
+                    </span>
                   </div>
                 )}
                 <CardContent className={`p-6 md:p-8 text-center ${plan.popular ? 'pt-12' : ''}`}>
@@ -1100,7 +1114,7 @@ export default function Home() {
                     ))}
                   </ul>
                   <Button className={`w-full ${plan.popular ? 'btn-brand' : 'bg-gray-900 text-white hover:bg-gray-800'}`}>
-                    اختر الخطة
+                    {t.sections?.pricingChoosePlan ?? 'اختر الخطة'}
                   </Button>
                 </CardContent>
               </Card>
@@ -1116,19 +1130,19 @@ export default function Home() {
       <section className="section-padding bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 text-gray-900">
         <div className="container-narrow text-center">
           <h2 className="section-heading text-gray-900 mb-4 font-arabic-heading">
-            {siteContent?.newsletterTitle ?? 'انضم إلى نشرتنا البريدية'}
+            {siteContent?.newsletterTitle ?? (t.sections?.newsletterTitle ?? 'انضم إلى نشرتنا البريدية')}
           </h2>
           <p className="section-subheading text-gray-800/90 mb-8 font-arabic-modern max-w-xl mx-auto">
-            {siteContent?.newsletterSubtitle ?? 'احصل على آخر العروض والأخبار والنصائح مباشرة في بريدك'}
+            {siteContent?.newsletterSubtitle ?? (t.sections?.newsletterSubtitle ?? 'احصل على آخر العروض والأخبار والنصائح مباشرة في بريدك')}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
             <Input
               type="email"
-              placeholder="بريدك الإلكتروني"
+              placeholder={t.sections?.newsletterEmailPlaceholder ?? 'بريدك الإلكتروني'}
               className="flex-1 text-right bg-white/95 border-0 shadow-md rounded-xl h-12"
             />
             <Button className="bg-gray-900 text-white hover:bg-gray-800 rounded-xl h-12 font-arabic-modern font-semibold">
-              اشترك الآن
+              {t.sections?.newsletterCta ?? 'اشترك الآن'}
             </Button>
           </div>
         </div>
@@ -1139,31 +1153,43 @@ export default function Home() {
         <div className="container-narrow">
           <div className="text-center mb-14">
             <h2 className="section-heading font-arabic-heading mb-2">
-              أحدث المقالات
+              {t.sections?.blogTitle ?? 'أحدث المقالات'}
             </h2>
             <span className="section-heading-accent" aria-hidden />
             <p className="section-subheading font-arabic-modern mt-4">
-              نصائح وأخبار من عالم التكنولوجيا
+              {t.sections?.blogSubtitle ?? 'نصائح وأخبار من عالم التكنولوجيا'}
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-6 md:gap-8">
             {[
               {
-                title: "كيف تختار العرض المناسب من موقعنا العقاري",
-                excerpt: "نصائح للبحث عن عقار والتمويل عبر منصة CIAR العقارية",
-                date: "15 يناير 2024",
+                title: language === 'en'
+                  ? "How to pick the right offer from our real estate platform"
+                  : "كيف تختار العرض المناسب من موقعنا العقاري",
+                excerpt: language === 'en'
+                  ? "Tips for searching and financing property through CIAR Real Estate"
+                  : "نصائح للبحث عن عقار والتمويل عبر منصة CIAR العقارية",
+                date: language === 'en' ? "15 Jan 2024" : "15 يناير 2024",
                 image: "/project-portfolio.jpg"
               },
               {
-                title: "أفضل الوجهات والحجوزات من موقعنا السياحي",
-                excerpt: "اكتشف العروض والبرامج السياحية وحجز رحلاتك بسهولة",
-                date: "12 يناير 2024",
+                title: language === 'en'
+                  ? "Top destinations and bookings from our travel site"
+                  : "أفضل الوجهات والحجوزات من موقعنا السياحي",
+                excerpt: language === 'en'
+                  ? "Discover deals, packages and easily book your trips"
+                  : "اكتشف العروض والبرامج السياحية وحجز رحلاتك بسهولة",
+                date: language === 'en' ? "12 Jan 2024" : "12 يناير 2024",
                 image: "/project-restaurant.jpg"
               },
               {
-                title: "تسوق الأزياء والتجارة الإلكترونية من مواقعنا",
-                excerpt: "موضة، مول إلكتروني، وتجارة B2B — كل ما تحتاجه في مكان واحد",
-                date: "8 يناير 2024",
+                title: language === 'en'
+                  ? "Shop fashion and e‑commerce across our sites"
+                  : "تسوق الأزياء والتجارة الإلكترونية من مواقعنا",
+                excerpt: language === 'en'
+                  ? "Fashion, online mall and B2B commerce — all in one place"
+                  : "موضة، مول إلكتروني، وتجارة B2B — كل ما تحتاجه في مكان واحد",
+                date: language === 'en' ? "8 Jan 2024" : "8 يناير 2024",
                 image: "/project-ecommerce.jpg"
               }
             ].map((post, index) => (
@@ -1176,7 +1202,7 @@ export default function Home() {
                   <h3 className="text-lg font-semibold mb-2 font-arabic-heading text-gray-900 line-clamp-2">{post.title}</h3>
                   <p className="text-gray-600 mb-4 font-arabic-modern reading-optimized text-sm line-clamp-2">{post.excerpt}</p>
                   <Button variant="outline" className="w-full rounded-xl btn-brand-outline border-amber-500/50">
-                    اقرأ المزيد
+                    {t.sections?.blogReadMore ?? 'اقرأ المزيد'}
                   </Button>
                 </CardContent>
               </Card>
@@ -1190,18 +1216,20 @@ export default function Home() {
         <div className="container-narrow">
           <div className="text-center mb-14">
             <h2 className="section-heading font-arabic-heading mb-2">
-              شركاء النجاح
+              {t.sections?.partnersTitle ?? 'شركاء النجاح'}
             </h2>
             <span className="section-heading-accent" aria-hidden />
             <p className="section-subheading font-arabic-modern mt-4">
-              نفتخر بالعمل مع أفضل الشركات
+              {t.sections?.partnersSubtitle ?? 'نفتخر بالعمل مع أفضل الشركات'}
             </p>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 md:gap-6">
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div key={i} className="card-elevated rounded-xl p-6 md:p-8 flex items-center justify-center min-h-[100px]">
                 <div className="w-20 h-10 bg-gray-200/80 rounded-lg flex items-center justify-center">
-                  <span className="text-xs font-bold text-gray-400 font-arabic-modern">شريك {i}</span>
+                  <span className="text-xs font-bold text-gray-400 font-arabic-modern">
+                    {t.sections?.partnerLabel ?? 'شريك'} {i}
+                  </span>
                 </div>
               </div>
             ))}
@@ -1214,17 +1242,38 @@ export default function Home() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 font-arabic-heading">
-              الأسئلة الشائعة
+              {t.sections?.faqTitle ?? 'الأسئلة الشائعة'}
             </h2>
             <p className="text-xl text-gray-600 font-arabic-modern reading-optimized">
-              إجابات على أكثر الأسئلة شيوعاً
+              {t.sections?.faqSubtitle ?? 'إجابات على أكثر الأسئلة شيوعاً'}
             </p>
           </div>
           <div className="space-y-4">
             {(siteContent?.faq ?? [
-              { q: "كم عدد مواقع شركة CIAR؟", a: "لدينا 14 موقعاً إلكترونياً تغطي عقاري، سياحي، موضة، تجارة إلكترونية، سيارات، توظيف، استثمار، تسويق، لوجستيات، وتوصيل." },
-              { q: "هل تقدمون دعماً للعملاء؟", a: "نعم، نقدم دعماً للعملاء على مدار الساعة لجميع مواقعنا وخدماتنا." },
-              { q: "كيف أصل إلى الموقع المناسب لاحتياجي؟", a: "يمكنك تصفح قائمة مواقعنا الـ 14 من صفحة «المواقع» أو البحث حسب القطاع (عقاري، سياحي، موضة، وغيرها)." },
+              {
+                q: language === 'en'
+                  ? "How many CIAR websites are there?"
+                  : "كم عدد مواقع شركة CIAR؟",
+                a: language === 'en'
+                  ? "We operate 14 websites covering real estate, travel, fashion, e‑commerce, cars, jobs, investment, marketing, logistics and delivery."
+                  : "لدينا 14 موقعاً إلكترونياً تغطي عقاري، سياحي، موضة، تجارة إلكترونية، سيارات، توظيف، استثمار، تسويق، لوجستيات، وتوصيل."
+              },
+              {
+                q: language === 'en'
+                  ? "Do you provide customer support?"
+                  : "هل تقدمون دعماً للعملاء؟",
+                a: language === 'en'
+                  ? "Yes. We provide 24/7 customer support across all our websites and services."
+                  : "نعم، نقدم دعماً للعملاء على مدار الساعة لجميع مواقعنا وخدماتنا."
+              },
+              {
+                q: language === 'en'
+                  ? "How can I find the right website for my needs?"
+                  : "كيف أصل إلى الموقع المناسب لاحتياجي؟",
+                a: language === 'en'
+                  ? "You can browse the list of our 14 websites from the 'Websites' page or filter by sector (real estate, travel, fashion, etc.)."
+                  : "يمكنك تصفح قائمة مواقعنا الـ 14 من صفحة «المواقع» أو البحث حسب القطاع (عقاري، سياحي، موضة، وغيرها)."
+              },
             ]).map((faq: { q: string; a: string }, index: number) => (
               <Card key={index}>
                 <CardContent className="p-6">
@@ -1242,10 +1291,10 @@ export default function Home() {
         <div className="container-narrow">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 text-center">
             {[
-              { number: "14", label: "موقع إلكتروني" },
-              { number: "14+", label: "قطاع نخدمه" },
-              { number: "200+", label: "عميل سعيد" },
-              { number: "24/7", label: "دعم العملاء" }
+              { number: "14", label: t.sections?.statsBlockWebsites ?? "موقع إلكتروني" },
+              { number: "14+", label: t.sections?.statsBlockSectors ?? "قطاع نخدمه" },
+              { number: "200+", label: t.sections?.statsBlockCustomers ?? "عميل سعيد" },
+              { number: "24/7", label: t.sections?.statsBlockSupport ?? "دعم العملاء" }
             ].map((stat, index) => (
               <div key={index} className="py-4">
                 <div className="text-3xl sm:text-4xl md:text-5xl font-bold mb-1 font-arabic-heading drop-shadow-sm">{stat.number}</div>
