@@ -2,11 +2,10 @@
 
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
-import { LogOut, Clock, AlertTriangle } from 'lucide-react'
+import { AlertTriangle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Card, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 
 interface SessionContextType {
   sessionValid: boolean
@@ -167,37 +166,8 @@ export function SessionProvider({ children }: SessionProviderProps) {
   return (
     <SessionContext.Provider value={{ sessionValid, timeRemaining, logout, extendSession }}>
       {children}
-      
-      {/* Session Status Bar */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-12">
-            <div className="flex items-center space-x-4 space-x-reverse">
-              <div className="flex items-center space-x-2 space-x-reverse">
-                <Clock className="w-4 h-4 text-gray-500" />
-                <span className="text-sm text-gray-600">
-                  الجلسة تنتهي خلال: {formatTime(timeRemaining)}
-                </span>
-              </div>
-              <Badge variant={timeRemaining <= 300 ? "destructive" : "secondary"} className="text-xs">
-                {timeRemaining <= 300 ? "تنتهي قريباً" : "نشطة"}
-              </Badge>
-            </div>
-            
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={logout}
-              className="text-red-600 border-red-200 hover:bg-red-50"
-            >
-              <LogOut className="w-4 h-4 ml-2" />
-              تسجيل الخروج
-            </Button>
-          </div>
-        </div>
-      </div>
 
-      {/* Session Warning Modal */}
+      {/* Session Warning Modal — يظهر فقط عند اقتراب انتهاء الجلسة */}
       {showWarning && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <Card className="w-full max-w-md mx-4">

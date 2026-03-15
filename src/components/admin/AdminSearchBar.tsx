@@ -28,14 +28,14 @@ export function AdminSearchBar({
 
   return (
     <div className={cn('relative flex items-center gap-2', className)}>
-      <Search className="absolute right-3 w-4 h-4 text-amber-500/70 pointer-events-none" />
+      <Search className="absolute right-3 w-4 h-4 text-[#475569] dark:text-amber-500/70 pointer-events-none" />
       <Input
         type="search"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
-        className="pr-10 pl-10 bg-slate-800/60 border-amber-900/30 text-slate-100 placeholder:text-slate-500 focus-visible:ring-amber-500/50 focus-visible:border-amber-500/40 rounded-lg"
+        className="pr-10 pl-10 bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-amber-900/30 text-[#0f172a] dark:text-slate-100 placeholder:text-[#64748b] dark:placeholder:text-slate-500 focus-visible:ring-[#1e3a8a] dark:focus-visible:ring-amber-500/50 focus-visible:border-[#1e40af] dark:focus-visible:border-amber-500/40 rounded-lg"
         dir="rtl"
       />
       {showClear && value && (
@@ -43,7 +43,7 @@ export function AdminSearchBar({
           type="button"
           variant="ghost"
           size="icon"
-          className="absolute left-2 h-7 w-7 text-slate-400 hover:text-slate-200"
+          className="absolute left-2 h-7 w-7 text-[#64748b] hover:text-[#0f172a] dark:text-slate-400 dark:hover:text-slate-200"
           onClick={() => onChange('')}
           aria-label="مسح البحث"
         >

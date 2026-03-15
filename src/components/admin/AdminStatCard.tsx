@@ -32,8 +32,8 @@ export function AdminStatCard({
     )}>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <span className="admin-card-title text-sm font-semibold">{title}</span>
-        <div className={cn('rounded-xl p-2.5 bg-amber-100 dark:bg-amber-500/20 border border-amber-200 dark:border-amber-500/20', iconClassName)}>
-          <Icon className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+        <div className={cn('rounded-xl p-2.5 bg-blue-50 dark:bg-amber-500/20 border border-blue-100 dark:border-amber-500/20', iconClassName)}>
+          <Icon className="w-5 h-5 text-[#1e3a8a] dark:text-amber-400" />
         </div>
       </CardHeader>
       <CardContent>

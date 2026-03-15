@@ -35,7 +35,7 @@ export function AdminMetricTrend({
     )}>
       <CardHeader className="flex flex-row items-center justify-between pb-1">
         <span className="admin-card-title text-sm font-semibold">{title}</span>
-        {Icon && <Icon className="w-4 h-4 text-amber-600 dark:text-amber-500/80" />}
+        {Icon && <Icon className="w-4 h-4 text-[#1e3a8a] dark:text-amber-500/80" />}
       </CardHeader>
       <CardContent>
         <p className="admin-card-value text-xl font-bold tabular-nums tracking-tight">
@@ -50,7 +50,7 @@ export function AdminMetricTrend({
                 {sparkline.map((v, i) => (
                   <div
                     key={i}
-                    className="w-1.5 rounded-full bg-gradient-to-t from-amber-600/80 to-amber-400/60 min-h-[4px]"
+                    className="w-1.5 rounded-full bg-gradient-to-t from-[#1e3a8a]/80 to-[#1e40af]/60 dark:from-amber-600/80 dark:to-amber-400/60 min-h-[4px]"
                     style={{ height: `${(v / max) * 100}%`, minHeight: 4 }}
                   />
                 ))}

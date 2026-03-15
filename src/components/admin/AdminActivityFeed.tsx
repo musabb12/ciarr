@@ -57,7 +57,7 @@ export function AdminActivityFeed({
                 <li key={item.id} className="flex gap-3">
                   <span className={cn('mt-1.5 w-2.5 h-2.5 rounded-full shrink-0', dot)} />
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">{item.title}</p>
+                    <p className="text-sm font-semibold text-[#0f172a] dark:text-slate-200">{item.title}</p>
                     {item.description && <p className="admin-card-sub text-xs mt-0.5">{item.description}</p>}
                     <p className="admin-card-sub text-xs mt-1">{item.time}</p>
                   </div>

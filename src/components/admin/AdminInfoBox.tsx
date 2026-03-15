@@ -11,7 +11,7 @@ const variantConfig: Record<
 > = {
   info: {
     icon: Info,
-    className: 'border-amber-200 dark:border-amber-500/30 bg-amber-50/80 dark:bg-slate-800/50 backdrop-blur-sm text-slate-700 dark:text-amber-200/90 shadow-sm',
+    className: 'border-blue-200 dark:border-amber-500/30 bg-blue-50/80 dark:bg-slate-800/50 backdrop-blur-sm text-[#0f172a] dark:text-amber-200/90 shadow-sm',
   },
   warning: {
     icon: AlertTriangle,

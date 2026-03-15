@@ -165,7 +165,7 @@ export function AdminDashboardClient() {
         <AdminStatusBadge variant="success" className="text-sm px-4 py-1.5">
           الحالة: نشط
         </AdminStatusBadge>
-        <span className="text-sm text-slate-500 dark:text-slate-400">مرحباً بك في لوحة التحكم — استخدم الروابط السريعة أدناه للوصول إلى الأقسام.</span>
+        <span className="text-sm text-[#475569] dark:text-slate-400">مرحباً بك في لوحة التحكم — استخدم الروابط السريعة أدناه للوصول إلى الأقسام.</span>
       </div>
 
       <AdminPageHeader
@@ -184,7 +184,7 @@ export function AdminDashboardClient() {
               variant="outline"
               size="sm"
               onClick={() => setCommandOpen(true)}
-              className="border-slate-600 text-slate-100 hover:bg-slate-800/60 text-xs"
+              className="border-[#1e3a8a] text-[#1e3a8a] hover:bg-blue-50 text-xs font-medium"
             >
               Ctrl+K لوحة الأوامر
             </Button>
@@ -193,7 +193,7 @@ export function AdminDashboardClient() {
               size="sm"
               onClick={() => setConfirmOpen(true)}
               disabled={refreshing}
-              className="border-slate-600 text-slate-100 hover:bg-slate-800/60 hover:border-slate-400 transition-colors"
+              className="border-[#475569] text-[#0f172a] hover:bg-slate-100 transition-colors font-medium"
             >
               <Download className="w-4 h-4 ml-2" />
               تحديث البيانات

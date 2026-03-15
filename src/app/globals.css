@@ -558,7 +558,7 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(245, 158, 11, 0.03) 0%, transparent 40%);
+  background: linear-gradient(180deg, rgba(30, 58, 138, 0.02) 0%, transparent 40%);
   pointer-events: none;
 }
 
@@ -619,21 +619,22 @@ body {
 [data-theme="dark"] .admin-header-border,
 .dark .admin-header-border { border-color: rgba(245, 158, 11, 0.2); box-shadow: 0 12px 32px rgba(15, 23, 42, 0.5); }
 
-.admin-brand-label { color: rgba(51, 65, 85, 0.9); }
-.admin-brand-desc { color: #334155; }
+.admin-brand-label { color: #1e3a8a; font-weight: 700; }
+.admin-brand-desc { color: #475569; }
 [data-theme="dark"] .admin-brand-label,
-.dark .admin-brand-label { color: rgba(253, 230, 138, 0.85); }
+.dark .admin-brand-label { color: rgba(253, 230, 138, 0.9); }
 [data-theme="dark"] .admin-brand-desc,
-.dark .admin-brand-desc { color: rgba(253, 250, 241, 0.95); }
+.dark .admin-brand-desc { color: rgba(226, 232, 240, 0.95); }
 
-.admin-search-icon { color: rgba(100, 116, 139, 0.9); }
+.admin-search-icon { color: #475569; }
 .admin-search-input {
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(148, 163, 184, 0.35);
-  color: #1e293b;
-  --tw-placeholder-opacity: 0.6;
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  color: #0f172a;
+  --tw-placeholder-opacity: 0.7;
 }
-.admin-search-input:focus-visible { --tw-ring-color: rgba(245, 158, 11, 0.4); border-color: rgba(245, 158, 11, 0.5); }
+.admin-search-input::placeholder { color: #64748b; }
+.admin-search-input:focus-visible { --tw-ring-color: #1e3a8a; border-color: #1e40af; }
 [data-theme="dark"] .admin-search-icon,
 .dark .admin-search-icon { color: rgba(253, 230, 138, 0.75); }
 [data-theme="dark"] .admin-search-input,
@@ -657,10 +658,10 @@ body {
 .dark .admin-search-btn:hover { box-shadow: 0 6px 24px rgba(245, 158, 11, 0.3); }
 
 .admin-session-badge {
-  color: #334155;
-  background: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(148, 163, 184, 0.3);
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
+  color: #0f172a;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  font-weight: 500;
 }
 [data-theme="dark"] .admin-session-badge,
 .dark .admin-session-badge {
@@ -672,8 +673,8 @@ body {
 
 .admin-theme-toggle,
 .admin-icon-btn {
-  color: #475569;
-  border-color: rgba(148, 163, 184, 0.35);
+  color: #1e3a8a;
+  border-color: #cbd5e1;
   background: transparent;
 }
 .admin-theme-toggle:hover,
@@ -703,20 +704,21 @@ body {
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
 }
 
+/* لوحة الأدمن — ألوان النص: أسود، رمادي، أزرق داكن لوضوح المحتوى */
 .admin-card-luxury {
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.98) 100%);
+  background: #ffffff;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  color: #1e293b;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  color: #0f172a;
 }
-.admin-card-luxury .admin-card-title { color: #475569; }
+.admin-card-luxury .admin-card-title { color: #1e3a8a; font-weight: 600; }
 .admin-card-luxury .admin-card-value { color: #0f172a; font-weight: 700; }
-.admin-card-luxury .admin-card-sub { color: #64748b; }
+.admin-card-luxury .admin-card-sub { color: #475569; }
 .admin-card-luxury:hover {
-  border-color: rgba(245, 158, 11, 0.3);
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(245, 158, 11, 0.08);
+  border-color: #94a3b8;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 [data-theme="dark"] .admin-card-luxury,
 .dark .admin-card-luxury {

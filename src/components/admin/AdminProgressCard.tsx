@@ -37,7 +37,7 @@ export function AdminProgressCard({
     )}>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <span className="admin-card-title text-sm font-semibold">{title}</span>
-        {Icon && <Icon className="w-5 h-5 text-amber-600 dark:text-amber-500/80" />}
+        {Icon && <Icon className="w-5 h-5 text-[#1e3a8a] dark:text-amber-500/80" />}
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
@@ -45,7 +45,7 @@ export function AdminProgressCard({
             <span className="admin-card-value text-base font-bold tabular-nums">{clamped}%</span>
             {label && <span className="admin-card-sub">{label}</span>}
           </div>
-          <Progress value={clamped} className="h-2.5 bg-slate-200 dark:bg-slate-700 [&>div]:bg-gradient-to-r [&>div]:from-amber-500 [&>div]:to-amber-600 rounded-full" />
+          <Progress value={clamped} className="h-2.5 bg-slate-200 dark:bg-slate-700 [&>div]:bg-gradient-to-r [&>div]:from-[#1e3a8a] [&>div]:to-[#1e40af] dark:[&>div]:from-amber-500 dark:[&>div]:to-amber-600 rounded-full" />
         </div>
       </CardContent>
     </Card>
