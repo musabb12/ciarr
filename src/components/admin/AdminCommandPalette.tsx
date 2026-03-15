@@ -63,7 +63,7 @@ export function AdminCommandPalette({
             placeholder={placeholder}
             value={search}
             onValueChange={setSearch}
-            className="h-12 bg-transparent border-b border-amber-900/20 text-amber-200 placeholder:text-slate-500 focus:ring-0"
+            className="h-12 bg-transparent border-b border-slate-600 text-slate-200 placeholder:text-slate-500 focus:ring-0"
           />
           <CommandList>
             <CommandEmpty>لا توجد نتائج.</CommandEmpty>
@@ -80,9 +80,9 @@ export function AdminCommandPalette({
                     <CommandItem
                       key={item.id}
                       onSelect={() => runAction(item)}
-                      className="text-slate-200 focus:bg-amber-900/30 focus:text-amber-200 cursor-pointer"
+                      className="text-slate-200 focus:bg-slate-700/50 focus:text-slate-100 cursor-pointer"
                     >
-                      {Icon && <Icon className="w-4 h-4 ml-2 shrink-0 text-amber-500/80" />}
+                      {Icon && <Icon className="w-4 h-4 ml-2 shrink-0 text-slate-400" />}
                       {item.label}
                     </CommandItem>
                   );

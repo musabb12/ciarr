@@ -111,11 +111,11 @@ export function AdminShell({ children }: { children: ReactNode }) {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="admin-dropdown w-56">
                   <DropdownMenuItem className="flex flex-col items-start gap-0.5 cursor-default">
-                    <span className="text-xs text-amber-300/90">وضع الإدارة</span>
+                    <span className="text-xs text-slate-500 dark:text-slate-400">وضع الإدارة</span>
                     <span className="text-[11px] text-slate-400">مراجعة شاملة لإعدادات المنصّة</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <a href="/admin/settings" className="w-full flex items-center justify-between focus:bg-amber-900/30 focus:text-amber-100">
+                    <a href="/admin/settings" className="w-full flex items-center justify-between focus:bg-slate-100 dark:focus:bg-slate-800 focus:text-slate-800 dark:focus:text-slate-200">
                       <span>إعدادات الموقع</span>
                     </a>
                   </DropdownMenuItem>

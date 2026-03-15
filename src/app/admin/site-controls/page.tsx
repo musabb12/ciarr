@@ -90,7 +90,7 @@ export default function SiteControlsPage() {
 
   const ControlInput = ({ label, value, onChange, placeholder, icon: Icon }: any) => (
     <div className="space-y-2">
-      <Label className="text-amber-200/90 flex items-center gap-2">
+      <Label className="text-slate-700 dark:text-slate-300 flex items-center gap-2">
         {Icon && <Icon className="w-4 h-4" />}
         {label}
       </Label>
@@ -105,7 +105,7 @@ export default function SiteControlsPage() {
 
   const ControlSwitch = ({ label, checked, onCheckedChange }: any) => (
     <div className="flex items-center justify-between">
-      <Label className="text-amber-200/90">{label}</Label>
+      <Label className="text-slate-700 dark:text-slate-300">{label}</Label>
       <Switch checked={checked} onCheckedChange={onCheckedChange} />
     </div>
   );
@@ -114,7 +114,7 @@ export default function SiteControlsPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-bold text-slate-100">تحكم الموقع</h1>
-        <p className="text-amber-200/80 mt-1">20 مكون للتحكم في إعدادات الموقع — التعديلات تُطبّق فوراً</p>
+        <p className="text-[#475569] dark:text-slate-400 mt-1">20 مكون للتحكم في إعدادات الموقع — التعديلات تُطبّق فوراً</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -223,7 +223,7 @@ export default function SiteControlsPage() {
           <CardContent className="space-y-4">
             <ControlInput label="عنوان الصفحة" value={settings.seoTitle} onChange={(v: string) => update({ seoTitle: v })} icon={Search} />
             <div className="space-y-2">
-              <Label className="text-amber-200/90">الوصف</Label>
+              <Label className="text-slate-700 dark:text-slate-300">الوصف</Label>
               <Textarea value={settings.seoDescription} onChange={(e) => update({ seoDescription: e.target.value })} className="bg-slate-800/60 border-amber-900/30 text-slate-100" rows={2} />
             </div>
           </CardContent>
@@ -274,7 +274,7 @@ export default function SiteControlsPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              <Label className="text-amber-200/90">كود تضمين خرائط جوجل</Label>
+              <Label className="text-slate-700 dark:text-slate-300">كود تضمين خرائط جوجل</Label>
               <Textarea value={settings.googleMapsEmbed} onChange={(e) => update({ googleMapsEmbed: e.target.value })} className="bg-slate-800/60 border-amber-900/30 text-slate-100 font-mono text-xs" rows={3} placeholder='<iframe src="..." ...></iframe>' />
             </div>
           </CardContent>
@@ -289,7 +289,7 @@ export default function SiteControlsPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              <Label className="text-amber-200/90">كود Google Analytics أو غيره</Label>
+              <Label className="text-slate-700 dark:text-slate-300">كود Google Analytics أو غيره</Label>
               <Textarea value={settings.analyticsCode} onChange={(e) => update({ analyticsCode: e.target.value })} className="bg-slate-800/60 border-amber-900/30 text-slate-100 font-mono text-xs" rows={4} placeholder="<script>...</script>" />
             </div>
           </CardContent>
@@ -304,7 +304,7 @@ export default function SiteControlsPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              <Label className="text-amber-200/90">نص إشعار الكوكيز</Label>
+              <Label className="text-slate-700 dark:text-slate-300">نص إشعار الكوكيز</Label>
               <Textarea value={settings.cookieConsentText} onChange={(e) => update({ cookieConsentText: e.target.value })} className="bg-slate-800/60 border-amber-900/30 text-slate-100" rows={2} />
             </div>
           </CardContent>
@@ -391,7 +391,7 @@ export default function SiteControlsPage() {
         <Button
           onClick={() => fetchSettings()}
           variant="outline"
-          className="border-amber-900/30 text-amber-200"
+          className="border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300"
         >
           تحديث العرض
         </Button>

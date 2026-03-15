@@ -21,11 +21,11 @@ export function AdminBreadcrumb({ items, className }: AdminBreadcrumbProps) {
         const isLast = i === items.length - 1;
         return (
           <span key={i} className="flex items-center gap-2">
-            {i > 0 && <ChevronLeft className="w-4 h-4 text-amber-500/50 rotate-180" />}
+            {i > 0 && <ChevronLeft className="w-4 h-4 text-slate-400 rotate-180" />}
             {item.href && !isLast ? (
               <Link
                 href={item.href}
-                className="text-[#1e3a8a] dark:text-amber-200/90 hover:text-[#1e40af] dark:hover:text-amber-300 transition-colors font-medium"
+                className="text-slate-800 dark:text-slate-200 hover:text-slate-600 dark:hover:text-slate-300 transition-colors font-medium"
               >
                 {item.label}
               </Link>

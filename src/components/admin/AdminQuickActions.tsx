@@ -47,9 +47,9 @@ export function AdminQuickActions({
               <Link key={item.href} href={item.href} prefetch className="group">
                 <Button
                   variant="outline"
-                  className="w-full justify-start gap-2 h-auto py-3.5 px-4 border-slate-200 dark:border-amber-900/30 bg-white dark:bg-transparent text-[#0f172a] dark:text-slate-300 hover:bg-blue-50 hover:border-amber-300 dark:hover:bg-gradient-to-l dark:hover:from-amber-600/20 dark:hover:to-amber-700/10 dark:hover:text-amber-200 dark:hover:border-amber-600/40 transition-all duration-200 font-medium"
+                  className="w-full justify-start gap-2 h-auto py-3.5 px-4 border-slate-200 dark:border-slate-600 bg-white dark:bg-transparent text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:border-slate-300 dark:hover:border-slate-500 transition-all duration-200 font-medium"
                 >
-                  <Icon className="w-4 h-4 shrink-0 text-[#1e3a8a] dark:text-amber-500/80 group-hover:text-[#1e40af]" />
+                  <Icon className="w-4 h-4 shrink-0 text-slate-600 dark:text-slate-400" />
                   <span className="text-sm truncate flex-1 text-right">{item.label}</span>
                   <ArrowLeft className="w-3.5 h-3.5 shrink-0 opacity-70 group-hover:translate-x-1 transition-transform" />
                 </Button>

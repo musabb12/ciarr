@@ -157,7 +157,7 @@ export function SessionProvider({ children }: SessionProviderProps) {
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-2 border-amber-200 border-t-amber-500 mx-auto mb-4" />
           <p className="text-gray-600 font-medium">جاري التحويل إلى صفحة تسجيل الدخول...</p>
-          <p className="text-sm text-gray-500 mt-2">إذا لم يتم التحويل تلقائياً، <a href="/admin/login" className="text-amber-600 underline">اضغط هنا</a></p>
+          <p className="text-sm text-gray-500 mt-2">إذا لم يتم التحويل تلقائياً، <a href="/admin/login" className="text-slate-700 dark:text-slate-300 underline">اضغط هنا</a></p>
         </div>
       </div>
     )
@@ -182,7 +182,7 @@ export function SessionProvider({ children }: SessionProviderProps) {
                 </h3>
                 
                 <Alert className="mb-4 border-amber-200 bg-amber-50">
-                  <AlertDescription className="text-amber-800">
+                  <AlertDescription className="text-[#475569] dark:text-slate-300">
                     ستنتهي جلستك خلال {warningCountdown} ثانية
                   </AlertDescription>
                 </Alert>

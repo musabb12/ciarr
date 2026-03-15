@@ -114,7 +114,7 @@ export function FontSettingsManagement() {
   }
 
   const selectTriggerClass =
-    'h-12 rounded-lg border bg-white px-4 text-[#0f172a] shadow-sm transition-colors hover:bg-slate-50 focus:ring-2 focus:ring-[#1e3a8a]/20 focus:ring-offset-0 dark:bg-slate-800/60 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-800 dark:focus:ring-amber-500/30';
+    'h-12 rounded-lg border bg-white px-4 text-[#0f172a] shadow-sm transition-colors hover:bg-slate-50 focus:ring-2 focus:ring-[#475569]/25 focus:ring-offset-0 dark:bg-slate-800/60 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-800 dark:focus:ring-slate-500/30';
 
   return (
     <div className="space-y-6">
@@ -203,7 +203,7 @@ export function FontSettingsManagement() {
             <Button
               onClick={handleSave}
               disabled={saving}
-              className="h-11 min-w-[200px] rounded-lg bg-[#1e3a8a] px-6 font-medium text-white shadow-sm transition-colors hover:bg-[#1e40af] dark:bg-amber-600 dark:text-slate-900 dark:hover:bg-amber-500"
+              className="h-11 min-w-[200px] rounded-lg bg-slate-800 px-6 font-medium text-white shadow-sm transition-colors hover:bg-slate-700 dark:bg-slate-600 dark:text-white dark:hover:bg-slate-500"
             >
               <Save className="w-4 h-4 ml-2" />
               {saving ? 'جاري الحفظ...' : 'حفظ إعدادات الخطوط'}

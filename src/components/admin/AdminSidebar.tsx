@@ -87,7 +87,7 @@ export function AdminSidebar() {
       </div>
       <div className="p-5 flex flex-col items-center border-b admin-sidebar-border">
         <div className="admin-sidebar-user-box w-16 h-16 rounded-2xl flex items-center justify-center ring-4 ring-amber-500/10">
-          <User className="w-8 h-8 text-amber-500" />
+          <User className="w-8 h-8 text-slate-600 dark:text-slate-400" />
         </div>
         <p className="mt-3 font-semibold admin-sidebar-title text-sm">المدير</p>
         <p className="admin-sidebar-sub">مدير CIAR</p>

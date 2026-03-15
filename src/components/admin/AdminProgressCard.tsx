@@ -37,7 +37,7 @@ export function AdminProgressCard({
     )}>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <span className="admin-card-title text-sm font-semibold">{title}</span>
-        {Icon && <Icon className="w-5 h-5 text-[#1e3a8a] dark:text-amber-500/80" />}
+        {Icon && <Icon className="w-5 h-5 text-slate-600 dark:text-slate-400" />}
       </CardHeader>
       <CardContent>
         <div className="space-y-2">

@@ -35,7 +35,7 @@ export function AdminMetricTrend({
     )}>
       <CardHeader className="flex flex-row items-center justify-between pb-1">
         <span className="admin-card-title text-sm font-semibold">{title}</span>
-        {Icon && <Icon className="w-4 h-4 text-[#1e3a8a] dark:text-amber-500/80" />}
+        {Icon && <Icon className="w-4 h-4 text-slate-600 dark:text-slate-400" />}
       </CardHeader>
       <CardContent>
         <p className="admin-card-value text-xl font-bold tabular-nums tracking-tight">

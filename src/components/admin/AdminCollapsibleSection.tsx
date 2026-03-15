@@ -23,7 +23,7 @@ export function AdminCollapsibleSection({
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between gap-3 px-4 py-3 text-right text-amber-200/90 hover:bg-slate-700/30 transition-colors"
+        className="w-full flex items-center justify-between gap-3 px-4 py-3 text-right text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700/30 transition-colors"
       >
         <span className="font-medium">{title}</span>
         {open ? <ChevronUp className="w-4 h-4 shrink-0" /> : <ChevronDown className="w-4 h-4 shrink-0" />}

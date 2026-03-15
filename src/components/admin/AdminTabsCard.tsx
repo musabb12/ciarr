@@ -46,7 +46,7 @@ export function AdminTabsCard({
               <TabsTrigger
                 key={tab.value}
                 value={tab.value}
-                className="data-[state=active]:bg-amber-500 data-[state=active]:text-white data-[state=active]:border-amber-500 text-slate-600 dark:text-slate-400 rounded-lg transition-all font-medium"
+                className="data-[state=active]:bg-slate-800 data-[state=active]:text-white data-[state=active]:border-slate-800 dark:data-[state=active]:bg-slate-600 dark:data-[state=active]:border-slate-600 text-slate-600 dark:text-slate-400 rounded-lg transition-all font-medium"
               >
                 {tab.label}
               </TabsTrigger>

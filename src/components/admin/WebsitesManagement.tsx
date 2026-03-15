@@ -335,7 +335,7 @@ export function WebsitesManagement() {
           <h2 className="text-2xl font-bold">إدارة المواقع</h2>
           <p className="text-gray-600">إدارة جميع المواقع والقوالب</p>
         </div>
-        <Button className="bg-blue-600 hover:bg-blue-700" onClick={() => setAddWebsiteOpen(true)}>
+        <Button className="bg-slate-800 hover:bg-slate-700 text-white" onClick={() => setAddWebsiteOpen(true)}>
           <Plus className="w-4 h-4 ml-2" />
           إضافة موقع
         </Button>
@@ -350,7 +350,7 @@ export function WebsitesManagement() {
                 <p className="text-sm text-gray-600">إجمالي المواقع</p>
                 <p className="text-2xl font-bold">{websites.length}</p>
               </div>
-              <Package className="w-8 h-8 text-blue-500" />
+              <Package className="w-8 h-8 text-slate-600 dark:text-slate-400" />
             </div>
           </CardContent>
         </Card>
@@ -385,7 +385,7 @@ export function WebsitesManagement() {
                   {(websites.reduce((sum, w) => sum + w.rating, 0) / websites.length).toFixed(1)}
                 </p>
               </div>
-              <Star className="w-8 h-8 text-yellow-500" />
+              <Star className="w-8 h-8 text-slate-500" />
             </div>
           </CardContent>
         </Card>
@@ -499,7 +499,7 @@ export function WebsitesManagement() {
                 <div className="flex items-center justify-between">
                   {getCategoryBadge(website.category)}
                   <div className="flex items-center space-x-1 space-x-reverse">
-                    <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                    <Star className="w-4 h-4 text-slate-500 fill-current" />
                     <span className="text-sm font-medium">{website.rating}</span>
                     <span className="text-sm text-gray-500">({website.reviewCount})</span>
                   </div>
@@ -514,7 +514,7 @@ export function WebsitesManagement() {
                     <Eye className="w-4 h-4" />
                     <span>{website.views}</span>
                   </div>
-                  <div className="font-semibold text-blue-600">
+                  <div className="font-semibold text-slate-800 dark:text-slate-200">
                     {website.isFree ? 'مجاني' : `${website.price} ريال`}
                   </div>
                 </div>
@@ -854,7 +854,7 @@ export function WebsitesManagement() {
                           <p className="text-sm text-gray-600">التحميلات</p>
                           <p className="text-2xl font-bold">{editingWebsite.downloads}</p>
                         </div>
-                        <Download className="w-8 h-8 text-blue-500" />
+                        <Download className="w-8 h-8 text-slate-600 dark:text-slate-400" />
                       </div>
                     </CardContent>
                   </Card>
@@ -876,7 +876,7 @@ export function WebsitesManagement() {
                           <p className="text-sm text-gray-600">التقييم</p>
                           <p className="text-2xl font-bold">{editingWebsite.rating}</p>
                         </div>
-                        <Star className="w-8 h-8 text-yellow-500" />
+                        <Star className="w-8 h-8 text-slate-500" />
                       </div>
                     </CardContent>
                   </Card>
@@ -985,7 +985,7 @@ export function WebsitesManagement() {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setAddWebsiteOpen(false)}>إلغاء</Button>
-            <Button onClick={handleAddWebsite} disabled={savingWebsite} className="bg-blue-600 hover:bg-blue-700">
+            <Button onClick={handleAddWebsite} disabled={savingWebsite} className="bg-slate-800 hover:bg-slate-700 text-white">
               {savingWebsite ? 'جاري الإضافة...' : 'إضافة'}
             </Button>
           </DialogFooter>

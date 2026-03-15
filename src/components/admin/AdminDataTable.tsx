@@ -74,7 +74,7 @@ export function AdminDataTable<T>({
               </TableRow>
             ) : (
               data.map((row) => (
-                <TableRow key={keyExtractor(row)} className="border-slate-100 dark:border-amber-900/10 hover:bg-slate-50 dark:hover:bg-amber-900/10 transition-colors">
+                <TableRow key={keyExtractor(row)} className="border-slate-100 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
                   {columns.map((col) => (
                     <TableCell key={col.key} className={cn('text-slate-700 dark:text-slate-200', col.className)}>
                       {col.render ? col.render(row) : (row as Record<string, unknown>)[col.key] as ReactNode}

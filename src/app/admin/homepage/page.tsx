@@ -107,7 +107,7 @@ export default function AdminHomepagePage() {
               معاينة الموقع
             </a>
           </Button>
-          <Button variant="outline" size="sm" className="border-amber-600 text-amber-400" onClick={handleReset} disabled={saving}>
+          <Button variant="outline" size="sm" className="border-slate-500 text-slate-700 dark:border-slate-500 dark:text-slate-300" onClick={handleReset} disabled={saving}>
             <RotateCcw className="w-4 h-4 ml-2" />
             استعادة الافتراضي
           </Button>

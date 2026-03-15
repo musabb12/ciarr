@@ -8,7 +8,7 @@ export default function AdminFontsPage() {
     <div className="space-y-8">
       <header className="space-y-2">
         <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#1e3a8a]/10 text-[#1e3a8a dark:bg-amber-500/15 dark:text-amber-400">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-200 text-slate-800 dark:bg-slate-600 dark:text-slate-200">
             <Type className="h-6 w-6" />
           </div>
           <div>

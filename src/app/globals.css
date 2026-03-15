@@ -613,18 +613,18 @@ body {
 .admin-header-line { background: linear-gradient(90deg, transparent, rgba(148,163,184,0.4), transparent); }
 .admin-header-border { border-color: rgba(148, 163, 184, 0.2); }
 [data-theme="dark"] .admin-header-gradient,
-.dark .admin-header-gradient { background: linear-gradient(90deg, rgba(120, 53, 15, 0.5), rgba(15, 23, 42, 0.85), rgba(120, 53, 15, 0.35)); opacity: 0.98; }
+.dark .admin-header-gradient { background: linear-gradient(90deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.5)); opacity: 0.98; }
 [data-theme="dark"] .admin-header-line,
-.dark .admin-header-line { background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.45), transparent); }
+.dark .admin-header-line { background: linear-gradient(90deg, transparent, rgba(148, 163, 184, 0.3), transparent); }
 [data-theme="dark"] .admin-header-border,
-.dark .admin-header-border { border-color: rgba(245, 158, 11, 0.2); box-shadow: 0 12px 32px rgba(15, 23, 42, 0.5); }
+.dark .admin-header-border { border-color: rgba(148, 163, 184, 0.2); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3); }
 
-.admin-brand-label { color: #1e3a8a; font-weight: 700; }
+.admin-brand-label { color: #0f172a; font-weight: 700; }
 .admin-brand-desc { color: #475569; }
 [data-theme="dark"] .admin-brand-label,
-.dark .admin-brand-label { color: rgba(253, 230, 138, 0.9); }
+.dark .admin-brand-label { color: #f1f5f9; }
 [data-theme="dark"] .admin-brand-desc,
-.dark .admin-brand-desc { color: rgba(226, 232, 240, 0.95); }
+.dark .admin-brand-desc { color: #94a3b8; }
 
 .admin-search-icon { color: #475569; }
 .admin-search-input {
@@ -634,28 +634,30 @@ body {
   --tw-placeholder-opacity: 0.7;
 }
 .admin-search-input::placeholder { color: #64748b; }
-.admin-search-input:focus-visible { --tw-ring-color: #1e3a8a; border-color: #1e40af; }
+.admin-search-input:focus-visible { --tw-ring-color: #64748b; border-color: #475569; }
 [data-theme="dark"] .admin-search-icon,
-.dark .admin-search-icon { color: rgba(253, 230, 138, 0.75); }
+.dark .admin-search-icon { color: #94a3b8; }
 [data-theme="dark"] .admin-search-input,
 .dark .admin-search-input {
   background: rgba(15, 23, 42, 0.55);
-  border-color: rgba(245, 158, 11, 0.25);
-  color: rgba(253, 250, 241, 0.95);
+  border-color: rgba(148, 163, 184, 0.3);
+  color: #e2e8f0;
 }
 [data-theme="dark"] .admin-search-input::placeholder,
-.dark .admin-search-input::placeholder { color: rgba(253, 230, 138, 0.45); }
+.dark .admin-search-input::placeholder { color: #94a3b8; }
 
 .admin-search-btn {
-  background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
-  color: #1c1917;
+  background: #334155;
+  color: #fff;
   font-weight: 600;
-  border: 1px solid rgba(251, 191, 36, 0.5);
-  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.25);
+  border: 1px solid #475569;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.2);
 }
-.admin-search-btn:hover { background: linear-gradient(180deg, #fcd34d 0%, #fbbf24 50%, #f59e0b 100%); box-shadow: 0 6px 20px rgba(217, 119, 6, 0.35); }
+.admin-search-btn:hover { background: #475569; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25); }
+[data-theme="dark"] .admin-search-btn,
+.dark .admin-search-btn { background: #475569; border-color: #64748b; color: #f1f5f9; }
 [data-theme="dark"] .admin-search-btn:hover,
-.dark .admin-search-btn:hover { box-shadow: 0 6px 24px rgba(245, 158, 11, 0.3); }
+.dark .admin-search-btn:hover { background: #64748b; }
 
 .admin-session-badge {
   color: #0f172a;
@@ -665,31 +667,31 @@ body {
 }
 [data-theme="dark"] .admin-session-badge,
 .dark .admin-session-badge {
-  color: rgba(254, 243, 199, 0.95);
-  background: rgba(15, 23, 42, 0.5);
-  border-color: rgba(245, 158, 11, 0.25);
+  color: #e2e8f0;
+  background: rgba(30, 41, 59, 0.6);
+  border-color: rgba(148, 163, 184, 0.25);
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 }
 
 .admin-theme-toggle,
 .admin-icon-btn {
-  color: #1e3a8a;
+  color: #0f172a;
   border-color: #cbd5e1;
   background: transparent;
 }
 .admin-theme-toggle:hover,
-.admin-icon-btn:hover { color: #1e293b; background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.35); }
+.admin-icon-btn:hover { color: #1e293b; background: #f1f5f9; border-color: #94a3b8; }
 [data-theme="dark"] .admin-theme-toggle,
 [data-theme="dark"] .admin-icon-btn,
 .dark .admin-theme-toggle,
 .dark .admin-icon-btn {
-  color: rgba(254, 243, 199, 0.85);
-  border-color: rgba(245, 158, 11, 0.25);
+  color: #cbd5e1;
+  border-color: rgba(148, 163, 184, 0.3);
 }
 [data-theme="dark"] .admin-theme-toggle:hover,
 [data-theme="dark"] .admin-icon-btn:hover,
 .dark .admin-theme-toggle:hover,
-.dark .admin-icon-btn:hover { color: #fef3c7; background: rgba(245, 158, 11, 0.18); border-color: rgba(245, 158, 11, 0.4); }
+.dark .admin-icon-btn:hover { color: #f1f5f9; background: rgba(51, 65, 85, 0.5); border-color: #64748b; }
 
 .admin-dropdown {
   background: rgba(255, 255, 255, 0.98);
@@ -704,7 +706,7 @@ body {
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
 }
 
-/* لوحة الأدمن — ألوان النص: أسود، رمادي، أزرق داكن لوضوح المحتوى */
+/* لوحة الأدمن — ألوان النص: أسود ورمادي فقط */
 .admin-card-luxury {
   background: #ffffff;
   backdrop-filter: blur(16px);
@@ -713,7 +715,7 @@ body {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   color: #0f172a;
 }
-.admin-card-luxury .admin-card-title { color: #1e3a8a; font-weight: 600; }
+.admin-card-luxury .admin-card-title { color: #0f172a; font-weight: 600; }
 .admin-card-luxury .admin-card-value { color: #0f172a; font-weight: 700; }
 .admin-card-luxury .admin-card-sub { color: #475569; }
 .admin-card-luxury:hover {
@@ -723,48 +725,50 @@ body {
 [data-theme="dark"] .admin-card-luxury,
 .dark .admin-card-luxury {
   background: linear-gradient(145deg, rgba(30, 41, 59, 0.65) 0%, rgba(15, 23, 42, 0.75) 100%);
-  border: 1px solid rgba(245, 158, 11, 0.14);
+  border: 1px solid rgba(148, 163, 184, 0.2);
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  color: rgba(241, 245, 249, 0.95);
+  color: #e2e8f0;
 }
 [data-theme="dark"] .admin-card-luxury .admin-card-title,
-.dark .admin-card-luxury .admin-card-title { color: rgba(251, 191, 36, 0.9); }
+.dark .admin-card-luxury .admin-card-title { color: #f1f5f9; }
 [data-theme="dark"] .admin-card-luxury .admin-card-value,
 .dark .admin-card-luxury .admin-card-value { color: #fff; }
 [data-theme="dark"] .admin-card-luxury .admin-card-sub,
-.dark .admin-card-luxury .admin-card-sub { color: rgba(148, 163, 184, 0.95); }
+.dark .admin-card-luxury .admin-card-sub { color: #94a3b8; }
 [data-theme="dark"] .admin-card-luxury:hover,
 .dark .admin-card-luxury:hover {
-  border-color: rgba(245, 158, 11, 0.28);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 32px rgba(245, 158, 11, 0.06);
+  border-color: rgba(148, 163, 184, 0.35);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 /* شريط الأدمن الجانبي — نصوص وحدود حسب الثيم */
 .admin-sidebar-border { border-color: rgba(148, 163, 184, 0.2); }
 [data-theme="dark"] .admin-sidebar-border,
-.dark .admin-sidebar-border { border-color: rgba(245, 158, 11, 0.15); }
-.admin-sidebar-title { font-weight: 700; font-size: 1.125rem; color: #1e293b; }
-.admin-sidebar-sub { font-size: 0.75rem; color: rgba(245, 158, 11, 0.85); }
+.dark .admin-sidebar-border { border-color: rgba(148, 163, 184, 0.2); }
+.admin-sidebar-title { font-weight: 700; font-size: 1.125rem; color: #0f172a; }
+.admin-sidebar-sub { font-size: 0.75rem; color: #64748b; }
 [data-theme="dark"] .admin-sidebar-title,
-.dark .admin-sidebar-title { color: rgba(241, 245, 249, 0.98); }
+.dark .admin-sidebar-title { color: #f1f5f9; }
 [data-theme="dark"] .admin-sidebar-sub,
-.dark .admin-sidebar-sub { color: rgba(251, 191, 36, 0.8); }
-.admin-sidebar-user-box { background: linear-gradient(135deg, rgba(251, 191, 36, 0.15) 0%, rgba(245, 158, 11, 0.2) 100%); border: 1px solid rgba(245, 158, 11, 0.25); }
+.dark .admin-sidebar-sub { color: #94a3b8; }
+.admin-sidebar-user-box { background: rgba(241, 245, 249, 0.8); border: 1px solid rgba(148, 163, 184, 0.3); }
+[data-theme="dark"] .admin-sidebar-user-box,
+.dark .admin-sidebar-user-box { background: rgba(51, 65, 85, 0.4); border-color: rgba(148, 163, 184, 0.25); }
 .admin-sidebar-section { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; }
 [data-theme="dark"] .admin-sidebar-section,
-.dark .admin-sidebar-section { color: rgba(251, 191, 36, 0.85); }
-.admin-sidebar-link { color: #64748b; }
-.admin-sidebar-link:hover { background: rgba(248, 250, 252, 0.8); color: #b45309; }
+.dark .admin-sidebar-section { color: #94a3b8; }
+.admin-sidebar-link { color: #475569; }
+.admin-sidebar-link:hover { background: #f1f5f9; color: #0f172a; }
 [data-theme="dark"] .admin-sidebar-link,
-.dark .admin-sidebar-link { color: rgba(148, 163, 184, 0.9); }
+.dark .admin-sidebar-link { color: #94a3b8; }
 [data-theme="dark"] .admin-sidebar-link:hover,
-.dark .admin-sidebar-link:hover { background: rgba(30, 41, 59, 0.6); color: rgba(253, 230, 138, 0.95); }
+.dark .admin-sidebar-link:hover { background: rgba(51, 65, 85, 0.5); color: #f1f5f9; }
 .admin-shell-wrapper .admin-dropdown [data-highlighted],
-.admin-shell-wrapper .admin-dropdown a:focus { background: rgba(245, 158, 11, 0.12); color: inherit; }
+.admin-shell-wrapper .admin-dropdown a:focus { background: #f1f5f9; color: #0f172a; }
 [data-theme="dark"] .admin-shell-wrapper .admin-dropdown [data-highlighted],
 .dark .admin-shell-wrapper .admin-dropdown [data-highlighted],
 [data-theme="dark"] .admin-shell-wrapper .admin-dropdown a:focus,
-.dark .admin-shell-wrapper .admin-dropdown a:focus { background: rgba(245, 158, 11, 0.2); }
+.dark .admin-shell-wrapper .admin-dropdown a:focus { background: rgba(51, 65, 85, 0.6); color: #e2e8f0; }
 
 /* توهج ذهبي خفيف */
 @keyframes admin-shimmer {
@@ -789,16 +793,16 @@ body {
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #1e3a8a 0%, #334155 100%);
+  background: linear-gradient(90deg, #0f172a 0%, #475569 100%);
   z-index: 1;
 }
 [data-theme="dark"] .admin-font-settings-card,
 .dark .admin-font-settings-card {
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(245, 158, 11, 0.12);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(148, 163, 184, 0.15);
 }
 [data-theme="dark"] .admin-font-settings-card::before,
 .dark .admin-font-settings-card::before {
-  background: linear-gradient(90deg, rgba(245, 158, 11, 0.9) 0%, rgba(251, 191, 36, 0.5) 100%);
+  background: linear-gradient(90deg, #475569 0%, #64748b 100%);
 }
 
 /* إخفاء أي عنصر عائم في الزاوية السفلية اليسرى (لإزالة العلامة الدائرية) */

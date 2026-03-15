@@ -184,7 +184,7 @@ export function AdminDashboardClient() {
               variant="outline"
               size="sm"
               onClick={() => setCommandOpen(true)}
-              className="border-[#1e3a8a] text-[#1e3a8a] hover:bg-blue-50 text-xs font-medium"
+              className="border-slate-600 text-slate-800 hover:bg-slate-100 text-xs font-medium"
             >
               Ctrl+K لوحة الأوامر
             </Button>

@@ -10,7 +10,7 @@ const AdminDashboardClient = dynamic(
       <div className="flex items-center justify-center min-h-[60vh] font-arabic-modern" dir="rtl">
         <div className="text-center">
           <div className="w-12 h-12 border-2 border-amber-900/30 border-t-amber-500 rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-amber-200/80 font-medium">جاري تحميل لوحة التحكم...</p>
+          <p className="text-[#475569] dark:text-slate-400 font-medium">جاري تحميل لوحة التحكم...</p>
         </div>
       </div>
     ),

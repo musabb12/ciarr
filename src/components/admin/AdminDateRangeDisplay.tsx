@@ -24,12 +24,12 @@ export function AdminDateRangeDisplay({
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-2 text-sm text-slate-700 dark:text-amber-200/90 px-3 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/30',
+        'inline-flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-600',
         className
       )}
       dir="rtl"
     >
-      <Calendar className="w-4 h-4 text-amber-600 dark:text-amber-500/80" />
+      <Calendar className="w-4 h-4 text-slate-600 dark:text-slate-400" />
       {format(startDate)} — {format(endDate)}
     </span>
   );

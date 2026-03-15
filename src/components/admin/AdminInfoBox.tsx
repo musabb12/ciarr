@@ -11,11 +11,11 @@ const variantConfig: Record<
 > = {
   info: {
     icon: Info,
-    className: 'border-blue-200 dark:border-amber-500/30 bg-blue-50/80 dark:bg-slate-800/50 backdrop-blur-sm text-[#0f172a] dark:text-amber-200/90 shadow-sm',
+    className: 'border-slate-200 dark:border-slate-600 bg-slate-50/80 dark:bg-slate-800/50 backdrop-blur-sm text-slate-800 dark:text-slate-200 shadow-sm',
   },
   warning: {
     icon: AlertTriangle,
-    className: 'border-amber-300 dark:border-amber-500/40 bg-amber-50 dark:bg-amber-500/15 text-amber-900 dark:text-amber-200 shadow-sm',
+    className: 'border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-800/50 text-slate-800 dark:text-slate-200 shadow-sm',
   },
   success: {
     icon: CheckCircle,

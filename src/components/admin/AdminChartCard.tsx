@@ -37,7 +37,7 @@ export function AdminChartCard({
           <Button
             variant="outline"
             size="sm"
-            className="border-slate-200 dark:border-amber-900/30 text-slate-700 dark:text-amber-200 hover:bg-amber-100 dark:hover:bg-amber-600/20 shrink-0 transition-all"
+            className="border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/50 shrink-0 transition-all"
             onClick={onExport}
           >
             <Download className="w-4 h-4 ml-2" />
