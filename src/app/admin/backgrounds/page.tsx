@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/dialog';
 import { Image as ImageIcon, Plus, Edit, Trash2, ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { ImageUpload } from '@/components/ui/image-upload';
 
 interface BgImage {
   id: string;
@@ -57,7 +58,7 @@ export default function AdminBackgroundsPage() {
 
   const handleAdd = async () => {
     if (!formUrl.trim()) {
-      toast.error('أدخل رابط الصورة');
+      toast.error('أدخل رابط الصورة أو ارفع صورة من الجهاز');
       return;
     }
     setSaving(true);
@@ -218,6 +219,12 @@ export default function AdminBackgroundsPage() {
               />
             </div>
             <div>
+              <Label className="text-slate-400">أو رفع صورة من الجهاز</Label>
+              <div className="mt-1">
+                <ImageUpload onUploadComplete={(url) => setFormUrl(url)} compact />
+              </div>
+            </div>
+            <div>
               <Label className="text-slate-400">العنوان (اختياري)</Label>
               <Input
                 className="mt-1 bg-slate-900/50 border-slate-600"
@@ -251,6 +258,12 @@ export default function AdminBackgroundsPage() {
                 value={formUrl}
                 onChange={(e) => setFormUrl(e.target.value)}
               />
+            </div>
+            <div>
+              <Label className="text-slate-400">أو رفع صورة من الجهاز</Label>
+              <div className="mt-1">
+                <ImageUpload onUploadComplete={(url) => setFormUrl(url)} compact />
+              </div>
             </div>
             <div>
               <Label className="text-slate-400">العنوان</Label>

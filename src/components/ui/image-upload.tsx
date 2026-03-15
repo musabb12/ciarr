@@ -12,9 +12,11 @@ interface ImageUploadProps {
   onUploadComplete: (imageUrl: string) => void
   maxFiles?: number
   accept?: string
+  /** عرض مضغوط: زر فقط بدون منطقة سحب وإفلات */
+  compact?: boolean
 }
 
-export function ImageUpload({ onUploadComplete, maxFiles = 1, accept = "image/*" }: ImageUploadProps) {
+export function ImageUpload({ onUploadComplete, maxFiles = 1, accept = "image/*", compact = false }: ImageUploadProps) {
   const [uploading, setUploading] = useState(false)
   const [progress, setProgress] = useState(0)
   const [error, setError] = useState('')
@@ -106,6 +108,35 @@ export function ImageUpload({ onUploadComplete, maxFiles = 1, accept = "image/*"
     if (e.target.files && e.target.files[0]) {
       handleFileUpload(e.target.files)
     }
+  }
+
+  if (compact) {
+    return (
+      <div className="space-y-2">
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept={accept}
+          onChange={handleFileChange}
+          className="hidden"
+          disabled={uploading}
+        />
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={uploading}
+        >
+          <Upload className="w-4 h-4 ml-2" />
+          {uploading ? 'جاري الرفع...' : 'رفع من الجهاز'}
+        </Button>
+        {uploading && <Progress value={progress} className="w-full h-1.5" />}
+        {error && (
+          <p className="text-sm text-destructive">{error}</p>
+        )}
+      </div>
+    );
   }
 
   return (

@@ -42,6 +42,7 @@ import {
   AlertCircle,
   Zap
 } from 'lucide-react';
+import { ImageUpload } from '@/components/ui/image-upload';
 
 interface Website {
   id: string;
@@ -119,6 +120,7 @@ export function WebsitesManagement() {
   const [addCategory, setAddCategory] = useState('الموضة');
   const [addDescription, setAddDescription] = useState('');
   const [addDescriptionEn, setAddDescriptionEn] = useState('');
+  const [addImageUrl, setAddImageUrl] = useState('');
   const [savingWebsite, setSavingWebsite] = useState(false);
 
   useEffect(() => {
@@ -226,6 +228,7 @@ export function WebsitesManagement() {
           category: addCategory.trim(),
           description: addDescription.trim(),
           descriptionEn: addDescriptionEn.trim() || undefined,
+          images: addImageUrl.trim() ? [addImageUrl.trim()] : undefined,
         }),
       });
       if (res.ok) {
@@ -238,6 +241,7 @@ export function WebsitesManagement() {
         setAddCategory('الموضة');
         setAddDescription('');
         setAddDescriptionEn('');
+        setAddImageUrl('');
       }
     } catch (e) {
       console.error(e);
@@ -629,13 +633,14 @@ export function WebsitesManagement() {
                     {/* 主图片 */}
                     <div>
                       <Label className="text-sm text-gray-600">الصورة الرئيسية</Label>
-                      <div className="mt-1 flex items-center space-x-2 space-x-reverse">
+                      <div className="mt-1 flex flex-wrap items-center gap-2">
                         <Input
                           value={editingWebsite.image}
                           onChange={(e) => updateEditingWebsite('image', e.target.value)}
                           placeholder="رابط الصورة الرئيسية"
-                          className="flex-1"
+                          className="flex-1 min-w-[200px]"
                         />
+                        <ImageUpload onUploadComplete={(url) => updateEditingWebsite('image', url)} compact />
                         <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
                           <img 
                             src={editingWebsite.image} 
@@ -651,12 +656,18 @@ export function WebsitesManagement() {
 
                     {/* 所有图片 */}
                     <div>
-                      <div className="flex items-center justify-between mb-2">
+                      <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                         <Label className="text-sm text-gray-600">جميع الصور ({editingWebsite.images?.length || 0})</Label>
-                        <Button variant="outline" size="sm" onClick={addImage}>
-                          <Plus className="w-4 h-4 ml-1" />
-                          إضافة صورة
-                        </Button>
+                        <div className="flex items-center gap-2">
+                          <Button variant="outline" size="sm" onClick={addImage}>
+                            <Plus className="w-4 h-4 ml-1" />
+                            إضافة برابط
+                          </Button>
+                          <ImageUpload
+                            onUploadComplete={(url) => editingWebsite && updateEditingWebsite('images', [...(editingWebsite.images || []), url])}
+                            compact
+                          />
+                        </div>
                       </div>
                       <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                         {editingWebsite.images?.map((img, index) => (
@@ -964,6 +975,13 @@ export function WebsitesManagement() {
                   <Label>الوصف (English, اختياري)</Label>
                   <Input className="mt-1" value={addDescriptionEn} onChange={(e) => setAddDescriptionEn(e.target.value)} placeholder="Short description in English" />
                 </div>
+            <div>
+              <Label>الصورة الرئيسية (اختياري)</Label>
+              <div className="mt-1 flex flex-wrap items-center gap-2">
+                <Input className="flex-1 min-w-[200px]" value={addImageUrl} onChange={(e) => setAddImageUrl(e.target.value)} placeholder="رابط الصورة أو ارفع من الجهاز" />
+                <ImageUpload onUploadComplete={(url) => setAddImageUrl(url)} compact />
+              </div>
+            </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setAddWebsiteOpen(false)}>إلغاء</Button>

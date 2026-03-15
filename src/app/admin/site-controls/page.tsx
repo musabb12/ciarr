@@ -36,6 +36,7 @@ import {
   ImageIcon,
 } from 'lucide-react';
 import type { SiteSettings } from '@/lib/site-settings';
+import { ImageUpload } from '@/components/ui/image-upload';
 
 export default function SiteControlsPage() {
   const { toast } = useToast();
@@ -364,8 +365,12 @@ export default function SiteControlsPage() {
               <ImageIcon className="w-5 h-5" /> خلفية الهيرو
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-2">
             <ControlInput label="رابط الصورة الافتراضي" value={settings.heroBackgroundImage} onChange={(v: string) => update({ heroBackgroundImage: v })} placeholder="/hero-bg.jpg" icon={ImageIcon} />
+            <div className="flex items-center gap-2 pt-1">
+              <Label className="text-slate-400 text-sm">أو رفع صورة من الجهاز</Label>
+              <ImageUpload onUploadComplete={(url) => update({ heroBackgroundImage: url })} compact />
+            </div>
           </CardContent>
         </Card>
 

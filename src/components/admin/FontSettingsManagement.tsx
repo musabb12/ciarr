@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { Save, Type } from 'lucide-react';
+import { Save } from 'lucide-react';
 import type { SiteContent, FontSettings, FontKey } from '@/lib/site-content-store';
 import { FONT_KEYS } from '@/lib/site-content-store';
 
@@ -107,38 +107,43 @@ export function FontSettingsManagement() {
 
   if (loading || !content) {
     return (
-      <div className="py-12 text-center text-muted-foreground">
-        جاري تحميل إعدادات الخطوط...
+      <div className="admin-font-settings-card admin-card-luxury flex min-h-[320px] items-center justify-center rounded-xl p-8">
+        <p className="text-[#475569] dark:text-slate-400">جاري تحميل إعدادات الخطوط...</p>
       </div>
     );
   }
 
+  const selectTriggerClass =
+    'h-12 rounded-lg border bg-white px-4 text-[#0f172a] shadow-sm transition-colors hover:bg-slate-50 focus:ring-2 focus:ring-[#1e3a8a]/20 focus:ring-offset-0 dark:bg-slate-800/60 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-800 dark:focus:ring-amber-500/30';
+
   return (
     <div className="space-y-6">
-      <Card className="admin-card-luxury border border-amber-500/20 bg-gradient-to-br from-slate-900/80 to-slate-800/80">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-amber-100">
-            <Type className="w-5 h-5" />
-            إعدادات الخطوط
+      <Card className="admin-card-luxury admin-font-settings-card">
+        <CardHeader className="space-y-2 pb-6">
+          <CardTitle className="admin-card-title text-xl font-semibold">
+            اختيار الخطوط
           </CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardDescription className="admin-card-sub text-sm leading-relaxed max-w-2xl">
             اختر خط العناوين، خط النص الأساسي، وخط النص العصري (20 خياراً). عند الضغط على «حفظ» تُطبَّق الخطوط على كامل الموقع فوراً.
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-3">
-            <div className="space-y-2">
-              <Label htmlFor="font-heading" className="text-slate-300">
-                خط العناوين (h1, h2, ...)
+        <CardContent className="space-y-8">
+          <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-3">
+            <div className="space-y-3">
+              <Label
+                htmlFor="font-heading"
+                className="admin-card-sub text-sm font-medium"
+              >
+                خط العناوين (h1, h2, …)
               </Label>
               <Select
                 value={heading}
                 onValueChange={(v) => setHeading(v as FontSettings['heading'])}
               >
-                <SelectTrigger id="font-heading" className="bg-slate-800/50 border-slate-600 text-slate-100">
+                <SelectTrigger id="font-heading" className={selectTriggerClass}>
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="dark:border-slate-600 dark:bg-slate-800/95">
                   {FONT_OPTIONS.map((opt) => (
                     <SelectItem key={opt.value} value={opt.value}>
                       {opt.labelAr}
@@ -147,18 +152,21 @@ export function FontSettingsManagement() {
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="font-body" className="text-slate-300">
+            <div className="space-y-3">
+              <Label
+                htmlFor="font-body"
+                className="admin-card-sub text-sm font-medium"
+              >
                 خط النص الأساسي
               </Label>
               <Select
                 value={body ?? 'cairo'}
                 onValueChange={(v) => setBody(v as FontKey)}
               >
-                <SelectTrigger id="font-body" className="bg-slate-800/50 border-slate-600 text-slate-100">
+                <SelectTrigger id="font-body" className={selectTriggerClass}>
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="dark:border-slate-600 dark:bg-slate-800/95">
                   {FONT_OPTIONS.map((opt) => (
                     <SelectItem key={opt.value} value={opt.value}>
                       {opt.labelAr}
@@ -167,18 +175,21 @@ export function FontSettingsManagement() {
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="font-modern" className="text-slate-300">
+            <div className="space-y-3">
+              <Label
+                htmlFor="font-modern"
+                className="admin-card-sub text-sm font-medium"
+              >
                 خط النص العصري (فقرات، أزرار)
               </Label>
               <Select
                 value={modern ?? 'tajawal'}
                 onValueChange={(v) => setModern(v as FontKey)}
               >
-                <SelectTrigger id="font-modern" className="bg-slate-800/50 border-slate-600 text-slate-100">
+                <SelectTrigger id="font-modern" className={selectTriggerClass}>
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="dark:border-slate-600 dark:bg-slate-800/95">
                   {FONT_OPTIONS.map((opt) => (
                     <SelectItem key={opt.value} value={opt.value}>
                       {opt.labelAr}
@@ -188,11 +199,11 @@ export function FontSettingsManagement() {
               </Select>
             </div>
           </div>
-          <div className="pt-2">
+          <div className="border-t border-slate-200 pt-6 dark:border-slate-600">
             <Button
               onClick={handleSave}
               disabled={saving}
-              className="bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
+              className="h-11 min-w-[200px] rounded-lg bg-[#1e3a8a] px-6 font-medium text-white shadow-sm transition-colors hover:bg-[#1e40af] dark:bg-amber-600 dark:text-slate-900 dark:hover:bg-amber-500"
             >
               <Save className="w-4 h-4 ml-2" />
               {saving ? 'جاري الحفظ...' : 'حفظ إعدادات الخطوط'}
