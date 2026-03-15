@@ -187,6 +187,17 @@ body {
     font-family: var(--font-tajawal), system-ui, -apple-system, sans-serif;
   }
   
+  /* إعدادات الخطوط من لوحة الأدمن (data-font-* على html) */
+  html[data-font-heading="amiri"] { --font-arabic-heading: var(--font-amiri); }
+  html[data-font-heading="cairo"] { --font-arabic-heading: var(--font-cairo); }
+  html[data-font-heading="tajawal"] { --font-arabic-heading: var(--font-tajawal); }
+  html[data-font-body="amiri"] { --font-arabic: var(--font-amiri); }
+  html[data-font-body="cairo"] { --font-arabic: var(--font-cairo); }
+  html[data-font-body="tajawal"] { --font-arabic: var(--font-tajawal); }
+  html[data-font-modern="amiri"] { --font-arabic-modern: var(--font-amiri); }
+  html[data-font-modern="cairo"] { --font-arabic-modern: var(--font-cairo); }
+  html[data-font-modern="tajawal"] { --font-arabic-modern: var(--font-tajawal); }
+  
   /* تحسين العناوين */
   h1, h2, h3, h4, h5, h6 {
     @apply font-arabic-heading;

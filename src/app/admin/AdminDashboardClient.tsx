@@ -15,6 +15,8 @@ import {
   Settings,
   Download,
   MessageSquare,
+  Type,
+  SlidersHorizontal,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -61,6 +63,8 @@ interface Stats {
 const quickLinks = [
   { href: '/admin/homepage', label: 'الصفحة الرئيسية', icon: LayoutDashboard },
   { href: '/admin/backgrounds', label: 'خلفيات الهيرو', icon: Image },
+  { href: '/admin/site-controls', label: 'تحكم الموقع (20 مكون)', icon: SlidersHorizontal },
+  { href: '/admin/fonts', label: 'إعدادات الخطوط', icon: Type },
   { href: '/admin/users', label: 'المستخدمون', icon: Users },
   { href: '/admin/websites', label: 'المواقع', icon: Globe },
   { href: '/admin/messages', label: 'الرسائل', icon: Mail },
@@ -88,9 +92,11 @@ const recentItems = [
 
 const commandPaletteItems = [
   { id: '1', label: 'لوحة التحكم', icon: LayoutDashboard, action: () => window.location.href = '/admin', keywords: ['لوحة', 'رئيسية'] },
-  { id: '2', label: 'المستخدمون', icon: Users, action: () => window.location.href = '/admin/users', keywords: ['مستخدمين'] },
-  { id: '3', label: 'الرسائل', icon: Mail, action: () => window.location.href = '/admin/messages', keywords: ['رسائل'] },
-  { id: '4', label: 'إعدادات الموقع', icon: Settings, action: () => window.location.href = '/admin/settings', keywords: ['إعدادات'] },
+  { id: '2', label: 'تحكم الموقع', icon: SlidersHorizontal, action: () => window.location.href = '/admin/site-controls', keywords: ['تحكم', 'سيمات', 'ثيم', 'لون'] },
+  { id: '3', label: 'إعدادات الخطوط', icon: Type, action: () => window.location.href = '/admin/fonts', keywords: ['خطوط', 'خط'] },
+  { id: '4', label: 'المستخدمون', icon: Users, action: () => window.location.href = '/admin/users', keywords: ['مستخدمين'] },
+  { id: '5', label: 'الرسائل', icon: Mail, action: () => window.location.href = '/admin/messages', keywords: ['رسائل'] },
+  { id: '6', label: 'إعدادات الموقع', icon: Settings, action: () => window.location.href = '/admin/settings', keywords: ['إعدادات'] },
 ];
 
 const timelineItems = [

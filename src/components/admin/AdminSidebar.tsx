@@ -21,6 +21,7 @@ import {
   Home,
   ImageIcon,
   SlidersHorizontal,
+  Type,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -53,6 +54,7 @@ const navSections = [
     title: 'الوسائط والنظام',
     items: [
       { href: '/admin/site-controls', label: 'تحكم الموقع (20 مكون)', icon: SlidersHorizontal },
+      { href: '/admin/fonts', label: 'إعدادات الخطوط', icon: Type },
       { href: '/admin/media', label: 'الوسائط', icon: Image },
       { href: '/admin/menus', label: 'القوائم', icon: Menu },
       { href: '/admin/seo', label: 'تحسين محركات البحث', icon: Search },

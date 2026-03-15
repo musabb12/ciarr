@@ -169,6 +169,21 @@ export default function Home() {
     refreshSiteData();
   }, []);
 
+  /** تطبيق إعدادات الخطوط من لوحة الأدمن على عنصر html */
+  useEffect(() => {
+    const fs = siteContent?.fontSettings;
+    const root = document.documentElement;
+    if (fs) {
+      if (fs.heading) root.dataset.fontHeading = fs.heading;
+      if (fs.body) root.dataset.fontBody = fs.body;
+      if (fs.modern) root.dataset.fontModern = fs.modern;
+    } else {
+      root.removeAttribute('data-font-heading');
+      root.removeAttribute('data-font-body');
+      root.removeAttribute('data-font-modern');
+    }
+  }, [siteContent?.fontSettings]);
+
   /** عند العودة لتبويب الموقع: إعادة جلب البيانات لرؤية آخر التعديلات من لوحة التحكم */
   useEffect(() => {
     const onVisibilityChange = () => {
@@ -693,7 +708,13 @@ export default function Home() {
             />
           </div>
           <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-3 font-arabic-heading text-shadow-hero leading-tight tracking-tight">
-            {siteContent?.hero?.title ?? t.hero.title}
+            {(() => {
+              const title = siteContent?.hero?.title ?? t.hero.title;
+              if (typeof title === 'string' && /<[a-z][\s\S]*>/i.test(title)) {
+                return <span dangerouslySetInnerHTML={{ __html: title }} />;
+              }
+              return title;
+            })()}
           </h1>
           <p className="text-lg md:text-xl lg:text-2xl mb-10 max-w-3xl mx-auto font-arabic-modern text-stone-300 text-shadow-hero reading-optimized">
             {siteContent?.hero?.subtitle ?? t.hero.subtitle}

@@ -64,7 +64,18 @@ export interface PartnerItem {
   logo?: string;
 }
 
+/** إعدادات الخطوط: القيم amiri | cairo | tajawal (مطابقة للخطوط المحمّلة في الموقع) */
+export interface FontSettings {
+  /** خط العناوين (h1, h2, ...) */
+  heading?: 'amiri' | 'cairo' | 'tajawal';
+  /** خط النص الأساسي */
+  body?: 'amiri' | 'cairo' | 'tajawal';
+  /** خط النص العصري (فقرات، أزرار) */
+  modern?: 'amiri' | 'cairo' | 'tajawal';
+}
+
 export interface SiteContent {
+  fontSettings?: FontSettings;
   hero: HeroContent;
   stats: StatItem[];
   statsVisitor: VisitorStat[];
@@ -106,6 +117,11 @@ export interface SiteContent {
 }
 
 const defaultContent: SiteContent = {
+  fontSettings: {
+    heading: 'amiri',
+    body: 'cairo',
+    modern: 'tajawal',
+  },
   hero: {
     title: 'عرض جميع مواقعنا الـ 14',
     subtitle: 'قطاعاتنا وخدماتنا',
