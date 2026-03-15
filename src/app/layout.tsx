@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import { Cairo, Amiri, Tajawal } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from "sonner";
 import { LanguageProvider } from "@/hooks/useLanguage";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { FontSettingsApplier } from "@/components/FontSettingsApplier";
 
-const cairo = Cairo({ subsets: ["arabic", "latin"], variable: "--font-cairo", display: "swap" });
-const amiri = Amiri({ weight: ["400", "700"], subsets: ["arabic", "latin"], variable: "--font-amiri", display: "swap" });
-const tajawal = Tajawal({ weight: ["400", "500", "700"], subsets: ["arabic"], variable: "--font-tajawal", display: "swap" });
+/** رابط خطوط Google (20 خطاً) — تُحمّل مرة واحدة وتُطبَّق من لوحة الأدمن */
+const FONTS_LINK =
+  "https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;500;600;700&family=Tajawal:wght@400;500;700&family=Almarai:wght@400;700&family=Changa:wght@400;500;600;700&family=El+Messiri:wght@400;500;600;700&family=Lateef:wght@400;700&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&family=Scheherazade+New:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Readex+Pro:wght@400;500;600;700&family=Rubik:wght@400;500;600;700&family=Rakkas&family=Aref+Ruqaa+Ink:wght@400;700&family=Katibeh&family=Lemonada:wght@400;500;600;700&family=Markazi+Text:wght@400;500;600;700&family=Jomhuria&display=swap";
 
 export const metadata: Metadata = {
   title: "CIAR - شركة خدمات رقمية | 14 موقعاً: عقاري، سياحي، موضة، تجارة إلكترونية",
@@ -39,7 +39,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ar" dir="rtl" suppressHydrationWarning className={`${cairo.variable} ${amiri.variable} ${tajawal.variable}`}>
+    <html lang="ar" dir="rtl" suppressHydrationWarning>
+      <head>
+        <link rel="stylesheet" href={FONTS_LINK} />
+      </head>
       <body className="antialiased bg-background text-foreground font-arabic">
         {/* تطبيق الثيم قبل التهيئة لمنع الوميض وتأكيد عمل data-theme على html */}
         <script
@@ -48,6 +51,7 @@ export default function RootLayout({
           }}
         />
         <ThemeProvider>
+          <FontSettingsApplier />
           <LanguageProvider>
             {children}
             <Toaster />

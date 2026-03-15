@@ -48,8 +48,8 @@ export function AdminDataTable<T>({
       {(title || headerActions) && (
         <CardHeader className="flex flex-row items-center justify-between gap-4">
           <div>
-            {title && <CardTitle className="text-slate-100 font-arabic-heading text-lg">{title}</CardTitle>}
-            {description && <p className="text-sm text-slate-400 mt-0.5">{description}</p>}
+            {title && <CardTitle className="admin-card-value font-arabic-heading text-lg">{title}</CardTitle>}
+            {description && <p className="admin-card-sub text-sm mt-0.5">{description}</p>}
           </div>
           {headerActions}
         </CardHeader>
@@ -57,9 +57,9 @@ export function AdminDataTable<T>({
       <CardContent className="p-0">
         <Table>
           <TableHeader>
-            <TableRow className="border-amber-900/20 bg-slate-800/50 hover:bg-transparent">
+            <TableRow className="border-slate-200 dark:border-amber-900/20 bg-slate-100 dark:bg-slate-800/50 hover:bg-transparent">
               {columns.map((col) => (
-                <TableHead key={col.key} className={cn('text-amber-200/80 font-medium', col.className)}>
+                <TableHead key={col.key} className={cn('admin-card-title font-semibold', col.className)}>
                   {col.label}
                 </TableHead>
               ))}
@@ -67,16 +67,16 @@ export function AdminDataTable<T>({
           </TableHeader>
           <TableBody>
             {data.length === 0 ? (
-              <TableRow className="border-amber-900/20 hover:bg-transparent">
-                <TableCell colSpan={columns.length} className="text-center text-slate-500 py-8">
+              <TableRow className="border-slate-200 dark:border-amber-900/20 hover:bg-transparent">
+                <TableCell colSpan={columns.length} className="text-center admin-card-sub py-8">
                   {emptyMessage}
                 </TableCell>
               </TableRow>
             ) : (
               data.map((row) => (
-                <TableRow key={keyExtractor(row)} className="border-amber-900/10 hover:bg-amber-900/10 transition-colors">
+                <TableRow key={keyExtractor(row)} className="border-slate-100 dark:border-amber-900/10 hover:bg-slate-50 dark:hover:bg-amber-900/10 transition-colors">
                   {columns.map((col) => (
-                    <TableCell key={col.key} className={cn('text-slate-200', col.className)}>
+                    <TableCell key={col.key} className={cn('text-slate-700 dark:text-slate-200', col.className)}>
                       {col.render ? col.render(row) : (row as Record<string, unknown>)[col.key] as ReactNode}
                     </TableCell>
                   ))}

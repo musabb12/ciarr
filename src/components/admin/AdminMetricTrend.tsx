@@ -34,13 +34,13 @@ export function AdminMetricTrend({
       className
     )}>
       <CardHeader className="flex flex-row items-center justify-between pb-1">
-        <span className="text-sm font-medium text-amber-200/80">{title}</span>
-        {Icon && <Icon className="w-4 h-4 text-amber-500/60" />}
+        <span className="admin-card-title text-sm font-semibold">{title}</span>
+        {Icon && <Icon className="w-4 h-4 text-amber-600 dark:text-amber-500/80" />}
       </CardHeader>
       <CardContent>
-        <p className="text-xl font-bold text-white tabular-nums tracking-tight">
+        <p className="admin-card-value text-xl font-bold tabular-nums tracking-tight">
           {value}
-          {unit && <span className="text-sm font-normal text-slate-500 mr-1">{unit}</span>}
+          {unit && <span className="admin-card-sub text-sm font-normal mr-1">{unit}</span>}
         </p>
         {(trendLabel || sparkline?.length) && (
           <div className="mt-2 flex items-center gap-2">

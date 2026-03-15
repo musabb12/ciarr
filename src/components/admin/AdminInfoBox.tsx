@@ -11,19 +11,19 @@ const variantConfig: Record<
 > = {
   info: {
     icon: Info,
-    className: 'border-amber-500/30 bg-slate-800/50 backdrop-blur-sm text-amber-200/90 shadow-lg shadow-black/5',
+    className: 'border-amber-200 dark:border-amber-500/30 bg-amber-50/80 dark:bg-slate-800/50 backdrop-blur-sm text-slate-700 dark:text-amber-200/90 shadow-sm',
   },
   warning: {
     icon: AlertTriangle,
-    className: 'border-amber-500/40 bg-amber-500/15 text-amber-200 shadow-lg shadow-amber-900/10',
+    className: 'border-amber-300 dark:border-amber-500/40 bg-amber-50 dark:bg-amber-500/15 text-amber-900 dark:text-amber-200 shadow-sm',
   },
   success: {
     icon: CheckCircle,
-    className: 'border-emerald-500/40 bg-emerald-500/15 text-emerald-200 shadow-lg shadow-emerald-900/10',
+    className: 'border-emerald-200 dark:border-emerald-500/40 bg-emerald-50 dark:bg-emerald-500/15 text-emerald-800 dark:text-emerald-200 shadow-sm',
   },
   error: {
     icon: XCircle,
-    className: 'border-red-500/40 bg-red-500/15 text-red-200 shadow-lg shadow-red-900/10',
+    className: 'border-red-200 dark:border-red-500/40 bg-red-50 dark:bg-red-500/15 text-red-800 dark:text-red-200 shadow-sm',
   },
 };
 

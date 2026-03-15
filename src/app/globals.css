@@ -103,6 +103,27 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  /* 20 خطاً من لوحة الأدمن — أسماء العائلات مطابقة لـ Google Fonts */
+  --font-amiri: 'Amiri', serif;
+  --font-cairo: 'Cairo', sans-serif;
+  --font-tajawal: 'Tajawal', sans-serif;
+  --font-almarai: 'Almarai', sans-serif;
+  --font-changa: 'Changa', sans-serif;
+  --font-el_messiri: 'El Messiri', sans-serif;
+  --font-lateef: 'Lateef', serif;
+  --font-noto_kufi_arabic: 'Noto Kufi Arabic', sans-serif;
+  --font-noto_naskh_arabic: 'Noto Naskh Arabic', serif;
+  --font-noto_sans_arabic: 'Noto Sans Arabic', sans-serif;
+  --font-scheherazade_new: 'Scheherazade New', serif;
+  --font-ibm_plex_sans_arabic: 'IBM Plex Sans Arabic', sans-serif;
+  --font-readex_pro: 'Readex Pro', sans-serif;
+  --font-rubik: 'Rubik', sans-serif;
+  --font-rakkas: 'Rakkas', serif;
+  --font-aref_ruqaa: 'Aref Ruqaa Ink', serif;
+  --font-katibeh: 'Katibeh', serif;
+  --font-lemonada: 'Lemonada', sans-serif;
+  --font-markazi_text: 'Markazi Text', serif;
+  --font-jomhuria: 'Jomhuria', serif;
 }
 
 .dark,
@@ -187,16 +208,67 @@ body {
     font-family: var(--font-tajawal), system-ui, -apple-system, sans-serif;
   }
   
-  /* إعدادات الخطوط من لوحة الأدمن (data-font-* على html) */
+  /* إعدادات الخطوط من لوحة الأدمن (20 خياراً — تُطبَّق على كامل الموقع عند الحفظ) */
   html[data-font-heading="amiri"] { --font-arabic-heading: var(--font-amiri); }
   html[data-font-heading="cairo"] { --font-arabic-heading: var(--font-cairo); }
   html[data-font-heading="tajawal"] { --font-arabic-heading: var(--font-tajawal); }
+  html[data-font-heading="almarai"] { --font-arabic-heading: var(--font-almarai); }
+  html[data-font-heading="changa"] { --font-arabic-heading: var(--font-changa); }
+  html[data-font-heading="el_messiri"] { --font-arabic-heading: var(--font-el_messiri); }
+  html[data-font-heading="lateef"] { --font-arabic-heading: var(--font-lateef); }
+  html[data-font-heading="noto_kufi_arabic"] { --font-arabic-heading: var(--font-noto_kufi_arabic); }
+  html[data-font-heading="noto_naskh_arabic"] { --font-arabic-heading: var(--font-noto_naskh_arabic); }
+  html[data-font-heading="noto_sans_arabic"] { --font-arabic-heading: var(--font-noto_sans_arabic); }
+  html[data-font-heading="scheherazade_new"] { --font-arabic-heading: var(--font-scheherazade_new); }
+  html[data-font-heading="ibm_plex_sans_arabic"] { --font-arabic-heading: var(--font-ibm_plex_sans_arabic); }
+  html[data-font-heading="readex_pro"] { --font-arabic-heading: var(--font-readex_pro); }
+  html[data-font-heading="rubik"] { --font-arabic-heading: var(--font-rubik); }
+  html[data-font-heading="rakkas"] { --font-arabic-heading: var(--font-rakkas); }
+  html[data-font-heading="aref_ruqaa"] { --font-arabic-heading: var(--font-aref_ruqaa); }
+  html[data-font-heading="katibeh"] { --font-arabic-heading: var(--font-katibeh); }
+  html[data-font-heading="lemonada"] { --font-arabic-heading: var(--font-lemonada); }
+  html[data-font-heading="markazi_text"] { --font-arabic-heading: var(--font-markazi_text); }
+  html[data-font-heading="jomhuria"] { --font-arabic-heading: var(--font-jomhuria); }
   html[data-font-body="amiri"] { --font-arabic: var(--font-amiri); }
   html[data-font-body="cairo"] { --font-arabic: var(--font-cairo); }
   html[data-font-body="tajawal"] { --font-arabic: var(--font-tajawal); }
+  html[data-font-body="almarai"] { --font-arabic: var(--font-almarai); }
+  html[data-font-body="changa"] { --font-arabic: var(--font-changa); }
+  html[data-font-body="el_messiri"] { --font-arabic: var(--font-el_messiri); }
+  html[data-font-body="lateef"] { --font-arabic: var(--font-lateef); }
+  html[data-font-body="noto_kufi_arabic"] { --font-arabic: var(--font-noto_kufi_arabic); }
+  html[data-font-body="noto_naskh_arabic"] { --font-arabic: var(--font-noto_naskh_arabic); }
+  html[data-font-body="noto_sans_arabic"] { --font-arabic: var(--font-noto_sans_arabic); }
+  html[data-font-body="scheherazade_new"] { --font-arabic: var(--font-scheherazade_new); }
+  html[data-font-body="ibm_plex_sans_arabic"] { --font-arabic: var(--font-ibm_plex_sans_arabic); }
+  html[data-font-body="readex_pro"] { --font-arabic: var(--font-readex_pro); }
+  html[data-font-body="rubik"] { --font-arabic: var(--font-rubik); }
+  html[data-font-body="rakkas"] { --font-arabic: var(--font-rakkas); }
+  html[data-font-body="aref_ruqaa"] { --font-arabic: var(--font-aref_ruqaa); }
+  html[data-font-body="katibeh"] { --font-arabic: var(--font-katibeh); }
+  html[data-font-body="lemonada"] { --font-arabic: var(--font-lemonada); }
+  html[data-font-body="markazi_text"] { --font-arabic: var(--font-markazi_text); }
+  html[data-font-body="jomhuria"] { --font-arabic: var(--font-jomhuria); }
   html[data-font-modern="amiri"] { --font-arabic-modern: var(--font-amiri); }
   html[data-font-modern="cairo"] { --font-arabic-modern: var(--font-cairo); }
   html[data-font-modern="tajawal"] { --font-arabic-modern: var(--font-tajawal); }
+  html[data-font-modern="almarai"] { --font-arabic-modern: var(--font-almarai); }
+  html[data-font-modern="changa"] { --font-arabic-modern: var(--font-changa); }
+  html[data-font-modern="el_messiri"] { --font-arabic-modern: var(--font-el_messiri); }
+  html[data-font-modern="lateef"] { --font-arabic-modern: var(--font-lateef); }
+  html[data-font-modern="noto_kufi_arabic"] { --font-arabic-modern: var(--font-noto_kufi_arabic); }
+  html[data-font-modern="noto_naskh_arabic"] { --font-arabic-modern: var(--font-noto_naskh_arabic); }
+  html[data-font-modern="noto_sans_arabic"] { --font-arabic-modern: var(--font-noto_sans_arabic); }
+  html[data-font-modern="scheherazade_new"] { --font-arabic-modern: var(--font-scheherazade_new); }
+  html[data-font-modern="ibm_plex_sans_arabic"] { --font-arabic-modern: var(--font-ibm_plex_sans_arabic); }
+  html[data-font-modern="readex_pro"] { --font-arabic-modern: var(--font-readex_pro); }
+  html[data-font-modern="rubik"] { --font-arabic-modern: var(--font-rubik); }
+  html[data-font-modern="rakkas"] { --font-arabic-modern: var(--font-rakkas); }
+  html[data-font-modern="aref_ruqaa"] { --font-arabic-modern: var(--font-aref_ruqaa); }
+  html[data-font-modern="katibeh"] { --font-arabic-modern: var(--font-katibeh); }
+  html[data-font-modern="lemonada"] { --font-arabic-modern: var(--font-lemonada); }
+  html[data-font-modern="markazi_text"] { --font-arabic-modern: var(--font-markazi_text); }
+  html[data-font-modern="jomhuria"] { --font-arabic-modern: var(--font-jomhuria); }
   
   /* تحسين العناوين */
   h1, h2, h3, h4, h5, h6 {
@@ -632,12 +704,16 @@ body {
 }
 
 .admin-card-luxury {
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.95) 100%);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.98) 100%);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(148, 163, 184, 0.2);
+  border: 1px solid rgba(148, 163, 184, 0.25);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  color: #1e293b;
 }
+.admin-card-luxury .admin-card-title { color: #475569; }
+.admin-card-luxury .admin-card-value { color: #0f172a; font-weight: 700; }
+.admin-card-luxury .admin-card-sub { color: #64748b; }
 .admin-card-luxury:hover {
   border-color: rgba(245, 158, 11, 0.3);
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(245, 158, 11, 0.08);
@@ -647,7 +723,14 @@ body {
   background: linear-gradient(145deg, rgba(30, 41, 59, 0.65) 0%, rgba(15, 23, 42, 0.75) 100%);
   border: 1px solid rgba(245, 158, 11, 0.14);
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  color: rgba(241, 245, 249, 0.95);
 }
+[data-theme="dark"] .admin-card-luxury .admin-card-title,
+.dark .admin-card-luxury .admin-card-title { color: rgba(251, 191, 36, 0.9); }
+[data-theme="dark"] .admin-card-luxury .admin-card-value,
+.dark .admin-card-luxury .admin-card-value { color: #fff; }
+[data-theme="dark"] .admin-card-luxury .admin-card-sub,
+.dark .admin-card-luxury .admin-card-sub { color: rgba(148, 163, 184, 0.95); }
 [data-theme="dark"] .admin-card-luxury:hover,
 .dark .admin-card-luxury:hover {
   border-color: rgba(245, 158, 11, 0.28);

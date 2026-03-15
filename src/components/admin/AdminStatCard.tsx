@@ -31,16 +31,16 @@ export function AdminStatCard({
       className
     )}>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <span className="text-sm font-medium text-amber-200/90">{title}</span>
-        <div className={cn('rounded-xl p-2.5 bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/20', iconClassName)}>
-          <Icon className="w-5 h-5 text-amber-400" />
+        <span className="admin-card-title text-sm font-semibold">{title}</span>
+        <div className={cn('rounded-xl p-2.5 bg-amber-100 dark:bg-amber-500/20 border border-amber-200 dark:border-amber-500/20', iconClassName)}>
+          <Icon className="w-5 h-5 text-amber-600 dark:text-amber-400" />
         </div>
       </CardHeader>
       <CardContent>
-        <p className="text-2xl font-bold text-white tabular-nums tracking-tight">{value}</p>
+        <p className="admin-card-value text-2xl font-bold tabular-nums tracking-tight">{value}</p>
         {(subtitle || trend) && (
           <div className="mt-1.5 flex items-center gap-2 flex-wrap">
-            {subtitle && <span className="text-xs text-slate-400">{subtitle}</span>}
+            {subtitle && <span className="admin-card-sub text-xs">{subtitle}</span>}
             {trend !== undefined && (
               <span
                 className={cn(

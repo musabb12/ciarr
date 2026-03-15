@@ -145,6 +145,8 @@ export function AdminDashboardClient() {
   const totalServices = stats?.totalServices ?? 0;
   const totalTemplates = stats?.totalTemplates ?? 0;
   const messagesLast30 = stats?.messagesLast30 ?? stats?.totalMessages ?? 0;
+  const fmt = (n: number | undefined) => (loading ? '—' : (n ?? 0).toLocaleString('ar-SA'));
+  const fmtNum = (n: number | undefined) => (loading ? '—' : String(n ?? 0));
 
   return (
     <AdminErrorBoundary>
@@ -158,6 +160,13 @@ export function AdminDashboardClient() {
       />
 
       <AdminBreadcrumb items={[{ label: 'لوحة تحكم الإدارة', href: '/admin' }, { label: 'نظرة عامة تشغيلية' }]} />
+
+      <div className="flex flex-wrap items-center gap-3 mb-2">
+        <AdminStatusBadge variant="success" className="text-sm px-4 py-1.5">
+          الحالة: نشط
+        </AdminStatusBadge>
+        <span className="text-sm text-slate-500 dark:text-slate-400">مرحباً بك في لوحة التحكم — استخدم الروابط السريعة أدناه للوصول إلى الأقسام.</span>
+      </div>
 
       <AdminPageHeader
         title="لوحة تحكم الإدارة"
@@ -212,34 +221,34 @@ export function AdminDashboardClient() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <AdminStatCard
           title="إجمالي المستخدمين"
-          value={loading ? '—' : (stats?.totalUsers ?? 0).toLocaleString('ar-SA')}
-          subtitle={`نشط: ${stats?.activeUsers ?? '—'}`}
+          value={fmt(stats?.totalUsers)}
+          subtitle={!loading ? `نشط: ${stats?.activeUsers ?? 0}` : undefined}
           icon={Users}
         />
         <AdminStatCard
           title="المواقع / القوالب"
-          value={loading ? '—' : (stats?.totalTemplates ?? 0).toLocaleString('ar-SA')}
+          value={fmt(stats?.totalTemplates)}
           icon={Globe}
         />
         <AdminStatCard
           title="الرسائل"
-          value={loading ? '—' : (stats?.totalMessages ?? 0).toLocaleString('ar-SA')}
+          value={fmt(stats?.totalMessages)}
           icon={Mail}
         />
         <AdminStatCard
           title="الأخبار"
-          value={loading ? '—' : totalNews.toLocaleString('ar-SA')}
+          value={fmt(totalNews)}
           icon={Newspaper}
         />
         <AdminStatCard
           title="الخدمات"
-          value={loading ? '—' : totalServices.toLocaleString('ar-SA')}
+          value={fmt(totalServices)}
           icon={Briefcase}
         />
         <AdminStatCard
           title="الرسائل آخر 30 يوماً"
-          value={loading ? '—' : messagesLast30.toLocaleString('ar-SA')}
-          subtitle={`النمو: ${trendValue ?? 0}%`}
+          value={fmt(messagesLast30)}
+          subtitle={!loading ? `النمو: ${trendValue ?? 0}%` : undefined}
           trend={trendValue !== undefined ? { value: trendValue, label: 'آخر 30 يوماً' } : undefined}
           trendUp={trendValue !== undefined ? trendValue >= 0 : undefined}
           icon={Mail}
@@ -249,7 +258,7 @@ export function AdminDashboardClient() {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
         <AdminMetricTrend
           title="نمو المستخدمين"
-          value={stats?.activeUsers ?? '—'}
+          value={fmtNum(stats?.activeUsers)}
           trend="up"
           trendLabel="+12% عن الشهر الماضي"
           sparkline={[4, 6, 5, 8, 7, 10, 9, 12]}
@@ -257,21 +266,21 @@ export function AdminDashboardClient() {
         />
         <AdminMetricTrend
           title="الرسائل الجديدة"
-          value={messagesLast30 || '—'}
+          value={fmtNum(messagesLast30)}
           trend={trendValue !== undefined ? (trendValue >= 0 ? 'up' : 'down') : 'neutral'}
-          trendLabel={trendValue !== undefined ? `${trendValue}% مقابل الفترة السابقة` : '—'}
+          trendLabel={!loading && trendValue !== undefined ? `${trendValue}% مقابل الفترة السابقة` : 'بدون مقارنة'}
           sparkline={[2, 3, 4, 6, 5, 7, 8, 9]}
           icon={Mail}
         />
         <AdminProgressCard
           title="معدل تفعيل المستخدمين"
           value={stats?.totalUsers ? Math.round(((stats.activeUsers ?? 0) / stats.totalUsers) * 100) : 0}
-          label="نشط/إجمالي"
+          label="نشط / إجمالي"
           icon={Users}
         />
         <AdminMetricGauge
           title="إنجاز المحتوى"
-          value={Math.min(100, totalTemplates * 5)}
+          value={Math.min(100, (totalTemplates || 0) * 5)}
           unit="%"
           icon={FileText}
         />
@@ -301,7 +310,7 @@ export function AdminDashboardClient() {
               value: 'tips',
               label: 'مؤشرات تشغيلية',
               content: (
-                <ul className="text-sm text-slate-400 space-y-2 list-disc list-inside">
+                <ul className="admin-card-sub text-sm space-y-2 list-disc list-inside">
                   <li>مراجعة الرسائل الواردة والمؤشرات الحرجة بشكل يومي.</li>
                   <li>متابعة نمو المستخدمين والرسائل مقارنة بالفترات السابقة.</li>
                   <li>مراقبة الخدمات والمواقع ذات النشاط الأعلى لاتخاذ قرارات تشغيلية.</li>
@@ -313,7 +322,7 @@ export function AdminDashboardClient() {
               value: 'support',
               label: 'إجراءات الحوكمة',
               content: (
-                <ul className="text-sm text-slate-400 space-y-2 list-disc list-inside">
+                <ul className="admin-card-sub text-sm space-y-2 list-disc list-inside">
                   <li>الالتزام بجداول النسخ الاحتياطي المعتمدة للبيانات.</li>
                   <li>تحديث بيانات الدخول الإدارية بشكل دوري ومراقبة محاولات الدخول الفاشلة.</li>
                   <li>مراجعة سجلات النظام للأحداث غير الاعتيادية وإغلاق البلاغات المفتوحة.</li>
@@ -325,7 +334,7 @@ export function AdminDashboardClient() {
       </div>
 
       <AdminInfoBox variant="info" title="ملاحظة تشغيلية">
-        تم تصميم هذه اللوحة لعرض ملخص تنفيذي للحركة على المنصة. استخدم شريط البحث والوصول السريع للانتقال مباشرة إلى أقسام الإدارة المتقدمة.
+        تم تصميم هذه اللوحة لعرض ملخص تنفيذي للحركة على المنصة. استخدم <strong>شريط البحث</strong> و<strong>الوصول السريع</strong> للانتقال مباشرة إلى أقسام الإدارة (الصفحة الرئيسية، الخطوط، تحكم الموقع، وغيرها).
       </AdminInfoBox>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -356,8 +365,11 @@ export function AdminDashboardClient() {
           onExport={() => {}}
           exportLabel="تصدير"
         >
-          <div className="h-48 flex items-center justify-center rounded-xl border border-slate-700 bg-slate-900/40 text-slate-300 text-sm font-medium">
-            مخطط الزيارات غير مفعّل حالياً. يمكن ربطه لاحقاً ببيانات Recharts أو أي نظام تقارير آخر.
+          <div className="h-48 flex flex-col items-center justify-center gap-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/40 px-4">
+            <BarChart3 className="w-10 h-10 text-slate-400 dark:text-slate-500" />
+            <p className="text-sm font-medium text-slate-600 dark:text-slate-400 text-center max-w-xs">
+              مخطط الزيارات غير مفعّل حالياً. يمكن ربطه لاحقاً ببيانات تحليلية.
+            </p>
           </div>
         </AdminChartCard>
       </div>

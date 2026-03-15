@@ -25,12 +25,12 @@ export function AdminBreadcrumb({ items, className }: AdminBreadcrumbProps) {
             {item.href && !isLast ? (
               <Link
                 href={item.href}
-                className="text-amber-200/80 hover:text-amber-300 transition-colors"
+                className="text-amber-600 dark:text-amber-200/90 hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
               >
                 {item.label}
               </Link>
             ) : (
-              <span className={isLast ? 'text-slate-100 font-medium' : 'text-slate-400'}>
+              <span className={isLast ? 'text-slate-800 dark:text-slate-100 font-semibold' : 'text-slate-500 dark:text-slate-400'}>
                 {item.label}
               </span>
             )}

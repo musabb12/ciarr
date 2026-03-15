@@ -30,14 +30,14 @@ export function AdminChartCard({
     )}>
       <CardHeader className="flex flex-row items-start justify-between gap-4">
         <div>
-          <CardTitle className="text-slate-100 font-arabic-heading text-lg">{title}</CardTitle>
-          {description && <p className="text-sm text-amber-200/70 mt-0.5">{description}</p>}
+          <CardTitle className="admin-card-value font-arabic-heading text-lg">{title}</CardTitle>
+          {description && <p className="admin-card-sub text-sm mt-0.5">{description}</p>}
         </div>
         {onExport && (
           <Button
             variant="outline"
             size="sm"
-            className="border-amber-900/30 text-amber-200 hover:bg-amber-600/20 hover:border-amber-600/40 shrink-0 transition-all"
+            className="border-slate-200 dark:border-amber-900/30 text-slate-700 dark:text-amber-200 hover:bg-amber-100 dark:hover:bg-amber-600/20 shrink-0 transition-all"
             onClick={onExport}
           >
             <Download className="w-4 h-4 ml-2" />

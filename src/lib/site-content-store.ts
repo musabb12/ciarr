@@ -64,14 +64,23 @@ export interface PartnerItem {
   logo?: string;
 }
 
-/** إعدادات الخطوط: القيم amiri | cairo | tajawal (مطابقة للخطوط المحمّلة في الموقع) */
+/** قيم الخطوط المتاحة (20 خياراً) — تُطبَّق على كامل الموقع عند الحفظ */
+export const FONT_KEYS = [
+  'amiri', 'cairo', 'tajawal', 'almarai', 'changa', 'el_messiri', 'lateef',
+  'noto_kufi_arabic', 'noto_naskh_arabic', 'noto_sans_arabic', 'scheherazade_new',
+  'ibm_plex_sans_arabic', 'readex_pro', 'rubik', 'rakkas', 'aref_ruqaa',
+  'katibeh', 'lemonada', 'markazi_text', 'jomhuria',
+] as const;
+export type FontKey = (typeof FONT_KEYS)[number];
+
+/** إعدادات الخطوط: تُطبَّق على كامل الموقع عند الحفظ */
 export interface FontSettings {
   /** خط العناوين (h1, h2, ...) */
-  heading?: 'amiri' | 'cairo' | 'tajawal';
+  heading?: FontKey;
   /** خط النص الأساسي */
-  body?: 'amiri' | 'cairo' | 'tajawal';
+  body?: FontKey;
   /** خط النص العصري (فقرات، أزرار) */
-  modern?: 'amiri' | 'cairo' | 'tajawal';
+  modern?: FontKey;
 }
 
 export interface SiteContent {

@@ -39,8 +39,8 @@ export function AdminMetricGauge({
       className
     )}>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <span className="text-sm font-medium text-amber-200/90">{title}</span>
-        {Icon && <Icon className="w-5 h-5 text-amber-500/60" />}
+        <span className="admin-card-title text-sm font-semibold">{title}</span>
+        {Icon && <Icon className="w-5 h-5 text-amber-600 dark:text-amber-500/80" />}
       </CardHeader>
       <CardContent>
         <div className="relative w-24 h-24 mx-auto">
@@ -52,7 +52,7 @@ export function AdminMetricGauge({
               fill="none"
               stroke="currentColor"
               strokeWidth="8"
-              className="text-slate-700"
+              className="text-slate-200 dark:text-slate-700"
             />
             <circle
               cx="50"
@@ -67,7 +67,7 @@ export function AdminMetricGauge({
             />
           </svg>
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-lg font-bold text-white tabular-nums">
+            <span className="admin-card-value text-lg font-bold tabular-nums">
               {Math.round(clamped)}
               {unit}
             </span>

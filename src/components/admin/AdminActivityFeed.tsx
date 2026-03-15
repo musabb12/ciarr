@@ -43,25 +43,25 @@ export function AdminActivityFeed({
       className
     )}>
       <CardHeader>
-        <CardTitle className="text-slate-100 text-base font-arabic-heading">{title}</CardTitle>
+        <CardTitle className="admin-card-value text-base font-arabic-heading">{title}</CardTitle>
       </CardHeader>
       <CardContent>
         {list.length === 0 ? (
-          <p className="text-sm text-slate-500 py-4 text-center">{emptyMessage}</p>
+          <p className="admin-card-sub text-sm py-4 text-center">{emptyMessage}</p>
         ) : (
           <ul className="space-y-4">
-            {list.map((item, i) => {
+            {list.map((item) => {
               const Icon = item.icon;
               const dot = variantDot[item.variant ?? 'default'];
               return (
                 <li key={item.id} className="flex gap-3">
-                  <span className={cn('mt-1.5 w-2 h-2 rounded-full shrink-0', dot)} />
+                  <span className={cn('mt-1.5 w-2.5 h-2.5 rounded-full shrink-0', dot)} />
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-slate-200">{item.title}</p>
-                    {item.description && <p className="text-xs text-slate-500 mt-0.5">{item.description}</p>}
-                    <p className="text-xs text-slate-500 mt-1">{item.time}</p>
+                    <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">{item.title}</p>
+                    {item.description && <p className="admin-card-sub text-xs mt-0.5">{item.description}</p>}
+                    <p className="admin-card-sub text-xs mt-1">{item.time}</p>
                   </div>
-                  {Icon && <Icon className="w-4 h-4 text-slate-500 shrink-0" />}
+                  {Icon && <Icon className="w-4 h-4 text-slate-400 dark:text-slate-500 shrink-0" />}
                 </li>
               );
             })}

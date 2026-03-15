@@ -36,16 +36,16 @@ export function AdminProgressCard({
       className
     )}>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <span className="text-sm font-medium text-amber-200/90">{title}</span>
-        {Icon && <Icon className="w-5 h-5 text-amber-500/60" />}
+        <span className="admin-card-title text-sm font-semibold">{title}</span>
+        {Icon && <Icon className="w-5 h-5 text-amber-600 dark:text-amber-500/80" />}
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
-            <span className="text-slate-300 font-medium tabular-nums">{clamped}%</span>
-            {label && <span className="text-slate-500">{label}</span>}
+            <span className="admin-card-value text-base font-bold tabular-nums">{clamped}%</span>
+            {label && <span className="admin-card-sub">{label}</span>}
           </div>
-          <Progress value={clamped} className="h-2 bg-slate-700 [&>div]:bg-gradient-to-r [&>div]:from-amber-600 [&>div]:to-amber-500 rounded-full" />
+          <Progress value={clamped} className="h-2.5 bg-slate-200 dark:bg-slate-700 [&>div]:bg-gradient-to-r [&>div]:from-amber-500 [&>div]:to-amber-600 rounded-full" />
         </div>
       </CardContent>
     </Card>
