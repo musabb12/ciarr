@@ -281,7 +281,7 @@ export default function Home() {
       const websites = await response.json();
       if (!Array.isArray(websites)) return;
       const ordered = [...websites].sort((a: any, b: any) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
-      setFeaturedWebsites(ordered.slice(0, 6));
+      setFeaturedWebsites(ordered);
     } catch (error) {
       setFeaturedWebsites([]);
     }

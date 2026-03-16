@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { supabaseAdmin } from '@/lib/supabase-server'
 import { supabase } from '@/lib/supabaseClient'
 
 // نضمن تشغيل هذا الـ API Route على بيئة Node.js
@@ -25,6 +26,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'حجم الملف كبير جداً (الحد الأقصى 10MB)' }, { status: 400 })
     }
 
+    // استخدام عميل الخادم (service_role) إن وُجد، وإلا العميل العادي
+    const client = supabaseAdmin ?? supabase
+    if (!client) {
+      return NextResponse.json({ error: 'إعدادات التخزين غير مكتملة' }, { status: 500 })
+    }
+
     // إنشاء اسم فريد للملف داخل مجلد admin/ في Bucket باسم uploads
     const timestamp = Date.now()
     const randomString = Math.random().toString(36).substring(2, 15)
@@ -35,7 +42,7 @@ export async function POST(request: NextRequest) {
     const fileBuffer = Buffer.from(arrayBuffer)
 
     // رفع الملف إلى Supabase Storage (Bucket: uploads)
-    const { error: uploadError } = await supabase.storage
+    const { error: uploadError } = await client.storage
       .from('uploads')
       .upload(filePath, fileBuffer, {
         contentType: file.type,
@@ -47,7 +54,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'فشل رفع الملف إلى التخزين' }, { status: 500 })
     }
 
-    const { data: publicUrlData } = supabase.storage.from('uploads').getPublicUrl(filePath)
+    const { data: publicUrlData } = client.storage.from('uploads').getPublicUrl(filePath)
     const publicUrl = publicUrlData?.publicUrl ?? ''
     
     return NextResponse.json({ 
