@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { writeFile, mkdir } from 'fs/promises'
-import { join } from 'path'
-import { existsSync } from 'fs'
+import { supabase } from '@/lib/supabaseClient'
+
+// نضمن تشغيل هذا الـ API Route على بيئة Node.js
+export const runtime = 'nodejs'
+export const dynamic = 'force-dynamic'
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,43 +14,45 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'لم يتم اختيار ملف' }, { status: 400 })
     }
 
-    // تحقق من نوع الملف
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
-    if (!allowedTypes.includes(file.type)) {
-      return NextResponse.json({ error: 'نوع الملف غير مدعوم' }, { status: 400 })
+    // تحقق من نوع الملف (يجب أن يكون صورة)
+    if (!file.type.startsWith('image/')) {
+      return NextResponse.json({ error: 'يجب أن يكون الملف من نوع صورة' }, { status: 400 })
     }
 
-    // تحقق من حجم الملف (5MB كحد أقصى)
-    const maxSize = 5 * 1024 * 1024
+    // تحقق من حجم الملف (10MB كحد أقصى)
+    const maxSize = 10 * 1024 * 1024
     if (file.size > maxSize) {
-      return NextResponse.json({ error: 'حجم الملف كبير جداً (الحد الأقصى 5MB)' }, { status: 400 })
+      return NextResponse.json({ error: 'حجم الملف كبير جداً (الحد الأقصى 10MB)' }, { status: 400 })
     }
 
-    const bytes = await file.arrayBuffer()
-    const buffer = Buffer.from(bytes)
-
-    // إنشاء اسم فريد للملف
+    // إنشاء اسم فريد للملف داخل مجلد admin/ في Bucket باسم uploads
     const timestamp = Date.now()
     const randomString = Math.random().toString(36).substring(2, 15)
-    const extension = file.name.split('.').pop()
-    const filename = `${timestamp}_${randomString}.${extension}`
+    const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_')
+    const filePath = `admin/${timestamp}_${randomString}_${safeName}`
 
-    // التأكد من وجود مجلد uploads
-    const uploadDir = join(process.cwd(), 'public', 'uploads')
-    if (!existsSync(uploadDir)) {
-      await mkdir(uploadDir, { recursive: true })
+    const arrayBuffer = await file.arrayBuffer()
+    const fileBuffer = Buffer.from(arrayBuffer)
+
+    // رفع الملف إلى Supabase Storage (Bucket: uploads)
+    const { error: uploadError } = await supabase.storage
+      .from('uploads')
+      .upload(filePath, fileBuffer, {
+        contentType: file.type,
+        upsert: false,
+      })
+
+    if (uploadError) {
+      console.error('Supabase upload error:', uploadError)
+      return NextResponse.json({ error: 'فشل رفع الملف إلى التخزين' }, { status: 500 })
     }
 
-    // حفظ الملف
-    const filepath = join(uploadDir, filename)
-    await writeFile(filepath, buffer)
-
-    // إرجاع مسار الملف النسبي
-    const relativePath = `/uploads/${filename}`
+    const { data: publicUrlData } = supabase.storage.from('uploads').getPublicUrl(filePath)
+    const publicUrl = publicUrlData?.publicUrl ?? ''
     
     return NextResponse.json({ 
       success: true,
-      filename: relativePath,
+      filename: publicUrl,
       originalName: file.name,
       size: file.size,
       type: file.type
