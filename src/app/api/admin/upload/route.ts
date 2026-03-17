@@ -26,10 +26,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'حجم الملف كبير جداً (الحد الأقصى 10MB)' }, { status: 400 })
     }
 
-    // استخدام عميل الخادم (service_role) إن وُجد، وإلا العميل العادي
+    // استخدام عميل الخادم (service_role) إن وُجد، وإلا العميل العادي (قد يكون null عند البناء)
     const client = supabaseAdmin ?? supabase
     if (!client) {
-      return NextResponse.json({ error: 'إعدادات التخزين غير مكتملة' }, { status: 500 })
+      return NextResponse.json(
+        { error: 'إعدادات التخزين غير مكتملة. أضف NEXT_PUBLIC_SUPABASE_URL و SUPABASE_SERVICE_ROLE_KEY (أو NEXT_PUBLIC_SUPABASE_ANON_KEY) في Netlify.' },
+        { status: 500 }
+      )
     }
 
     // إنشاء اسم فريد للملف داخل مجلد admin/ في Bucket باسم uploads
@@ -51,7 +54,8 @@ export async function POST(request: NextRequest) {
 
     if (uploadError) {
       console.error('Supabase upload error:', uploadError)
-      return NextResponse.json({ error: 'فشل رفع الملف إلى التخزين' }, { status: 500 })
+      const message = uploadError.message || 'فشل رفع الملف إلى التخزين'
+      return NextResponse.json({ error: message }, { status: 500 })
     }
 
     const { data: publicUrlData } = client.storage.from('uploads').getPublicUrl(filePath)

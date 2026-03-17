@@ -36,6 +36,17 @@ export async function loadSiteContentFromDb(): Promise<SiteContent | null> {
   }
 }
 
+/** يحفظ المحتوى في ملف محلي (نسخة احتياطية عند فشل DB) */
+async function saveContentToFile(json: string): Promise<void> {
+  try {
+    const dir = path.dirname(CONTENT_FILE);
+    await fs.mkdir(dir, { recursive: true });
+    await fs.writeFile(CONTENT_FILE, json, 'utf-8');
+  } catch (e) {
+    console.error('site-content file write:', e);
+  }
+}
+
 export async function saveSiteContentToDb(content: SiteContent): Promise<void> {
   ensureDatabaseUrl();
   const json = JSON.stringify(content, null, 2);
@@ -47,13 +58,8 @@ export async function saveSiteContentToDb(content: SiteContent): Promise<void> {
     });
   } catch (e) {
     console.error('site-content db write:', e);
+    await saveContentToFile(json);
     throw e;
   }
-  try {
-    const dir = path.dirname(CONTENT_FILE);
-    await fs.mkdir(dir, { recursive: true });
-    await fs.writeFile(CONTENT_FILE, json, 'utf-8');
-  } catch (e) {
-    console.error('site-content file write:', e);
-  }
+  await saveContentToFile(json);
 }

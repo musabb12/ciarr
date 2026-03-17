@@ -6,13 +6,33 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { languages, Language } from '@/lib/i18n';
 import { Globe, ChevronDown } from 'lucide-react';
 
+/** يفعّل ترجمة جوجل: يكتب كوكي googtrans ويعيد التحميل لترجمة الصفحة فعلياً بـ Google */
+function switchToGoogleTranslateLanguage(lang: Language) {
+  if (typeof document === 'undefined') return;
+  const googtrans = lang === 'ar' ? '/ar/ar' : `/ar/${lang}`;
+  document.cookie = `googtrans=${googtrans}; path=/; max-age=31536000; SameSite=Lax`;
+  document.cookie = `language=${lang}; path=/; max-age=31536000; SameSite=Lax`;
+  try {
+    localStorage.setItem('language', lang);
+  } catch {
+    // تجاهل
+  }
+  window.location.reload();
+}
+
 type LanguageSelectorProps = {
   className?: string;
 };
 
 export function LanguageSelector({ className = '' }: LanguageSelectorProps) {
-  const { language, setLanguage } = useLanguage();
+  const { language } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
+
+  const handleSelect = (lang: Language) => {
+    setIsOpen(false);
+    if (lang === language) return;
+    switchToGoogleTranslateLanguage(lang);
+  };
 
   return (
     <div className="relative">
@@ -29,16 +49,13 @@ export function LanguageSelector({ className = '' }: LanguageSelectorProps) {
       </Button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-[120px]">
+        <div className="absolute top-full left-0 mt-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-50 min-w-[120px]">
           {Object.entries(languages).map(([lang, config]) => (
             <button
               key={lang}
-              onClick={() => {
-                setLanguage(lang as Language);
-                setIsOpen(false);
-              }}
-              className={`w-full px-3 py-2 text-sm text-left hover:bg-gray-100 flex items-center space-x-2 space-x-reverse ${
-                language === lang ? 'bg-gray-100 font-semibold' : ''
+              onClick={() => handleSelect(lang as Language)}
+              className={`w-full px-3 py-2 text-sm text-left hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center space-x-2 space-x-reverse ${
+                language === lang ? 'bg-gray-100 dark:bg-gray-800 font-semibold' : ''
               }`}
             >
               <span>{config.flag}</span>

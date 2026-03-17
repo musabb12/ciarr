@@ -709,7 +709,8 @@ export default function Home() {
           </div>
           <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-3 font-arabic-heading text-shadow-hero leading-tight tracking-tight">
             {(() => {
-              const title = siteContent?.hero?.title ?? t.hero.title;
+              const fromContent = language === 'ar' ? siteContent?.hero?.title : (siteContent?.hero?.titleEn ?? siteContent?.hero?.title);
+              const title = fromContent ?? t.hero.title;
               if (typeof title === 'string' && /<[a-z][\s\S]*>/i.test(title)) {
                 return <span dangerouslySetInnerHTML={{ __html: title }} />;
               }
@@ -717,7 +718,7 @@ export default function Home() {
             })()}
           </h1>
           <p className="text-lg md:text-xl lg:text-2xl mb-10 max-w-3xl mx-auto font-arabic-modern text-stone-300 text-shadow-hero reading-optimized">
-            {siteContent?.hero?.subtitle ?? t.hero.subtitle}
+            {(language === 'ar' ? siteContent?.hero?.subtitle : (siteContent?.hero?.subtitleEn ?? siteContent?.hero?.subtitle)) ?? t.hero.subtitle}
           </p>
           
           {/* Search Bar */}
@@ -726,7 +727,7 @@ export default function Home() {
               <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
               <Input
                 type="text"
-                placeholder={siteContent?.hero?.searchPlaceholder ?? t.hero.searchPlaceholder}
+                placeholder={(language === 'ar' ? siteContent?.hero?.searchPlaceholder : (siteContent?.hero?.searchPlaceholderEn ?? siteContent?.hero?.searchPlaceholder)) ?? t.hero.searchPlaceholder}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pr-12 pl-4 py-4 text-lg bg-white/95 backdrop-blur-sm border-0 font-arabic-modern text-right rounded-2xl focus-visible:ring-2 focus-visible:ring-amber-400"
@@ -737,12 +738,12 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg">
               <Link prefetch href="/websites" className="btn-luxury rounded-xl px-8 py-6 text-base font-arabic-modern inline-flex items-center justify-center shadow-[var(--luxury-glow)]">
-                استعرض المواقع
+                {t.sections?.featuredWebsitesViewAll ?? (isArabic ? 'عرض جميع مواقعنا الـ 14' : 'View All 14 Websites')}
               </Link>
             </Button>
             <Button asChild size="lg" variant="outline">
               <Link prefetch href="/services" className="rounded-xl px-8 py-6 border-2 border-white/60 text-white hover:bg-white/10 hover:border-white/80 font-arabic-modern font-semibold backdrop-blur-sm inline-flex items-center justify-center transition-all duration-300">
-                خدماتنا وقطاعاتنا
+                {t.sections?.servicesTitle ?? (isArabic ? 'قطاعاتنا وخدماتنا' : 'Our Sectors & Services')}
               </Link>
             </Button>
           </div>

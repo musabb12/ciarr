@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from "sonner";
@@ -33,17 +34,30 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const lang = cookieStore.get("language")?.value;
+  const isRtl = lang !== "en" && lang !== "fr";
+  const htmlLang = lang === "en" || lang === "fr" ? lang : "ar";
+  const htmlDir = isRtl ? "rtl" : "ltr";
+
   return (
-    <html lang="ar" dir="rtl" suppressHydrationWarning>
+    <html lang={htmlLang} dir={htmlDir} suppressHydrationWarning>
       <head>
         <link rel="stylesheet" href={FONTS_LINK} />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var m=document.cookie.match(/language=([^;]+)/);var l=m?m[1]:'';if(l==='en'||l==='fr')document.cookie='googtrans=/ar/'+l+'; path=/; max-age=31536000; SameSite=Lax';})();window.googleTranslateElementInit=function(){if(window.google&&window.google.translate&&document.getElementById('google_translate_element')){new window.google.translate.TranslateElement({pageLanguage:'ar',includedLanguages:'ar,en,fr',layout:0},'google_translate_element');}};`,
+          }}
+        />
+        <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async />
       </head>
       <body className="antialiased bg-background text-foreground font-arabic">
+        <div id="google_translate_element" className="sr-only" aria-hidden />
         {/* تطبيق الثيم قبل التهيئة لمنع الوميض وتأكيد عمل data-theme على html */}
         <script
           dangerouslySetInnerHTML={{
@@ -52,7 +66,7 @@ export default function RootLayout({
         />
         <ThemeProvider>
           <FontSettingsApplier />
-          <LanguageProvider>
+          <LanguageProvider initialLanguage={lang}>
             {children}
             <Toaster />
             <SonnerToaster position="top-left" dir="rtl" />

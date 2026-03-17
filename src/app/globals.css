@@ -815,3 +815,19 @@ body .fixed.bottom-5.left-5,
 body .fixed.bottom-6.left-6 {
   display: none !important;
 }
+
+/* ويدجت ترجمة جوجل: إخفاء البانر العلوي وتصغير القائمة */
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+body {
+  top: 0 !important;
+}
+#google_translate_element .goog-te-gadget {
+  font-size: 0.875rem !important;
+}
+#google_translate_element .goog-te-gadget-select {
+  padding: 0.25rem 0.5rem !important;
+  min-height: 0 !important;
+  border-radius: 0.375rem !important;
+}
