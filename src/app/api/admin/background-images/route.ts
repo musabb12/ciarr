@@ -61,10 +61,28 @@ export async function GET() {
     if (realImages.length > 0) {
       return NextResponse.json(realImages);
     }
+
+    // إذا لم توجد صور في القاعدة، نقوم بزرع (seed) الخلفيات الافتراضية مرة واحدة في الجدول
+    if (rows.length === 0) {
+      await db.backgroundImage.createMany({
+        data: fallbackImages.map((img, idx) => ({
+          url: img.url,
+          title: img.title,
+          active: true,
+          sortOrder: idx + 1,
+        })),
+        skipDuplicates: true,
+      });
+
+      const seeded = await db.backgroundImage.findMany({
+        orderBy: { sortOrder: 'asc' },
+      });
+      return NextResponse.json(seeded);
+    }
   } catch (error) {
     console.error('Error fetching background images:', error);
   }
-  // fallback (لا يكتب في قاعدة البيانات)
+  // fallback أخير فقط لو فشل كل شيء (لن تُكتب في DB)
   return NextResponse.json(
     fallbackImages.map((img, idx) => ({
       id: `fallback-${idx + 1}`,
