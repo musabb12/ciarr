@@ -23,6 +23,14 @@ export function ImageUpload({ onUploadComplete, maxFiles = 1, accept = "image/*"
   const [dragActive, setDragActive] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
+  const fileToDataUrl = (file: File): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = () => resolve(String(reader.result || ''))
+      reader.onerror = () => reject(new Error('failed_to_read_file'))
+      reader.readAsDataURL(file)
+    })
+
   const handleFileUpload = async (files: FileList) => {
     if (files.length === 0) return
 
@@ -72,10 +80,36 @@ export function ImageUpload({ onUploadComplete, maxFiles = 1, accept = "image/*"
         onUploadComplete(data.filename)
       } else {
         const errorData = await response.json()
-        setError(errorData.error || 'فشل رفع الصورة')
+        const serverError = String(errorData?.error || '')
+        // fallback: إذا إعدادات التخزين السحابي غير متوفرة، نحفظ الصورة كـ Data URL.
+        // هذا يضمن استمرار العمل في Vercel حتى قبل ضبط متغيرات Supabase.
+        if (
+          /SUPABASE|NEXT_PUBLIC_SUPABASE|SERVICE_ROLE|ANON_KEY|إعدادات التخزين/i.test(serverError)
+        ) {
+          const dataUrl = await fileToDataUrl(file)
+          if (dataUrl) {
+            onUploadComplete(dataUrl)
+            setError('تم التحويل لوضع بديل: حُفظت الصورة مباشرة بدون Supabase')
+          } else {
+            setError('تعذر قراءة الصورة محلياً')
+          }
+        } else {
+          setError(serverError || 'فشل رفع الصورة')
+        }
       }
     } catch (error) {
-      setError('حدث خطأ أثناء رفع الصورة')
+      // fallback أخير لأي خطأ شبكي/خادمي
+      try {
+        const dataUrl = await fileToDataUrl(file)
+        if (dataUrl) {
+          onUploadComplete(dataUrl)
+          setError('تم التحويل لوضع بديل بسبب خطأ في الرفع')
+        } else {
+          setError('حدث خطأ أثناء رفع الصورة')
+        }
+      } catch {
+        setError('حدث خطأ أثناء رفع الصورة')
+      }
     } finally {
       setTimeout(() => {
         setUploading(false)
@@ -207,6 +241,7 @@ export function ImageUpload({ onUploadComplete, maxFiles = 1, accept = "image/*"
       <div className="text-xs text-gray-500">
         <p>• الصيغ المسموحة: JPG, PNG, WebP, GIF</p>
         <p>• الحجم الأقصى: 5MB</p>
+        <p>• عند تعطل Supabase سيتم الحفظ بوضع بديل تلقائياً</p>
       </div>
     </div>
   )

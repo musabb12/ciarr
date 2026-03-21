@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
     const client = supabaseAdmin ?? supabase
     if (!client) {
       return NextResponse.json(
-        { error: 'إعدادات التخزين غير مكتملة. أضف NEXT_PUBLIC_SUPABASE_URL و SUPABASE_SERVICE_ROLE_KEY (أو NEXT_PUBLIC_SUPABASE_ANON_KEY) في Netlify.' },
+        { error: 'إعدادات التخزين غير مكتملة. أضف NEXT_PUBLIC_SUPABASE_URL و SUPABASE_SERVICE_ROLE_KEY (أو NEXT_PUBLIC_SUPABASE_ANON_KEY) في Vercel/Netlify.' },
         { status: 500 }
       )
     }

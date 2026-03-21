@@ -52,10 +52,20 @@ export async function GET() {
     const rows = await db.backgroundImage.findMany({
       orderBy: { sortOrder: 'asc' },
     });
-    // نستخدم فقط الصور الحقيقية (روابط كاملة)، ونتجاهل الروابط القديمة مثل /header-bg-*.jpg
+    // نستخدم الصور الحقيقية:
+    // - روابط كاملة http/https
+    // - روابط data:image/* (وضع بديل عند غياب Supabase)
+    // ونتجاهل الروابط القديمة مثل /header-bg-*.jpg
     const realImages = rows.filter((row) => {
       const url = String(row.url ?? '').trim();
-      return url && (url.startsWith('http://') || url.startsWith('https://'));
+      return (
+        !!url &&
+        (
+          url.startsWith('http://') ||
+          url.startsWith('https://') ||
+          url.startsWith('data:image/')
+        )
+      );
     });
 
     if (realImages.length > 0) {
