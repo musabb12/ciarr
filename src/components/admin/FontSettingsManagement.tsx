@@ -51,6 +51,15 @@ export function FontSettingsManagement() {
   const [heading, setHeading] = useState<FontSettings['heading']>('amiri');
   const [body, setBody] = useState<FontSettings['body']>('cairo');
   const [modern, setModern] = useState<FontSettings['modern']>('tajawal');
+  const [headingSize, setHeadingSize] = useState<FontSettings['headingSize']>('md');
+  const [bodySize, setBodySize] = useState<FontSettings['bodySize']>('md');
+  const [headingWeight, setHeadingWeight] = useState<FontSettings['headingWeight']>('bold');
+  const [bodyWeight, setBodyWeight] = useState<FontSettings['bodyWeight']>('normal');
+  const [lineHeight, setLineHeight] = useState<FontSettings['lineHeight']>('normal');
+  const [letterSpacing, setLetterSpacing] = useState<FontSettings['letterSpacing']>('normal');
+  const [previewText, setPreviewText] = useState<FontSettings['previewText']>(
+    'منصتك العالمية — عرض جميع مواقع CIAR الـ 14 وخدماتها.'
+  );
 
   const fetchContent = async () => {
     setLoading(true);
@@ -64,6 +73,13 @@ export function FontSettingsManagement() {
           setHeading(isValidFontKey(fs.heading) ? fs.heading : 'amiri');
           setBody(isValidFontKey(fs.body) ? fs.body : 'cairo');
           setModern(isValidFontKey(fs.modern) ? fs.modern : 'tajawal');
+          setHeadingSize(fs.headingSize ?? 'md');
+          setBodySize(fs.bodySize ?? 'md');
+          setHeadingWeight(fs.headingWeight ?? 'bold');
+          setBodyWeight(fs.bodyWeight ?? 'normal');
+          setLineHeight(fs.lineHeight ?? 'normal');
+          setLetterSpacing(fs.letterSpacing ?? 'normal');
+          setPreviewText(fs.previewText ?? previewText);
         }
       }
     } catch {
@@ -83,7 +99,18 @@ export function FontSettingsManagement() {
     try {
       const updated: SiteContent = {
         ...content,
-        fontSettings: { heading, body, modern },
+        fontSettings: {
+          heading,
+          body,
+          modern,
+          headingSize,
+          bodySize,
+          headingWeight,
+          bodyWeight,
+          lineHeight,
+          letterSpacing,
+          previewText,
+        },
       };
       const res = await fetch('/api/admin/site-content', {
         method: 'PUT',
@@ -127,7 +154,8 @@ export function FontSettingsManagement() {
             اختر خط العناوين، خط النص الأساسي، وخط النص العصري (20 خياراً). عند الضغط على «حفظ» تُطبَّق الخطوط على كامل الموقع فوراً.
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-8">
+        <CardContent className="space-y-10">
+          {/* 1-3: اختيار العائلة typographic */}
           <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-3">
             <div className="space-y-3">
               <Label
@@ -199,6 +227,146 @@ export function FontSettingsManagement() {
               </Select>
             </div>
           </div>
+          {/* 4-7: حجم ووزن العناوين والنص */}
+          <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+            <div className="space-y-3">
+              <Label className="admin-card-sub text-sm font-medium">
+                حجم العناوين
+              </Label>
+              <Select value={headingSize} onValueChange={(v) => setHeadingSize(v as FontSettings['headingSize'])}>
+                <SelectTrigger className={selectTriggerClass}>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="dark:border-slate-600 dark:bg-slate-800/95">
+                  <SelectItem value="sm">صغير</SelectItem>
+                  <SelectItem value="md">عادي</SelectItem>
+                  <SelectItem value="lg">كبير</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-3">
+              <Label className="admin-card-sub text-sm font-medium">
+                حجم النص الأساسي
+              </Label>
+              <Select value={bodySize} onValueChange={(v) => setBodySize(v as FontSettings['bodySize'])}>
+                <SelectTrigger className={selectTriggerClass}>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="dark:border-slate-600 dark:bg-slate-800/95">
+                  <SelectItem value="sm">صغير</SelectItem>
+                  <SelectItem value="md">عادي</SelectItem>
+                  <SelectItem value="lg">كبير</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-3">
+              <Label className="admin-card-sub text-sm font-medium">
+                وزن العناوين
+              </Label>
+              <Select
+                value={headingWeight}
+                onValueChange={(v) => setHeadingWeight(v as FontSettings['headingWeight'])}
+              >
+                <SelectTrigger className={selectTriggerClass}>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="dark:border-slate-600 dark:bg-slate-800/95">
+                  <SelectItem value="normal">عادي</SelectItem>
+                  <SelectItem value="semibold">شبه عريض</SelectItem>
+                  <SelectItem value="bold">عريض</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-3">
+              <Label className="admin-card-sub text-sm font-medium">
+                وزن النص الأساسي
+              </Label>
+              <Select value={bodyWeight} onValueChange={(v) => setBodyWeight(v as FontSettings['bodyWeight'])}>
+                <SelectTrigger className={selectTriggerClass}>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="dark:border-slate-600 dark:bg-slate-800/95">
+                  <SelectItem value="normal">عادي</SelectItem>
+                  <SelectItem value="medium">متوسط</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          {/* 8-9: تباعد الأسطر والأحرف */}
+          <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2">
+            <div className="space-y-3">
+              <Label className="admin-card-sub text-sm font-medium">
+                تباعد الأسطر
+              </Label>
+              <Select value={lineHeight} onValueChange={(v) => setLineHeight(v as FontSettings['lineHeight'])}>
+                <SelectTrigger className={selectTriggerClass}>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="dark:border-slate-600 dark:bg-slate-800/95">
+                  <SelectItem value="tight">مشدود</SelectItem>
+                  <SelectItem value="normal">طبيعي</SelectItem>
+                  <SelectItem value="relaxed">مرتخٍ</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-3">
+              <Label className="admin-card-sub text-sm font-medium">
+                تباعد الأحرف في العناوين
+              </Label>
+              <Select
+                value={letterSpacing}
+                onValueChange={(v) => setLetterSpacing(v as FontSettings['letterSpacing'])}
+              >
+                <SelectTrigger className={selectTriggerClass}>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="dark:border-slate-600 dark:bg-slate-800/95">
+                  <SelectItem value="tight">أضيق</SelectItem>
+                  <SelectItem value="normal">طبيعي</SelectItem>
+                  <SelectItem value="wide">أوسع</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          {/* 10: معاينة فاخرة للخط */}
+          <div className="rounded-xl border border-slate-200 bg-slate-50 px-5 py-4 dark:border-slate-600 dark:bg-slate-900/40">
+            <p className="admin-card-sub text-xs mb-2 text-slate-500 dark:text-slate-400">
+              معاينة الخطوط كما ستظهر تقريباً في الموقع
+            </p>
+            <div
+              className="mb-3 text-lg font-bold text-slate-900 dark:text-slate-100"
+              style={{
+                fontSize:
+                  headingSize === 'lg' ? '1.25rem' : headingSize === 'sm' ? '1.02rem' : '1.125rem',
+                fontWeight:
+                  headingWeight === 'bold' ? 700 : headingWeight === 'semibold' ? 600 : 500,
+                letterSpacing:
+                  letterSpacing === 'wide'
+                    ? '0.08em'
+                    : letterSpacing === 'tight'
+                    ? '-0.03em'
+                    : '0em',
+                lineHeight:
+                  lineHeight === 'tight' ? 1.2 : lineHeight === 'relaxed' ? 1.7 : 1.45,
+              }}
+            >
+              CIAR — لوحة تحكم فاخرة
+            </div>
+            <textarea
+              className="w-full resize-none rounded-lg border border-slate-200 bg-white p-3 text-sm text-slate-700 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400/40 dark:border-slate-600 dark:bg-slate-900/60 dark:text-slate-100 dark:focus-visible:ring-slate-500/50"
+              rows={3}
+              value={previewText}
+              onChange={(e) => setPreviewText(e.target.value)}
+              style={{
+                fontSize: bodySize === 'lg' ? '1rem' : bodySize === 'sm' ? '0.9rem' : '0.95rem',
+                fontWeight: bodyWeight === 'medium' ? 500 : 400,
+                lineHeight: lineHeight === 'tight' ? 1.35 : lineHeight === 'relaxed' ? 1.8 : 1.55,
+              }}
+            />
+          </div>
+
           <div className="border-t border-slate-200 pt-6 dark:border-slate-600">
             <Button
               onClick={handleSave}

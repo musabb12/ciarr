@@ -28,6 +28,20 @@ export function GoogleTranslateWidget() {
   useEffect(() => {
     if (loaded.current || typeof window === 'undefined') return;
 
+    // منع تعديل DOM قبل hydration: نحمّل سكربت جوجل بعد تحميل React.
+    // كذلك نضمن وجود googtrans حسب كوكي language.
+    try {
+      const langMatch = document.cookie.match(/(?:^|;\s*)language=([^;]+)/);
+      const lang = langMatch ? decodeURIComponent(langMatch[1]) : '';
+      if (lang === 'en' || lang === 'fr') {
+        document.cookie = `googtrans=/ar/${lang}; path=/; max-age=31536000; SameSite=Lax`;
+      } else {
+        document.cookie = `googtrans=/ar/ar; path=/; max-age=31536000; SameSite=Lax`;
+      }
+    } catch {
+      // ignore
+    }
+
     window.googleTranslateElementInit = function () {
       if (window.google?.translate && document.getElementById('google_translate_element')) {
         new window.google.translate.TranslateElement(
@@ -46,7 +60,7 @@ export function GoogleTranslateWidget() {
 
     const script = document.createElement('script');
     script.id = id;
-    script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
     script.async = true;
     document.body.appendChild(script);
     loaded.current = true;

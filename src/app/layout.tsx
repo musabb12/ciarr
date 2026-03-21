@@ -6,6 +6,7 @@ import { Toaster as SonnerToaster } from "sonner";
 import { LanguageProvider } from "@/hooks/useLanguage";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { FontSettingsApplier } from "@/components/FontSettingsApplier";
+import { GoogleTranslateWidget } from "@/components/GoogleTranslateWidget";
 
 /** رابط خطوط Google (20 خطاً) — تُحمّل مرة واحدة وتُطبَّق من لوحة الأدمن */
 const FONTS_LINK =
@@ -49,15 +50,8 @@ export default async function RootLayout({
     <html lang={htmlLang} dir={htmlDir} suppressHydrationWarning>
       <head>
         <link rel="stylesheet" href={FONTS_LINK} />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){var m=document.cookie.match(/language=([^;]+)/);var l=m?m[1]:'';if(l==='en'||l==='fr')document.cookie='googtrans=/ar/'+l+'; path=/; max-age=31536000; SameSite=Lax';})();window.googleTranslateElementInit=function(){if(window.google&&window.google.translate&&document.getElementById('google_translate_element')){new window.google.translate.TranslateElement({pageLanguage:'ar',includedLanguages:'ar,en,fr',layout:0},'google_translate_element');}};`,
-          }}
-        />
-        <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async />
       </head>
       <body className="antialiased bg-background text-foreground font-arabic">
-        <div id="google_translate_element" className="sr-only" aria-hidden />
         {/* تطبيق الثيم قبل التهيئة لمنع الوميض وتأكيد عمل data-theme على html */}
         <script
           dangerouslySetInnerHTML={{
@@ -67,6 +61,7 @@ export default async function RootLayout({
         <ThemeProvider>
           <FontSettingsApplier />
           <LanguageProvider initialLanguage={lang}>
+            <GoogleTranslateWidget />
             {children}
             <Toaster />
             <SonnerToaster position="top-left" dir="rtl" />

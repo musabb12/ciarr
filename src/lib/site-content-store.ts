@@ -81,6 +81,20 @@ export interface FontSettings {
   body?: FontKey;
   /** خط النص العصري (فقرات، أزرار) */
   modern?: FontKey;
+  /** حجم العناوين (نسبي: صغير/عادي/كبير) */
+  headingSize?: 'sm' | 'md' | 'lg';
+  /** حجم النص الأساسي (نسبي) */
+  bodySize?: 'sm' | 'md' | 'lg';
+  /** وزن العناوين (عادي/شبه عريض/عريض) */
+  headingWeight?: 'normal' | 'semibold' | 'bold';
+  /** وزن النص الأساسي (عادي/متوسط) */
+  bodyWeight?: 'normal' | 'medium';
+  /** تباعد الأسطر العام (مرتخٍ/طبيعي/مشدود) */
+  lineHeight?: 'relaxed' | 'normal' | 'tight';
+  /** تباعد الأحرف في العناوين (طبيعي/أوسع/أضيق) */
+  letterSpacing?: 'normal' | 'wide' | 'tight';
+  /** نص المعاينة في تبويب إعدادات الخطوط */
+  previewText?: string;
 }
 
 export interface SiteContent {
@@ -130,6 +144,13 @@ const defaultContent: SiteContent = {
     heading: 'amiri',
     body: 'cairo',
     modern: 'tajawal',
+    headingSize: 'md',
+    bodySize: 'md',
+    headingWeight: 'bold',
+    bodyWeight: 'normal',
+    lineHeight: 'normal',
+    letterSpacing: 'normal',
+    previewText: 'منصتك العالمية — عرض جميع مواقع CIAR الـ 14 وخدماتها.',
   },
   hero: {
     title: 'عرض جميع مواقعنا الـ 14',

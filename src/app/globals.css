@@ -171,7 +171,7 @@ html {
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: var(--font-cairo), system-ui, -apple-system, sans-serif;
+  font-family: var(--font-arabic, var(--font-cairo)), system-ui, -apple-system, sans-serif;
   font-feature-settings: "rlig" 1, "calt" 1;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -195,17 +195,41 @@ body {
   
   /* تحسين الخطوط العربية */
   .font-arabic {
-    font-family: var(--font-cairo), system-ui, -apple-system, sans-serif;
+    font-family: var(--font-arabic), system-ui, -apple-system, sans-serif;
+    font-weight: var(--ciar-body-weight, 400);
+    line-height: var(--ciar-line-height, 1.45);
+    font-size: calc(1em * var(--ciar-body-size-mult, 1));
   }
   
   .font-arabic-heading {
-    font-family: var(--font-amiri), Georgia, serif;
-    font-weight: 700;
-    line-height: 1.4;
+    font-family: var(--font-arabic-heading), Georgia, serif;
+    font-weight: var(--ciar-heading-weight, 700);
+    line-height: var(--ciar-line-height, 1.35);
+    letter-spacing: var(--ciar-heading-letter-spacing, 0em);
+    font-size: calc(1em * var(--ciar-heading-size-mult, 1));
   }
   
   .font-arabic-modern {
-    font-family: var(--font-tajawal), system-ui, -apple-system, sans-serif;
+    font-family: var(--font-arabic-modern), system-ui, -apple-system, sans-serif;
+    font-weight: var(--ciar-body-weight, 400);
+    line-height: var(--ciar-line-height, 1.45);
+    font-size: calc(1em * var(--ciar-body-size-mult, 1));
+  }
+
+  /* تطبيق إعدادات الخط عالميًا (حتى لو لم تُستخدم الكلاسات صراحة) */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-arabic-heading), Georgia, serif;
+    font-weight: var(--ciar-heading-weight, 700);
+    line-height: var(--ciar-line-height, 1.35);
+    letter-spacing: var(--ciar-heading-letter-spacing, 0em);
+  }
+  p, li, label, input, textarea, select {
+    font-family: var(--font-arabic), system-ui, -apple-system, sans-serif;
+    font-weight: var(--ciar-body-weight, 400);
+    line-height: var(--ciar-line-height, 1.45);
+  }
+  button, a {
+    font-family: var(--font-arabic-modern), system-ui, -apple-system, sans-serif;
   }
   
   /* إعدادات الخطوط من لوحة الأدمن (20 خياراً — تُطبَّق على كامل الموقع عند الحفظ) */
@@ -269,6 +293,30 @@ body {
   html[data-font-modern="lemonada"] { --font-arabic-modern: var(--font-lemonada); }
   html[data-font-modern="markazi_text"] { --font-arabic-modern: var(--font-markazi_text); }
   html[data-font-modern="jomhuria"] { --font-arabic-modern: var(--font-jomhuria); }
+
+  /* إعدادات شكل الخط (حجم/وزن/تباعد) من لوحة الأدمن */
+  html[data-font-heading-size="sm"] { --ciar-heading-size-mult: 0.92; }
+  html[data-font-heading-size="md"] { --ciar-heading-size-mult: 1; }
+  html[data-font-heading-size="lg"] { --ciar-heading-size-mult: 1.08; }
+
+  html[data-font-body-size="sm"] { --ciar-body-size-mult: 0.94; }
+  html[data-font-body-size="md"] { --ciar-body-size-mult: 1; }
+  html[data-font-body-size="lg"] { --ciar-body-size-mult: 1.07; }
+
+  html[data-font-heading-weight="normal"] { --ciar-heading-weight: 500; }
+  html[data-font-heading-weight="semibold"] { --ciar-heading-weight: 600; }
+  html[data-font-heading-weight="bold"] { --ciar-heading-weight: 700; }
+
+  html[data-font-body-weight="normal"] { --ciar-body-weight: 400; }
+  html[data-font-body-weight="medium"] { --ciar-body-weight: 500; }
+
+  html[data-font-line-height="tight"] { --ciar-line-height: 1.25; }
+  html[data-font-line-height="normal"] { --ciar-line-height: 1.45; }
+  html[data-font-line-height="relaxed"] { --ciar-line-height: 1.7; }
+
+  html[data-font-letter-spacing="tight"] { --ciar-heading-letter-spacing: -0.03em; }
+  html[data-font-letter-spacing="normal"] { --ciar-heading-letter-spacing: 0em; }
+  html[data-font-letter-spacing="wide"] { --ciar-heading-letter-spacing: 0.08em; }
   
   /* تحسين العناوين */
   h1, h2, h3, h4, h5, h6 {
@@ -613,7 +661,7 @@ body {
 .admin-header-line { background: linear-gradient(90deg, transparent, rgba(148,163,184,0.4), transparent); }
 .admin-header-border { border-color: rgba(148, 163, 184, 0.2); }
 [data-theme="dark"] .admin-header-gradient,
-.dark .admin-header-gradient { background: linear-gradient(90deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.5)); opacity: 0.98; }
+.dark .admin-header-gradient { background: linear-gradient(90deg, rgba(30, 41, 59, 0.6), rgba(15, 18, 25, 0.9), rgba(30, 41, 59, 0.5)); opacity: 0.98; }
 [data-theme="dark"] .admin-header-line,
 .dark .admin-header-line { background: linear-gradient(90deg, transparent, rgba(148, 163, 184, 0.3), transparent); }
 [data-theme="dark"] .admin-header-border,
