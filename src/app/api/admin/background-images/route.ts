@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/db';
+import { backgroundsRepo } from '@/lib/firebase/repos';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -49,9 +49,7 @@ const fallbackImages = [
 
 export async function GET() {
   try {
-    const rows = await db.backgroundImage.findMany({
-      orderBy: { sortOrder: 'asc' },
-    });
+    const rows = await backgroundsRepo.listAll();
     // نستخدم الصور الحقيقية:
     // - روابط كاملة http/https
     // - روابط data:image/* (وضع بديل عند غياب Supabase)
@@ -74,19 +72,7 @@ export async function GET() {
 
     // إذا لم توجد صور في القاعدة، نقوم بزرع (seed) الخلفيات الافتراضية مرة واحدة في الجدول
     if (rows.length === 0) {
-      await db.backgroundImage.createMany({
-        data: fallbackImages.map((img, idx) => ({
-          url: img.url,
-          title: img.title,
-          active: true,
-          sortOrder: idx + 1,
-        })),
-        skipDuplicates: true,
-      });
-
-      const seeded = await db.backgroundImage.findMany({
-        orderBy: { sortOrder: 'asc' },
-      });
+      const seeded = await backgroundsRepo.seedIfEmpty(fallbackImages);
       return NextResponse.json(seeded);
     }
   } catch (error) {
@@ -110,14 +96,12 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     if (!body.url) return NextResponse.json({ error: 'url is required' }, { status: 400 });
-    const count = await db.backgroundImage.count();
-    const created = await db.backgroundImage.create({
-      data: {
-        url: String(body.url),
-        title: body.title ? String(body.title) : null,
-        active: body.active !== false,
-        sortOrder: body.order ?? count + 1,
-      },
+    const count = await backgroundsRepo.count();
+    const created = await backgroundsRepo.create({
+      url: String(body.url),
+      title: body.title ? String(body.title) : null,
+      active: body.active !== false,
+      sortOrder: body.order ?? count + 1,
     });
     return NextResponse.json(created, { status: 201 });
   } catch (error) {
@@ -131,16 +115,13 @@ export async function PUT(request: NextRequest) {
     const body = await request.json();
     const { id, ...rest } = body;
     if (!id) return NextResponse.json({ error: 'id is required' }, { status: 400 });
-    const exists = await db.backgroundImage.findUnique({ where: { id: String(id) } });
+    const exists = await backgroundsRepo.findById(String(id));
     if (!exists) return NextResponse.json({ error: 'Not found' }, { status: 404 });
-    const updated = await db.backgroundImage.update({
-      where: { id: String(id) },
-      data: {
-        ...(rest.url !== undefined && { url: String(rest.url) }),
-        ...(rest.title !== undefined && { title: rest.title ? String(rest.title) : null }),
-        ...(rest.active !== undefined && { active: Boolean(rest.active) }),
-        ...(rest.order !== undefined && { sortOrder: Number(rest.order) }),
-      },
+    const updated = await backgroundsRepo.update(String(id), {
+      ...(rest.url !== undefined && { url: String(rest.url) }),
+      ...(rest.title !== undefined && { title: rest.title ? String(rest.title) : null }),
+      ...(rest.active !== undefined && { active: Boolean(rest.active) }),
+      ...(rest.order !== undefined && { sortOrder: Number(rest.order) }),
     });
     return NextResponse.json(updated);
   } catch (error) {
@@ -154,7 +135,7 @@ export async function DELETE(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
     if (!id) return NextResponse.json({ error: 'id is required' }, { status: 400 });
-    await db.backgroundImage.delete({ where: { id } });
+    await backgroundsRepo.remove(id);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error deleting background image:', error);

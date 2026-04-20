@@ -5,25 +5,17 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import type { SiteContent } from './site-content-store';
-import { db } from '@/lib/db';
+import { settingsRepo } from '@/lib/firebase/repos';
 
 const CONTENT_FILE = path.join(process.cwd(), 'data', 'site-content.json');
 
-/** رسالة واضحة عند غياب DATABASE_URL (مثلاً على Netlify) */
-export const DATABASE_URL_MESSAGE =
-  'قاعدة البيانات غير مضبوطة. أضف المتغير DATABASE_URL في Netlify: Site configuration → Environment variables ثم أعد النشر (Deploy).';
-
-function ensureDatabaseUrl(): void {
-  if (!process.env.DATABASE_URL?.trim()) {
-    const e = new Error(DATABASE_URL_MESSAGE) as Error & { code?: string };
-    e.code = 'DATABASE_URL_NOT_SET';
-    throw e;
-  }
-}
+export const FIREBASE_CONFIG_MESSAGE =
+  'إعدادات Firebase غير مكتملة. أضف FIREBASE_PROJECT_ID و FIREBASE_CLIENT_EMAIL و FIREBASE_PRIVATE_KEY و FIREBASE_STORAGE_BUCKET.'
 
 export async function loadSiteContentFromDb(): Promise<SiteContent | null> {
   try {
-    const row = await db.setting.findUnique({ where: { key: 'site_content' } });
+    const value = await settingsRepo.getValue('site_content');
+    const row = value ? { value } : null;
     if (row?.value) return JSON.parse(row.value) as SiteContent;
   } catch {
     // قاعدة البيانات غير متوفرة
@@ -48,18 +40,17 @@ async function saveContentToFile(json: string): Promise<void> {
 }
 
 export async function saveSiteContentToDb(content: SiteContent): Promise<void> {
-  ensureDatabaseUrl();
   const json = JSON.stringify(content, null, 2);
   try {
-    await db.setting.upsert({
-      where: { key: 'site_content' },
-      create: { key: 'site_content', value: json, type: 'json', group: 'content' },
-      update: { value: json },
-    });
+    await settingsRepo.setValue('site_content', json, 'content', 'json');
   } catch (e) {
     console.error('site-content db write:', e);
     await saveContentToFile(json);
-    throw e;
+    const message = (e as Error)?.message || ''
+    if (/Firebase is not configured/i.test(message)) {
+      throw new Error(FIREBASE_CONFIG_MESSAGE)
+    }
+    throw e
   }
   await saveContentToFile(json);
 }

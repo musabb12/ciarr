@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/db";
 import { hashPassword } from "@/lib/user-auth";
-import { UserRole } from "@prisma/client";
+import { userProfilesRepo } from "@/lib/firebase/repos";
 
-// فرض تشغيل Node.js (لـ crypto و Prisma)
+// فرض تشغيل Node.js (لـ crypto)
 export const runtime = "nodejs";
 
 const MIN_PASSWORD_LENGTH = 8;
@@ -36,9 +35,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const existing = await db.user.findUnique({
-      where: { email: trimmedEmail },
-    });
+    const existing = await userProfilesRepo.findByEmail(trimmedEmail);
     if (existing) {
       return NextResponse.json(
         { error: "هذا البريد الإلكتروني مسجّل مسبقاً" },
@@ -47,14 +44,13 @@ export async function POST(request: NextRequest) {
     }
 
     const hashedPassword = hashPassword(password);
-    const user = await db.user.create({
-      data: {
-        email: trimmedEmail,
-        name: name ? String(name).trim() || null : null,
-        password: hashedPassword,
-        role: UserRole.USER,
-        isActive: true,
-      },
+    const user = await userProfilesRepo.create({
+      email: trimmedEmail,
+      password,
+      passwordHash: hashedPassword,
+      name: name ? String(name).trim() || null : null,
+      role: "USER",
+      isActive: true,
     });
 
     return NextResponse.json({
@@ -71,19 +67,6 @@ export async function POST(request: NextRequest) {
 
     // رسالة أوضح لأخطاء قاعدة البيانات
     const err = error as { code?: string; message?: string };
-    if (err?.code === "P2002") {
-      return NextResponse.json(
-        { error: "هذا البريد الإلكتروني مسجّل مسبقاً" },
-        { status: 409 }
-      );
-    }
-    if (err?.code === "P2021" || err?.message?.includes("does not exist")) {
-      return NextResponse.json(
-        { error: "قاعدة البيانات غير مهيأة. شغّل: npx prisma db push" },
-        { status: 500 }
-      );
-    }
-
     return NextResponse.json(
       { error: err?.message || "حدث خطأ أثناء التسجيل. تحقق من الطرفية." },
       { status: 500 }

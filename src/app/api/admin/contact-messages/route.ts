@@ -1,12 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/db';
-import { ContactStatus } from '@prisma/client';
+import { contactsRepo } from '@/lib/firebase/repos';
 
-function mapStatus(s: string): ContactStatus {
-  if (s === 'REPLIED') return ContactStatus.REPLIED;
-  if (s === 'READ') return ContactStatus.READ;
-  if (s === 'CLOSED') return ContactStatus.CLOSED;
-  return ContactStatus.NEW;
+function mapStatus(s: string) {
+  return contactsRepo.normalizeStatus(s);
 }
 
 function toApiMessage(m: {
@@ -16,9 +12,9 @@ function toApiMessage(m: {
   phone: string | null;
   subject: string;
   message: string;
-  status: ContactStatus;
+  status: string;
   notes: string | null;
-  createdAt: Date;
+  createdAt: string;
 }) {
   return {
     id: m.id,
@@ -29,16 +25,14 @@ function toApiMessage(m: {
     message: m.message,
     status: m.status.toLowerCase(),
     notes: m.notes ?? undefined,
-    createdAt: m.createdAt.toISOString(),
-    priority: m.status === ContactStatus.NEW ? 'high' : 'medium',
+    createdAt: new Date(m.createdAt).toISOString(),
+    priority: m.status === 'NEW' ? 'high' : 'medium',
   };
 }
 
 export async function GET() {
   try {
-    const list = await db.contactMessage.findMany({
-      orderBy: { createdAt: 'desc' },
-    });
+    const list = await contactsRepo.listAll();
     return NextResponse.json(list.map(toApiMessage));
   } catch (error) {
     console.error('Error fetching contact messages:', error);
@@ -59,16 +53,17 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    const created = await db.contactMessage.create({
-      data: {
-        name: String(name),
-        email: String(email),
-        phone: phone ? String(phone) : null,
-        subject: String(subject),
-        message: String(message),
-        status: ContactStatus.NEW,
-      },
+    const created = await contactsRepo.create({
+      name: String(name),
+      email: String(email),
+      phone: phone ? String(phone) : null,
+      subject: String(subject),
+      message: String(message),
+      status: 'NEW',
     });
+    if (!created) {
+      return NextResponse.json({ error: 'Failed to create contact message' }, { status: 500 });
+    }
     return NextResponse.json(toApiMessage(created), { status: 201 });
   } catch (error) {
     console.error('Error creating contact message:', error);
@@ -86,13 +81,13 @@ export async function PUT(request: NextRequest) {
     if (!id) {
       return NextResponse.json({ error: 'id is required' }, { status: 400 });
     }
-    const data: { status?: ContactStatus; notes?: string | null } = {};
+    const data: { status?: string; notes?: string | null } = {};
     if (status != null) data.status = mapStatus(String(status));
     if (notes !== undefined) data.notes = notes ? String(notes) : null;
-    const updated = await db.contactMessage.update({
-      where: { id },
-      data,
-    });
+    const updated = await contactsRepo.update(id, data);
+    if (!updated) {
+      return NextResponse.json({ error: 'Not found' }, { status: 404 });
+    }
     return NextResponse.json(toApiMessage(updated));
   } catch (error) {
     console.error('Error updating contact message:', error);
@@ -110,7 +105,7 @@ export async function DELETE(request: NextRequest) {
     if (!id) {
       return NextResponse.json({ error: 'id is required' }, { status: 400 });
     }
-    await db.contactMessage.delete({ where: { id } });
+    await contactsRepo.remove(id);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error deleting contact message:', error);

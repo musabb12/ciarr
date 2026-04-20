@@ -228,11 +228,24 @@ function getReadableSession(): string | null {
 
 function extractExpiry(sessionId: string): number | null {
   try {
-    const [encodedPayload] = sessionId.split('.')
-    if (!encodedPayload) return null
-    const payloadString = decodeURIComponent(encodedPayload)
-    const payload = JSON.parse(payloadString) as { expiresAt?: number }
-    return typeof payload.expiresAt === 'number' ? payload.expiresAt : null
+    const parts = sessionId.split('.')
+
+    // Firebase JWT session cookie
+    if (parts.length >= 2) {
+      const base64Url = parts[1]
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+      const padded = base64 + '='.repeat((4 - (base64.length % 4)) % 4)
+      const payloadString = atob(padded)
+      const payload = JSON.parse(payloadString) as { exp?: number }
+      if (typeof payload.exp === 'number') {
+        return payload.exp * 1000
+      }
+    }
+
+    // Legacy custom token payload
+    const legacyPayload = decodeURIComponent(parts[0] || '')
+    const legacy = JSON.parse(legacyPayload) as { expiresAt?: number }
+    return typeof legacy.expiresAt === 'number' ? legacy.expiresAt : null
   } catch (error) {
     console.error('Failed to parse session payload:', error)
     return null

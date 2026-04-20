@@ -1,6 +1,6 @@
 import { randomBytes, scryptSync, timingSafeEqual } from "crypto";
-import { db } from "@/lib/db";
-import { UserRole } from "@prisma/client";
+import { sessionsRepo, userProfilesRepo } from "@/lib/firebase/repos";
+import type { FirestoreUserRole } from "@/lib/firebase/collections";
 
 const SESSION_DURATION_MS = 7 * 24 * 60 * 60 * 1000; // 7 أيام
 const SALT_LENGTH = 16;
@@ -24,38 +24,39 @@ export function verifyPassword(password: string, stored: string): boolean {
 }
 
 export async function createUserSession(userId: string): Promise<{ token: string; expiresAt: Date }> {
-  const token = randomBytes(32).toString("hex");
-  const expiresAt = new Date(Date.now() + SESSION_DURATION_MS);
-  await db.session.create({
-    data: { userId, token, expiresAt },
-  });
+  const { token, expiresAt } = await sessionsRepo.create(userId, SESSION_DURATION_MS);
   return { token, expiresAt };
 }
 
 export async function validateUserSession(token: string): Promise<{
   valid: boolean;
-  user?: { id: string; email: string; name: string | null; role: UserRole };
+  user?: { id: string; email: string; name: string | null; role: FirestoreUserRole };
   error?: string;
 }> {
   try {
-    const session = await db.session.findUnique({
-      where: { token },
-      include: { user: true },
-    });
-    if (!session || session.expiresAt < new Date()) {
-      if (session) await db.session.delete({ where: { id: session.id } });
+    const session = await sessionsRepo.findByToken(token);
+    if (!session) {
       return { valid: false, error: "انتهت صلاحية الجلسة" };
     }
-    if (!session.user.isActive) {
+    if (new Date(session.expiresAt) < new Date()) {
+      await sessionsRepo.deleteByToken(token);
+      return { valid: false, error: "انتهت صلاحية الجلسة" };
+    }
+    const user = await userProfilesRepo.findById(session.userId);
+    if (!user) {
+      await sessionsRepo.deleteByToken(token);
+      return { valid: false, error: "المستخدم غير موجود" };
+    }
+    if (!user.isActive) {
       return { valid: false, error: "الحساب غير مفعّل" };
     }
     return {
       valid: true,
       user: {
-        id: session.user.id,
-        email: session.user.email,
-        name: session.user.name,
-        role: session.user.role,
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
       },
     };
   } catch (e) {
@@ -65,7 +66,7 @@ export async function validateUserSession(token: string): Promise<{
 }
 
 export async function deleteUserSession(token: string): Promise<void> {
-  await db.session.deleteMany({ where: { token } });
+  await sessionsRepo.deleteByToken(token);
 }
 
 export { SESSION_DURATION_MS };

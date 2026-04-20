@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
     const sessionResult = await createAdminSession(username, password)
 
     if (sessionResult.success) {
-      const response = NextResponse.json({ 
+      const response = NextResponse.json({
         success: true,
         sessionId: sessionResult.sessionId,
         expiresAt: sessionResult.expiresAt,

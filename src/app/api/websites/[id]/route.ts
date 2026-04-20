@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { updateDisplayWebsite, removeDisplayWebsite } from '@/lib/display-websites-db'
 
 export async function PUT(
   request: NextRequest,
@@ -16,19 +17,23 @@ export async function PUT(
       )
     }
 
-    // Update website with new data
-    const updatedWebsite = {
-      id,
+    const updatedWebsite = await updateDisplayWebsite(id, {
       title: body.title,
       description: body.description || '',
       url: body.url,
       category: body.category,
       technologies: body.technologies || [],
-      images: body.images || []
+      images: body.images || [],
+      badges: body.badges || [],
+      tags: body.tags || [],
+      featured: body.featured ?? false,
+      status: body.status || 'active',
+      client: body.client || 'CIAR',
+      hidden: body.hidden ?? false,
+    })
+    if (!updatedWebsite) {
+      return NextResponse.json({ error: 'الموقع غير موجود' }, { status: 404 })
     }
-
-    // In a real application, you would update this in a database
-    console.log('Website updated:', updatedWebsite)
 
     return NextResponse.json(updatedWebsite)
   } catch (error) {
@@ -47,8 +52,10 @@ export async function DELETE(
   try {
     const id = params.id
 
-    // In a real application, you would delete this from a database
-    console.log('Website deleted:', id)
+    const removed = await removeDisplayWebsite(id)
+    if (!removed) {
+      return NextResponse.json({ error: 'الموقع غير موجود' }, { status: 404 })
+    }
 
     return NextResponse.json({ message: 'تم حذف الموقع بنجاح' })
   } catch (error) {

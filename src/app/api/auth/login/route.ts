@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/db";
-import { verifyPassword, createUserSession } from "@/lib/user-auth";
+import { createFirebaseSessionCookie, signInWithEmailPassword } from "@/lib/firebase/auth";
+import { userProfilesRepo } from "@/lib/firebase/repos";
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,45 +13,47 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const user = await db.user.findUnique({
-      where: { email: String(email).trim().toLowerCase() },
-    });
-
-    if (!user || !user.password) {
+    const normalizedEmail = String(email).trim().toLowerCase();
+    const profile = await userProfilesRepo.findByEmail(normalizedEmail);
+    if (!profile) {
       return NextResponse.json(
         { error: "البريد الإلكتروني أو كلمة المرور غير صحيحة" },
         { status: 401 }
       );
     }
 
-    if (!user.isActive) {
+    if (!profile.isActive) {
       return NextResponse.json(
         { error: "الحساب غير مفعّل. تواصل مع الإدارة." },
         { status: 403 }
       );
     }
 
-    const valid = verifyPassword(password, user.password);
-    if (!valid) {
+    let idToken = "";
+    try {
+      const signIn = await signInWithEmailPassword(normalizedEmail, String(password));
+      idToken = signIn.idToken;
+    } catch {
       return NextResponse.json(
         { error: "البريد الإلكتروني أو كلمة المرور غير صحيحة" },
         { status: 401 }
       );
     }
 
-    const { token, expiresAt } = await createUserSession(user.id);
+    const sessionCookie = await createFirebaseSessionCookie(idToken, "user");
+    await userProfilesRepo.touchLastLogin(profile.id);
 
     const response = NextResponse.json({
       success: true,
       message: "تم تسجيل الدخول بنجاح",
       user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
+        id: profile.id,
+        email: profile.email,
+        name: profile.name,
       },
     });
 
-    response.cookies.set("user-session", token, {
+    response.cookies.set("user-session", sessionCookie, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/db";
-import { hashPassword, verifyPassword, validateUserSession } from "@/lib/user-auth";
+import { hashPassword } from "@/lib/user-auth";
+import { buildSessionUserFromCookie, signInWithEmailPassword } from "@/lib/firebase/auth";
+import { userProfilesRepo } from "@/lib/firebase/repos";
 
 const MIN_PASSWORD_LENGTH = 8;
 
@@ -11,8 +12,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "غير مصرح" }, { status: 401 });
     }
 
-    const result = await validateUserSession(token);
-    if (!result.valid || !result.user) {
+    const result = await buildSessionUserFromCookie(token);
+    if (!result || !result.isActive) {
       return NextResponse.json({ error: "غير مصرح" }, { status: 401 });
     }
 
@@ -33,23 +34,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const user = await db.user.findUnique({
-      where: { id: result.user.id },
-    });
-
-    if (!user || !user.password) {
-      return NextResponse.json({ error: "المستخدم غير موجود" }, { status: 404 });
-    }
-
-    const valid = verifyPassword(currentPassword, user.password);
-    if (!valid) {
+    try {
+      await signInWithEmailPassword(result.email, currentPassword);
+    } catch {
       return NextResponse.json({ error: "كلمة المرور الحالية غير صحيحة" }, { status: 400 });
     }
 
     const hashedPassword = hashPassword(newPassword);
-    await db.user.update({
-      where: { id: user.id },
-      data: { password: hashedPassword },
+    await userProfilesRepo.update(result.id, {
+      password: newPassword,
+      passwordHash: hashedPassword,
     });
 
     return NextResponse.json({ success: true, message: "تم تغيير كلمة المرور بنجاح" });

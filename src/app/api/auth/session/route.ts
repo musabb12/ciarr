@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { validateUserSession } from "@/lib/user-auth";
+import { buildSessionUserFromCookie } from "@/lib/firebase/auth";
 
 export async function GET(request: NextRequest) {
   try {
@@ -8,12 +8,19 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ user: null });
     }
 
-    const result = await validateUserSession(token);
-    if (!result.valid) {
+    const user = await buildSessionUserFromCookie(token);
+    if (!user || !user.isActive) {
       return NextResponse.json({ user: null });
     }
 
-    return NextResponse.json({ user: result.user });
+    return NextResponse.json({
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+      },
+    });
   } catch (error) {
     console.error("Session error:", error);
     return NextResponse.json({ user: null });

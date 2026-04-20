@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { db } from '@/lib/db';
+import { contactsRepo, newsRepo, servicesRepo, userProfilesRepo, websitesRepo } from '@/lib/firebase/repos';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -27,14 +27,14 @@ export async function GET() {
       messagesLast30,
       messagesPrev30,
     ] = await Promise.all([
-      db.user.count(),
-      db.user.count({ where: { isActive: true } }),
-      db.displayWebsite.count(),
-      db.contactMessage.count(),
-      db.newsItem.count(),
-      db.siteService.count(),
-      db.contactMessage.count({ where: { createdAt: { gte: last30 } } }),
-      db.contactMessage.count({ where: { createdAt: { gte: prev30, lt: last30 } } }),
+      userProfilesRepo.count(),
+      userProfilesRepo.countActive(),
+      websitesRepo.count(),
+      contactsRepo.count(),
+      newsRepo.count(),
+      servicesRepo.count(),
+      contactsRepo.countBetween(last30),
+      contactsRepo.countBetween(prev30, last30),
     ]);
 
     const monthlyGrowth = Number(calcGrowth(messagesLast30, messagesPrev30).toFixed(1));

@@ -1,13 +1,14 @@
 /**
  * مواقع العرض (الـ 14 موقعاً) — من Prisma مع fallback لـ data/websites عند الفراغ.
  */
-import { db } from '@/lib/db';
+import { websitesRepo } from '@/lib/firebase/repos';
 import { listWebsites, type AdminWebsite } from '@/data/websites';
 
-function parseJson<T>(s: string | null, fallback: T): T {
+function parseJson<T>(s: unknown, fallback: T): T {
   if (!s) return fallback;
+  if (Array.isArray(s)) return s as T;
   try {
-    return JSON.parse(s) as T;
+    return JSON.parse(String(s)) as T;
   } catch {
     return fallback;
   }
@@ -77,9 +78,7 @@ function mapDataWebsiteToApi(w: ReturnType<typeof listWebsites>[number]) {
 
 export async function listDisplayWebsites(options?: { includeHidden?: boolean }): Promise<DisplayWebsiteApi[]> {
   try {
-    const rows = await db.displayWebsite.findMany({
-      orderBy: { displayOrder: 'asc' },
-    });
+    const rows = await websitesRepo.list({ includeHidden: true });
     if (rows.length > 0) {
       const list = rows.map(toApiWebsite);
       return options?.includeHidden ? list : list.filter((w) => !w.hidden);
@@ -92,64 +91,59 @@ export async function listDisplayWebsites(options?: { includeHidden?: boolean })
 }
 
 export async function createDisplayWebsite(data: Partial<DisplayWebsiteApi> & { title: string; url: string; category: string }) {
-  const count = await db.displayWebsite.count();
-  const slug = (data.id as string) || data.title?.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') || `site-${Date.now()}`;
-  const created = await db.displayWebsite.create({
-    data: {
-      slug,
-      title: data.title,
-      titleEn: data.titleEn ?? null,
-      description: data.description ?? null,
-      descriptionEn: data.descriptionEn ?? null,
-      url: data.url,
-      category: data.category,
-      technologies: data.technologies ? JSON.stringify(data.technologies) : null,
-      images: data.images ? JSON.stringify(data.images) : null,
-      badges: data.badges ? JSON.stringify(data.badges) : null,
-      tags: data.tags ? JSON.stringify(data.tags) : null,
-      featured: data.featured ?? false,
-      status: data.status ?? 'active',
-      client: data.client ?? null,
-      hidden: data.hidden ?? false,
-      displayOrder: data.displayOrder ?? count + 1,
-    },
+  const count = await websitesRepo.count();
+  const created = await websitesRepo.create({
+    id: data.id as string | undefined,
+    slug:
+      (data.id as string) ||
+      data.title?.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') ||
+      `site-${Date.now()}`,
+    title: data.title,
+    titleEn: data.titleEn ?? null,
+    description: data.description ?? null,
+    descriptionEn: data.descriptionEn ?? null,
+    url: data.url,
+    category: data.category,
+    technologies: data.technologies ?? [],
+    images: data.images ?? [],
+    badges: data.badges ?? [],
+    tags: data.tags ?? [],
+    featured: data.featured ?? false,
+    status: data.status ?? 'active',
+    client: data.client ?? null,
+    hidden: data.hidden ?? false,
+    displayOrder: data.displayOrder ?? count + 1,
   });
+  if (!created) {
+    throw new Error('Failed to create website')
+  }
   return toApiWebsite(created);
 }
 
 export async function updateDisplayWebsite(id: string, data: Partial<DisplayWebsiteApi>) {
-  const existing = await db.displayWebsite.findFirst({
-    where: { OR: [{ id }, { slug: id }] },
-  });
+  const existing = await websitesRepo.findByIdOrSlug(id);
   if (!existing) return null;
-  const updated = await db.displayWebsite.update({
-    where: { id: existing.id },
-    data: {
-      ...(data.title != null && { title: data.title }),
-      ...(data.titleEn !== undefined && { titleEn: data.titleEn || null }),
-      ...(data.description !== undefined && { description: data.description || null }),
-      ...(data.descriptionEn !== undefined && { descriptionEn: data.descriptionEn || null }),
-      ...(data.url != null && { url: data.url }),
-      ...(data.category != null && { category: data.category }),
-      ...(data.technologies !== undefined && { technologies: data.technologies ? JSON.stringify(data.technologies) : null }),
-      ...(data.images !== undefined && { images: data.images ? JSON.stringify(data.images) : null }),
-      ...(data.badges !== undefined && { badges: data.badges ? JSON.stringify(data.badges) : null }),
-      ...(data.tags !== undefined && { tags: data.tags ? JSON.stringify(data.tags) : null }),
-      ...(data.featured !== undefined && { featured: data.featured }),
-      ...(data.status != null && { status: data.status }),
-      ...(data.client !== undefined && { client: data.client || null }),
-      ...(data.hidden !== undefined && { hidden: data.hidden }),
-      ...(data.displayOrder != null && { displayOrder: data.displayOrder }),
-    },
+  const updated = await websitesRepo.update(existing.id, {
+    ...(data.title != null && { title: data.title }),
+    ...(data.titleEn !== undefined && { titleEn: data.titleEn || null }),
+    ...(data.description !== undefined && { description: data.description || null }),
+    ...(data.descriptionEn !== undefined && { descriptionEn: data.descriptionEn || null }),
+    ...(data.url != null && { url: data.url }),
+    ...(data.category != null && { category: data.category }),
+    ...(data.technologies !== undefined && { technologies: data.technologies ?? [] }),
+    ...(data.images !== undefined && { images: data.images ?? [] }),
+    ...(data.badges !== undefined && { badges: data.badges ?? [] }),
+    ...(data.tags !== undefined && { tags: data.tags ?? [] }),
+    ...(data.featured !== undefined && { featured: data.featured }),
+    ...(data.status != null && { status: data.status }),
+    ...(data.client !== undefined && { client: data.client || null }),
+    ...(data.hidden !== undefined && { hidden: data.hidden }),
+    ...(data.displayOrder != null && { displayOrder: data.displayOrder }),
   });
+  if (!updated) return null
   return toApiWebsite(updated);
 }
 
 export async function removeDisplayWebsite(id: string): Promise<boolean> {
-  const existing = await db.displayWebsite.findFirst({
-    where: { OR: [{ id }, { slug: id }] },
-  });
-  if (!existing) return false;
-  await db.displayWebsite.delete({ where: { id: existing.id } });
-  return true;
+  return websitesRepo.remove(id);
 }

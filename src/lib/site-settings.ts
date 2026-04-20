@@ -4,7 +4,7 @@
 
 import { promises as fs } from 'fs';
 import path from 'path';
-import { db } from '@/lib/db';
+import { settingsRepo } from '@/lib/firebase/repos';
 
 export interface SiteSettings {
   siteName: string;
@@ -89,7 +89,8 @@ function getFilePath() {
 export async function getSiteSettings(): Promise<SiteSettings> {
   if (memoryCache) return memoryCache;
   try {
-    const row = await db.setting.findUnique({ where: { key: 'site_settings' } });
+    const value = await settingsRepo.getValue('site_settings');
+    const row = value ? { value } : null;
     if (row?.value) {
       const parsed = JSON.parse(row.value) as Partial<SiteSettings>;
       memoryCache = { ...DEFAULT_SETTINGS, ...parsed };
@@ -115,11 +116,7 @@ export async function setSiteSettings(settings: Partial<SiteSettings>): Promise<
   const updated = { ...current, ...settings };
   memoryCache = updated;
   try {
-    await db.setting.upsert({
-      where: { key: 'site_settings' },
-      create: { key: 'site_settings', value: JSON.stringify(updated), type: 'json', group: 'general' },
-      update: { value: JSON.stringify(updated) },
-    });
+    await settingsRepo.setValue('site_settings', JSON.stringify(updated), 'general', 'json');
   } catch (e) {
     console.error('site-settings db write:', e);
   }

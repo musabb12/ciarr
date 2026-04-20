@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { userProfilesRepo } from "@/lib/firebase/repos";
 
 export async function GET() {
   try {
-    await db.user.count();
+    await userProfilesRepo.count();
     return NextResponse.json({ ok: true, db: "connected" });
   } catch (err) {
     console.error("Health check DB error:", err);

@@ -1,8 +1,7 @@
-import { db } from '@/lib/db';
+import { settingsRepo } from '@/lib/firebase/repos';
 export async function getSetting(key: string) {
-  const r = await db.setting.findUnique({ where: { key } });
-  return r?.value ?? null;
+  return settingsRepo.getValue(key);
 }
 export async function setSetting(key: string, value: string, group = 'general') {
-  await db.setting.upsert({ where: { key }, create: { key, value, group }, update: { value, group } });
+  await settingsRepo.setValue(key, value, group);
 }

@@ -82,14 +82,14 @@ export function ImageUpload({ onUploadComplete, maxFiles = 1, accept = "image/*"
         const errorData = await response.json()
         const serverError = String(errorData?.error || '')
         // fallback: إذا إعدادات التخزين السحابي غير متوفرة، نحفظ الصورة كـ Data URL.
-        // هذا يضمن استمرار العمل في Vercel حتى قبل ضبط متغيرات Supabase.
+        // هذا يضمن استمرار العمل حتى قبل ضبط متغيرات Firebase.
         if (
-          /SUPABASE|NEXT_PUBLIC_SUPABASE|SERVICE_ROLE|ANON_KEY|إعدادات التخزين/i.test(serverError)
+          /FIREBASE|FIREBASE_PROJECT_ID|FIREBASE_CLIENT_EMAIL|FIREBASE_PRIVATE_KEY|FIREBASE_STORAGE_BUCKET|إعدادات/i.test(serverError)
         ) {
           const dataUrl = await fileToDataUrl(file)
           if (dataUrl) {
             onUploadComplete(dataUrl)
-            setError('تم التحويل لوضع بديل: حُفظت الصورة مباشرة بدون Supabase')
+            setError('تم التحويل لوضع بديل: حُفظت الصورة مباشرة بدون Firebase Storage')
           } else {
             setError('تعذر قراءة الصورة محلياً')
           }
@@ -241,7 +241,7 @@ export function ImageUpload({ onUploadComplete, maxFiles = 1, accept = "image/*"
       <div className="text-xs text-gray-500">
         <p>• الصيغ المسموحة: JPG, PNG, WebP, GIF</p>
         <p>• الحجم الأقصى: 5MB</p>
-        <p>• عند تعطل Supabase سيتم الحفظ بوضع بديل تلقائياً</p>
+        <p>• عند تعطل Firebase Storage سيتم الحفظ بوضع بديل تلقائياً</p>
       </div>
     </div>
   )

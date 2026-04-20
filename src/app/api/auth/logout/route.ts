@@ -1,11 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
-import { deleteUserSession } from "@/lib/user-auth";
+import { buildSessionUserFromCookie, revokeFirebaseUserSessions } from "@/lib/firebase/auth";
 
 export async function POST(request: NextRequest) {
   try {
     const token = request.cookies.get("user-session")?.value;
     if (token) {
-      await deleteUserSession(token);
+      try {
+        const user = await buildSessionUserFromCookie(token);
+        if (user) {
+          await revokeFirebaseUserSessions(user.id);
+        }
+      } catch {
+        // ignore revoke failures and continue logout
+      }
     }
 
     const response = NextResponse.json({ success: true, message: "تم تسجيل الخروج" });

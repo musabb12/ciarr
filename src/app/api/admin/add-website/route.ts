@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
-import { existsSync } from 'fs';
-import { db } from '@/lib/db';
+import { uploadBufferToFirebaseStorage } from '@/lib/firebase-admin';
+import { websitesRepo } from '@/lib/firebase/repos';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -29,12 +27,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create uploads directory if it doesn't exist
-    const uploadsDir = join(process.cwd(), 'public', 'uploads', 'websites');
-    if (!existsSync(uploadsDir)) {
-      await mkdir(uploadsDir, { recursive: true });
-    }
-
     // Handle image uploads
     const images: string[] = [];
     let imageIndex = 0;
@@ -44,18 +36,16 @@ export async function POST(request: NextRequest) {
       if (!image) break;
       
       try {
-        // Generate unique filename
         const timestamp = Date.now();
         const filename = `${title.replace(/\s+/g, '_')}_${timestamp}_${imageIndex}.${image.name.split('.').pop()}`;
-        const filepath = join(uploadsDir, filename);
-        
-        // Save file
         const bytes = await image.arrayBuffer();
         const buffer = Buffer.from(bytes);
-        await writeFile(filepath, buffer);
-        
-        // Store public URL
-        images.push(`/uploads/websites/${filename}`);
+        const uploadResult = await uploadBufferToFirebaseStorage({
+          fileBuffer: buffer,
+          destinationPath: `websites/${filename}`,
+          contentType: image.type || 'application/octet-stream',
+        });
+        images.push(uploadResult.publicUrl);
         imageIndex++;
       } catch (error) {
         console.error('Error saving image:', error);
@@ -81,34 +71,30 @@ export async function POST(request: NextRequest) {
       lastUpdated: new Date().toISOString().split('T')[0]
     };
 
-    // احفظ في قاعدة البيانات (DisplayWebsite)
+    // احفظ في Firestore (websites)
     try {
-      const displayCount = await db.displayWebsite.count();
-      const slug =
-        title?.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') || `site-${Date.now()}`;
-      await db.displayWebsite.create({
-        data: {
-          slug,
-          title,
-          description: description ?? null,
-          url: demoUrl || '',
-          category,
-          technologies: technologies.length ? JSON.stringify(technologies) : null,
-          images: newWebsite.images.length ? JSON.stringify(newWebsite.images) : null,
-          badges: null,
-          tags: features.length ? JSON.stringify(features) : null,
-          featured: false,
-          status: 'active',
-          client: provider || null,
-          provider: provider || null,
-          price: isNaN(newWebsite.price) ? null : newWebsite.price,
-          demoUrl: demoUrl || null,
-          hidden: false,
-          displayOrder: displayCount + 1,
-        },
+      const displayCount = await websitesRepo.count();
+      await websitesRepo.create({
+        id: newWebsite.id,
+        title,
+        description: description ?? null,
+        url: demoUrl || '',
+        category,
+        technologies,
+        images: newWebsite.images,
+        badges: [],
+        tags: features,
+        featured: false,
+        status: 'active',
+        client: provider || null,
+        provider: provider || null,
+        price: isNaN(newWebsite.price) ? null : newWebsite.price,
+        demoUrl: demoUrl || null,
+        hidden: false,
+        displayOrder: displayCount + 1,
       });
     } catch (err) {
-      console.error('DB save error (displayWebsite):', err);
+      console.error('Firestore save error (websites):', err);
     }
 
     return NextResponse.json({
